@@ -27,9 +27,13 @@ export function LanguageSettings(props: IStackProps) {
       label: t`Arabic`,
       value: 'ar',
     },
+    {
+      label: t`Turkish`,
+      value: 'tr',
+    },
   ];
 
-  if (!['en', 'fa', 'ar'].includes(lang)) {
+  if (!['en', 'fa', 'ar', 'tr'].includes(lang)) {
     languageEntries.push({
       label: lang + ' (' + t`Unsupported` + ')',
       value: lang,
@@ -45,7 +49,9 @@ export function LanguageSettings(props: IStackProps) {
             // allow some time for forceRTL to work
             setTimeout(restart, 200);
           })
-          .catch(() => {});
+          .catch(err => {
+            console.error(err);
+          });
       }
     });
 
