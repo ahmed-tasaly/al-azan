@@ -16,24 +16,28 @@ export function LanguageSettings(props: IStackProps) {
 
   const languageEntries: LanguageEntry[] = [
     {
-      label: t`English`,
+      label: `English`,
       value: 'en',
     },
     {
-      label: t`Persian`,
+      label: `فارسی`,
       value: 'fa',
     },
     {
-      label: t`Arabic`,
+      label: `العربیة`,
       value: 'ar',
     },
     {
-      label: t`Turkish`,
+      label: `Türkçe`,
       value: 'tr',
+    },
+    {
+      label: `Indonesia`,
+      value: 'id',
     },
   ];
 
-  if (!['en', 'fa', 'ar', 'tr'].includes(lang)) {
+  if (!['en', 'fa', 'ar', 'tr', 'id'].includes(lang)) {
     languageEntries.push({
       label: lang + ' (' + t`Unsupported` + ')',
       value: lang,
