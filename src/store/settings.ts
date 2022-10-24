@@ -24,6 +24,12 @@ export type Reminder = {
   duration: number;
   /** has a value of `-1` or `+1` */
   durationModifier: number;
+  /** when is this reminder scheduled to be fired. can be undefined if not scheduled yet. or an outdated timestamp. */
+  whenIsFired?: number;
+  /** timestamp of when it was scheduled. */
+  whenScheduled?: number;
+  /** timestamp of when it was modified. */
+  modified?: number;
 };
 
 export type SettingsStore = {
@@ -34,6 +40,7 @@ export type SettingsStore = {
   NUMBERING_SYSTEM: string;
   // other
   SELECTED_LOCALE: string;
+  SELECTED_ARABIC_CALENDAR: string;
   APP_INITIAL_CONFIG_DONE: boolean;
   APP_INTRO_DONE: boolean;
   SAVED_ADHAN_AUDIO_ENTRIES: AdhanEntry[];
@@ -73,6 +80,7 @@ export const settings = createVanilla<SettingsStore>()(
     set => ({
       THEME_COLOR: 'default',
       SELECTED_LOCALE: PREFERRED_LOCALE,
+      SELECTED_ARABIC_CALENDAR: '',
       APP_INITIAL_CONFIG_DONE: false,
       APP_INTRO_DONE: false,
       SAVED_ADHAN_AUDIO_ENTRIES: INITIAL_ADHAN_AUDIO_ENTRIES,
