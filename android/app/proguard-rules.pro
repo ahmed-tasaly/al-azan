@@ -9,6 +9,11 @@
 
 # Add any project specific keep options here:
 
+# Disabling obfuscation is useful if you collect stack traces from production crashes
+# (unless you are using a system that supports de-obfuscate the stack traces).
+-dontobfuscate
+
+# React Native
 
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
@@ -42,6 +47,7 @@
 
 # hermes
 -keep class com.facebook.jni.** { *; }
+-keep class com.facebook.hermes.** { *; }
 
 
 # okio
@@ -51,9 +57,72 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
 
+# app
+-keep class com.github.meypod.al_azan.** { *; }
+
 # alarm module
 
--keep class com.reactnativealarmmodule { *; }
+-keep class com.reactnativealarmmodule.** { *; }
 
 # location module
--keep class com.github.douglasjunior { *; }
+-keep class com.github.douglasjunior.** { *; }
+
+# system settings module
+-keep class com.ninty.system.setting.** { *; }
+
+# mmkv
+
+-keep class com.reactnativemmkv { *; }
+
+############################
+######### FROM MMKV ########
+############################
+
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
+
+# Preserve all annotations.
+
+-keepattributes *Annotation*
+
+# Preserve all public classes, and their public and protected fields and
+# methods.
+
+-keep public class * {
+    public protected *;
+}
+
+# Preserve all .class method names.
+
+-keepclassmembernames class * {
+    java.lang.Class class$(java.lang.String);
+    java.lang.Class class$(java.lang.String, boolean);
+}
+
+# Preserve all native method names and the names of their classes.
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Preserve the special static methods that are required in all enumeration
+# classes.
+
+-keepclassmembers class * extends java.lang.Enum {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Explicitly preserve all serialization members. The Serializable interface
+# is only a marker interface, so it wouldn't save them.
+# You can comment this out if your library doesFn't use serialization.
+# If your code contains serializable classes that have to be backward
+# compatible, please refer to the manual.
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}

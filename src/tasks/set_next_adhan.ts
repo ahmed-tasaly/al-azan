@@ -1,68 +1,101 @@
 import {t} from '@lingui/macro';
-import {ToastAndroid} from 'react-native';
+import {cancelAlarmsAndReminders} from './cancel_alarms';
 import {getPrayerTimes, translatePrayer} from '@/adhan';
-import {hasAtLeastOneNotificationSetting} from '@/store/calculation_settings';
+import {
+  ADHAN_NOTIFICATION_ID,
+  ADHAN_CHANNEL_ID,
+  ADHAN_CHANNEL_NAME,
+  PRE_ADHAN_NOTIFICATION_ID,
+  PRE_ADHAN_CHANNEL_ID,
+  PRE_ADHAN_CHANNEL_NAME,
+} from '@/constants/notification';
+import {alarmSettings, hasAtLeastOneNotificationSetting} from '@/store/alarm';
 import {settings} from '@/store/settings';
 import {setAlarmTask} from '@/tasks/set_alarm';
 import {setPreAlarmTask} from '@/tasks/set_pre_alarm';
-import {setReminders} from '@/tasks/set_reminder';
-import {getNextDayBeginning, getTime} from '@/utils/date';
+import {getTime} from '@/utils/date';
+import {getUpcommingTimeDay, showUpcomingToast} from '@/utils/upcoming';
 
 type SetNextAdhanOptions = {
-  fromDate?: Date;
   noToast?: boolean;
 };
 
 export function setNextAdhan(options?: SetNextAdhanOptions) {
   const notificationSettingsIsValid = hasAtLeastOneNotificationSetting();
 
-  if (!notificationSettingsIsValid) return Promise.resolve();
-
-  let targetDate = options?.fromDate || new Date();
-  let nextPrayer = getPrayerTimes(targetDate)?.nextPrayer(true);
-  if (!nextPrayer) {
-    targetDate = getNextDayBeginning(targetDate);
-    nextPrayer = getPrayerTimes(targetDate)?.nextPrayer(true);
+  if (!notificationSettingsIsValid) {
+    void cancelAlarmsAndReminders();
+    return;
   }
-  if (!nextPrayer) return Promise.resolve();
+
+  const dismissedAlarmTS =
+    settings.getState().DISMISSED_ALARM_TIMESTAMPS[ADHAN_NOTIFICATION_ID] || 0;
+
+  let targetDate = new Date(dismissedAlarmTS + 10000);
+
+  if (targetDate.valueOf() < Date.now()) {
+    targetDate = new Date();
+  }
+
+  let nextPrayer = getPrayerTimes(targetDate)?.nextPrayer({
+    useSettings: true,
+    checkNextDays: true,
+  });
+  if (!nextPrayer) return;
 
   const {date, prayer, playSound} = nextPrayer!;
 
-  const dismissedAlarmTS = settings.getState().DISMISSED_ALARM_TIMESTAMP;
+  if (dismissedAlarmTS >= date.valueOf()) return;
 
-  if (dismissedAlarmTS >= date.valueOf()) return Promise.resolve();
+  const showNextPrayerInfo = alarmSettings.getState().SHOW_NEXT_PRAYER_TIME;
+
+  const title = translatePrayer(prayer);
+  let body: string | undefined;
+  let subtitle: string | undefined = getTime(date);
+
+  if (showNextPrayerInfo) {
+    const next = getPrayerTimes(new Date(date.valueOf() + 1000))?.nextPrayer({
+      checkNextDays: true,
+      useSettings: true,
+    });
+    if (next) {
+      body = `${t`Next`}: ${translatePrayer(
+        next.prayer,
+      )}, ${getUpcommingTimeDay(next.date)}`;
+    }
+  } else {
+    body = subtitle;
+    subtitle = undefined;
+  }
+
+  const adhanOptions = {
+    notifId: ADHAN_NOTIFICATION_ID,
+    notifChannelId: ADHAN_CHANNEL_ID,
+    notifChannelName: ADHAN_CHANNEL_NAME,
+    date,
+    title,
+    body,
+    subtitle,
+    playSound,
+    prayer,
+  };
 
   return setPreAlarmTask({
-    date,
-    prayer,
+    ...adhanOptions,
+    notifId: PRE_ADHAN_NOTIFICATION_ID,
+    notifChannelId: PRE_ADHAN_CHANNEL_ID,
+    notifChannelName: PRE_ADHAN_CHANNEL_NAME,
+    targetAlarmNotifId: ADHAN_NOTIFICATION_ID,
   })
-    .then(() =>
-      setAlarmTask({
-        date,
-        prayer,
-        playSound,
-      }),
-    )
-    .then(() => {
-      return setReminders({
-        noToast: true,
-        date,
-        reminders: settings.getState().REMINDERS,
-      });
-    })
+    .then(() => setAlarmTask(adhanOptions))
     .then(() => {
       if (!options?.noToast) {
         const translatedPrayerName = translatePrayer(prayer);
-        const time24Format = getTime(date);
-        ToastAndroid.show(
-          t`Next` +
-            ': ' +
-            translatedPrayerName +
-            ', ' +
-            time24Format +
-            (date.getDay() !== new Date().getDay() ? ' ' + t`Tomorrow` : ''),
-          ToastAndroid.SHORT,
-        );
+        let message = t`Next` + ': ' + translatedPrayerName + ',';
+        showUpcomingToast({
+          message,
+          date,
+        });
       }
     });
 }

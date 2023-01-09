@@ -11,9 +11,16 @@ export enum Prayer {
   Isha = 'isha',
   /** middle of the night */
   Midnight = 'midnight',
+  /** last third of the night */
+  Tahajjud = 'tahajjud',
 }
 
-export const NonPrayer = [Prayer.Sunrise, Prayer.Sunset, Prayer.Midnight];
+export const NonPrayer = [
+  Prayer.Sunrise,
+  Prayer.Sunset,
+  Prayer.Midnight,
+  Prayer.Tahajjud,
+];
 
 export const PrayersInOrder = [
   Prayer.Fajr,
@@ -25,6 +32,8 @@ export const PrayersInOrder = [
   Prayer.Isha,
   /** middle of the night */
   Prayer.Midnight,
+  /** last third of the night */
+  Prayer.Tahajjud,
 ];
 
 const prayerTranslations = {
@@ -59,6 +68,10 @@ const prayerTranslations = {
   midnight: defineMessage({
     id: 'sunnah.midnight',
     message: 'Midnight',
+  }),
+  tahajjud: defineMessage({
+    id: 'sunnah.tahajjud',
+    message: 'Tahajjud',
   }),
 } as Record<string, MessageDescriptor>;
 

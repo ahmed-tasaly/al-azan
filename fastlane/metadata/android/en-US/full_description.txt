@@ -1,4 +1,4 @@
-Privacy-first ad-free open-source Adhan app built using react-native.
+Privacy-first ad-free open-source muslim Adhan (islamic prayer times) app
 
 App features:
 
@@ -8,9 +8,15 @@ App features:
 
 * Open-source
 
+* You can search for your location online Or use GPS offline
+
 * Set custom Adhan audio
 
-* Many options for Adhan calculation
+* Select different Adhan audio for Fajr namaz
+
+* In addition to five daily prayers, it has settings for Sunrise, Sunset, Midnight and Night Prayer (Tahajjud)
+
+* Many options for Adhan (اذان) calculation
 
 * Light/Dark theme
 
@@ -20,7 +26,7 @@ App features:
 
 * Homescreen and notification Widgets
 
-* Is localized in English, Persian, Arabic, Turkish, Indonesian, French
+* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German
 
 Open source repository:
 https://github.com/meypod/al-azan/

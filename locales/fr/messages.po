@@ -1,37 +1,41 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-10-30 15:01+0330\n"
+"POT-Creation-Date: 2023-01-08 19:16+0330\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fr\n"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:123
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:122
 msgid "10 min"
 msgstr "10 min"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:127
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:126
 msgid "15 min"
 msgstr "15 min"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:131
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:130
 msgid "30 min"
 msgstr "30 min"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:119
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:118
 msgid "5 min"
 msgstr "5 min"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:135
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:134
 msgid "60 min"
 msgstr "60 min"
+
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:138
+msgid "90 min"
+msgstr "90 min"
 
 #: src/assets/adhan_entries.ts:23
 msgid "Abdul-Basit Abdus-Samad"
 msgstr "Abdul-Basit Abdus-Samad"
 
-#: src/screens/settings_calculation/index.tsx:184
+#: src/screens/settings_calculation/index.tsx:187
 msgid "Abyad"
 msgstr "Abyad"
 
@@ -44,17 +48,17 @@ msgstr "Ajouter"
 msgid "Add Custom Adhan"
 msgstr "Ajouter un Adhan personnalisé"
 
-#: src/screens/settings_reminders/index.tsx:50
+#: src/screens/settings_reminders/index.tsx:58
 msgid "Add Reminder"
 msgstr "Ajouter un rappel"
 
-#: src/screens/fullscreen_alarm/index.tsx:77
+#: src/screens/fullscreen_alarm/index.tsx:40
 msgid "Adhan"
 msgstr "Adhan"
 
 #: src/screens/settings_adhan/index.tsx:94
 msgid "Adhan audio file is not downloaded yet"
-msgstr "Le fichier audio Adhan n'est pas encore téléchargé"
+msgstr "Le fichier audio pour l'Adhan n'est pas encore téléchargé"
 
 #: src/screens/settings_calculation/index.tsx:93
 msgid "Adjustments"
@@ -64,7 +68,7 @@ msgstr "Ajustements"
 msgid "Advanced Calculation Settings"
 msgstr "Paramètres de calcul avancés"
 
-#: src/screens/settings_calculation/index.tsx:183
+#: src/screens/settings_calculation/index.tsx:186
 msgid "Ahmer"
 msgstr "Ahmer"
 
@@ -92,11 +96,11 @@ msgstr "Calcul du Asr"
 msgid "At least one prayer time must be shown"
 msgstr "Au moins un temps de prière doit être affiché"
 
-#: src/intro/intro.tsx:106
+#: src/intro/intro.tsx:118
 msgid "Attention"
 msgstr "Attention"
 
-#: src/intro/intro.tsx:35
+#: src/intro/intro.tsx:39
 #: src/screens/settings_battery_optimizations/index.tsx:46
 msgid "Battery Optimization"
 msgstr "Optimisation de la batterie"
@@ -105,7 +109,7 @@ msgstr "Optimisation de la batterie"
 msgid "Calculating Adhan has many different methods. Each method provides different results. It is your responsibility to search and use the right method."
 msgstr "Le calcul de l'Adhan peut se faire selon de nombreuses méthodes différentes. Chaque méthode fournit des résultats différents. Il est de votre responsabilité de rechercher et d'utiliser la bonne méthode."
 
-#: src/intro/intro.tsx:27
+#: src/intro/intro.tsx:31
 msgid "Calculation"
 msgstr "Calcul"
 
@@ -118,13 +122,10 @@ msgid "Calendar"
 msgstr "Calendrier"
 
 #: src/screens/settings_adhan/index.tsx:180
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:195
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:238
+#: src/tasks/set_pre_alarm.ts:63
 msgid "Cancel"
 msgstr "Annuler"
-
-#: src/tasks/set_pre_alarm.ts:84
-msgid "Cancel Adhan"
-msgstr "Annuler Adhan"
 
 #: src/screens/settings_calculation/index.tsx:133
 msgid "Choose Asr Calculation Madhab"
@@ -138,18 +139,19 @@ msgstr "Choisir la méthode de calcul"
 msgid "Choose High Latitude Setting"
 msgstr "Choisir le réglage de la latitude élevée"
 
-#: src/screens/settings_display/language_settings.tsx:75
+#: src/screens/settings_display/language_settings.tsx:82
 msgid "Choose Language"
 msgstr "Choisir la langue"
 
-#: src/screens/settings_calculation/index.tsx:146
+#: src/screens/settings_calculation/index.tsx:149
 msgid "Choose Polar Resolution"
 msgstr "Choisir la résolution polaire"
 
-#: src/screens/settings_calculation/index.tsx:175
+#: src/screens/settings_calculation/index.tsx:178
 msgid "Choose Shafaq method"
 msgstr "Choisissez la méthode Shafaq"
 
+#: src/screens/settings_display/calendar_secondary_settings.tsx:26
 #: src/screens/settings_display/calendar_settings.tsx:26
 msgid "Choose calendar type"
 msgstr "Choisissez le type de calendrier"
@@ -162,23 +164,19 @@ msgstr "Choisir le système de numérotation"
 msgid "City/Area"
 msgstr "Ville/Zone"
 
-#: src/screens/settings_location/index.tsx:338
-msgid "Clear"
-msgstr "Effacer"
-
 #: src/screens/settings_location/index.tsx:144
 msgid "Clipboard data does not contain coordinates"
 msgstr "Les données du presse-papiers ne contiennent pas de coordonnées"
 
-#: src/screens/settings_calculation/index.tsx:157
+#: src/screens/settings_calculation/index.tsx:160
 msgid "Closest City"
 msgstr "Ville la plus proche"
 
-#: src/screens/settings_calculation/index.tsx:161
+#: src/screens/settings_calculation/index.tsx:164
 msgid "Closest Date"
 msgstr "Date la plus proche"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:194
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:237
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -210,14 +208,14 @@ msgstr "En fonction de votre appareil et de la version d'Android, il peut arrive
 
 #: src/screens/settings_adhan/adhan_list_item.tsx:186
 msgid "Deselect as Fajr Adhan"
-msgstr "Désélectionner comme Fajr Adhan"
+msgstr "Désélectionner comme Adhan du Fajr"
 
 #: src/screens/settings_battery_optimizations/index.tsx:57
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: src/screens/fullscreen_alarm/index.tsx:105
-#: src/tasks/set_alarm.ts:92
+#: src/screens/fullscreen_alarm/index.tsx:123
+#: src/tasks/set_alarm.ts:98
 msgid "Dismiss"
 msgstr "Passer"
 
@@ -225,11 +223,11 @@ msgstr "Passer"
 msgid "Diyanet İşleri Başkanlığı, Turkey"
 msgstr "Diyanet İşleri Başkanlığı, Turquie"
 
-#: src/intro/intro.tsx:89
+#: src/intro/intro.tsx:101
 msgid "Done"
 msgstr "Terminé"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:86
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
 msgid "Edit Reminder"
 msgstr "Modifier le rappel"
 
@@ -261,16 +259,19 @@ msgstr "Erreur lors du téléchargement d'un fichier audio"
 msgid "Error while getting coordinates"
 msgstr "Erreur lors de l'obtention des coordonnées"
 
-#. short week day, friday
-#: src/components/week_day_selector.tsx:30
-msgid "FRI"
-msgstr "FRI"
+#: src/screens/settings_display/calendar_secondary_settings.tsx:32
+msgid "Ethiopic"
+msgstr "Éthiopique"
 
 #: src/screens/settings_location/index.tsx:198
 msgid "Find My Location"
 msgstr "Trouver ma position"
 
-#: src/screens/settings_calculation/index.tsx:180
+#: src/components/week_day_selector.tsx:26
+msgid "Friday"
+msgstr "Vendredi"
+
+#: src/screens/settings_calculation/index.tsx:183
 msgid "General (default)"
 msgstr "Général (par défaut)"
 
@@ -278,22 +279,26 @@ msgstr "Général (par défaut)"
 msgid "Getting coordinates"
 msgstr "Obtenir des coordonnées"
 
-#: src/intro/intro.tsx:112
+#: src/intro/intro.tsx:124
 msgid "Got it"
 msgstr "Obtenu"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:30
+msgid "Gregorian"
+msgstr "Grégorien"
 
 #: src/adhan/calculation_methods.ts:58
 msgid "Gulf region"
 msgstr "Région du Golfe"
 
-#: src/screens/settings_calculation/index.tsx:138
+#: src/screens/settings_calculation/index.tsx:141
 msgid "Hanafi"
 msgstr "Hanafi"
 
 #: src/screens/settings_display/hide_prayer_settings.tsx:58
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:63
 msgid "Hidden?"
-msgstr "Caché ?"
+msgstr "Caché?"
 
 #: src/screens/settings_display/hide_prayer_settings.tsx:54
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:59
@@ -307,6 +312,10 @@ msgstr "Latitude élevée"
 #: src/screens/settings_about/index.tsx:24
 msgid "Home"
 msgstr "Accueil"
+
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:21
+msgid "If enabled, when a notification is shown, it will contain info for the next prayer time"
+msgstr "Si cette option est activée, lorsqu'une notification est affichée, elle contient des informations sur la prochaine heure de prière"
 
 #: src/screens/settings_battery_optimizations/index.tsx:52
 msgid "If you want to make sure the app can work reliably, You have to disable power optimization for this app. You can open related settings using the button below."
@@ -340,11 +349,11 @@ msgstr "Kementrian Agama République d'Indonésie (KEMENAG)"
 msgid "Kuwait"
 msgstr "Koweït"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:94
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:93
 msgid "Label"
 msgstr "Intitulé"
 
-#: src/screens/settings_display/language_settings.tsx:72
+#: src/screens/settings_display/language_settings.tsx:79
 msgid "Language"
 msgstr "Langue"
 
@@ -367,9 +376,9 @@ msgstr "Licence"
 
 #: src/screens/settings_display/theme_settings.tsx:37
 msgid "Light"
-msgstr "Lumière"
+msgstr "Clair"
 
-#: src/intro/intro.tsx:23
+#: src/intro/intro.tsx:27
 msgid "Location"
 msgstr "Localisation"
 
@@ -382,11 +391,6 @@ msgstr "Longitude"
 msgid "Longitude is invalid"
 msgstr "La longitude n'est pas valide"
 
-#. short week day, monday
-#: src/components/week_day_selector.tsx:14
-msgid "MON"
-msgstr "MON"
-
 #: src/assets/adhan_entries.ts:19
 msgid "Masjid An Nabawi"
 msgstr "Masjid An Nabawi"
@@ -398,6 +402,10 @@ msgstr "Le milieu de la nuit"
 #: src/assets/adhan_entries.ts:33
 msgid "Moazen Zade"
 msgstr "Moazen Zade"
+
+#: src/components/week_day_selector.tsx:14
+msgid "Monday"
+msgstr "Lundi"
 
 #: src/adhan/calculation_methods.ts:22
 msgid "Moonsighting Committee"
@@ -412,16 +420,17 @@ msgstr "Ligue islamique mondiale"
 msgid "Name"
 msgstr "Nom"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:86
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
 msgid "New Reminder"
 msgstr "Nouveau rappel"
 
-#: src/intro/intro.tsx:88
-#: src/tasks/set_next_adhan.ts:58
+#: src/intro/intro.tsx:100
+#: src/tasks/set_next_adhan.ts:62
+#: src/tasks/set_next_adhan.ts:94
 msgid "Next"
 msgstr "Suivant"
 
-#: src/screens/home/index.tsx:113
+#: src/screens/home/index.tsx:136
 msgid "Next Day"
 msgstr "Jour suivant"
 
@@ -433,11 +442,12 @@ msgstr "Non"
 msgid "None (Automatic)"
 msgstr "Aucun (automatique)"
 
-#: src/screens/settings_notifications/index.tsx:18
+#: src/screens/settings_notifications/notification_setting.tsx:236
+#: src/screens/settings_notifications/notification_setting.tsx:321
 msgid "Notification"
 msgstr "Notification"
 
-#: src/intro/intro.tsx:31
+#: src/intro/intro.tsx:35
 msgid "Notification & Sound"
 msgstr "Notification et son"
 
@@ -445,9 +455,18 @@ msgstr "Notification et son"
 msgid "Numbering system"
 msgstr "Système de numérotation"
 
+#: src/screens/settings_reminders/reminder_item.tsx:33
+msgid "Once"
+msgstr "Une fois"
+
 #: src/screens/settings_calculation/index.tsx:121
 msgid "One-Seventh of the Night"
 msgstr "Un septième de la nuit"
+
+#. shown in add/edit reminder dialog
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:206
+msgid "Only once?"
+msgstr "Une seule fois ?"
 
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:44
 msgid "Only six items can be shown at the same time"
@@ -461,11 +480,20 @@ msgstr "Ouvrir les paramètres d'optimisation de la batterie"
 msgid "Open Power Manager Settings"
 msgstr "Ouvrir les paramètres de gestion d'énergie"
 
-#: src/screens/settings_location/index.tsx:333
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:185
+msgid "Options"
+msgstr "Options"
+
+#: src/screens/settings_location/index.tsx:346
 msgid "Paste"
 msgstr "Coller"
 
-#: src/screens/settings_calculation/index.tsx:143
+#. shown in add/edit reminder dialog
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:188
+msgid "Play adhan?"
+msgstr "Jouer l'adhan ?"
+
+#: src/screens/settings_calculation/index.tsx:146
 msgid "Polar Resolution"
 msgstr "Résolution polaire"
 
@@ -473,7 +501,7 @@ msgstr "Résolution polaire"
 msgid "Power Manager"
 msgstr "Gestionnaire d'énergie"
 
-#: src/screens/home/index.tsx:91
+#: src/screens/home/index.tsx:107
 msgid "Prev Day"
 msgstr "Jour précédent"
 
@@ -489,28 +517,15 @@ msgstr "Ragheb Mustafa Ghalwash"
 msgid "Referred to as the ISNA method"
 msgstr "Appelée la méthode ISNA"
 
-#: src/tasks/set_reminder.ts:94
-#: src/tasks/set_reminder.ts:119
+#: src/screens/fullscreen_alarm/index.tsx:44
+#: src/tasks/set_reminder.ts:70
+#: src/tasks/set_reminder.ts:96
 msgid "Reminder"
 msgstr "Rappel"
 
-#: src/components/week_day_selector.tsx:60
-msgid "Repeat"
-msgstr "Répéter"
-
-#: src/intro/intro.tsx:108
+#: src/intro/intro.tsx:120
 msgid "Required settings are incomplete. For app to show prayer times, You have to configure it from settings later."
 msgstr "Les paramètres requis sont incomplets. Pour que l'application affiche les heures de prière, vous devrez les configurer à partir de paramètres ultérieurement."
-
-#. short week day, saturday
-#: src/components/week_day_selector.tsx:34
-msgid "SAT"
-msgstr "sam."
-
-#. short week day, sunday
-#: src/components/week_day_selector.tsx:10
-msgid "SUN"
-msgstr "dim."
 
 #: src/screens/settings_battery_optimizations/index.tsx:82
 msgid ""
@@ -524,19 +539,27 @@ msgstr ""
 "Dans le menu Batterie, appuyez sur \"Gestion de l'alimentation des applications\", puis sur \"Application à ne pas mettre en veille\",\n"
 "et ajoutez cette application à la liste."
 
+#: src/components/week_day_selector.tsx:29
+msgid "Saturday"
+msgstr "Samedi"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:21
+msgid "Secondary Calendar"
+msgstr "Calendrier secondaire"
+
 #: src/screens/settings_adhan/adhan_list_item.tsx:187
 msgid "Select as Fajr Adhan"
-msgstr "Sélectionner comme Fajr Adhan"
+msgstr "Sélectionner comme Adhan du Fajr"
 
 #: src/screens/settings_adhan/index.tsx:173
 msgid "Selecting a name is required"
 msgstr "La sélection d'un nom est obligatoire"
 
-#: src/screens/settings_calculation/index.tsx:167
+#: src/screens/settings_calculation/index.tsx:170
 msgid "Shafaq"
 msgstr "Shafaq"
 
-#: src/screens/settings_calculation/index.tsx:169
+#: src/screens/settings_calculation/index.tsx:172
 msgid ""
 "Shafaq is used by the MoonsightingCommittee method to \n"
 "determine what type of twilight to use in order to\n"
@@ -546,9 +569,9 @@ msgstr ""
 "déterminer quel type de crépuscule utiliser afin de\n"
 "déterminer l'heure d'Isha"
 
-#: src/screens/settings_calculation/index.tsx:137
-msgid "Shafi (Default)"
-msgstr "Shafi (Par défaut)"
+#: src/screens/settings_calculation/index.tsx:138
+msgid "Shafi, Maliki, Hanbali (Default)"
+msgstr "Shafi, Maliki, Hanbali (Par défaut)"
 
 #: src/adhan/calculation_methods.ts:106
 msgid "Shia Ithna Ashari, Leva Institute, Qum"
@@ -560,11 +583,15 @@ msgstr "Shia, Institut de géophysique, Université de Téhéran"
 
 #: src/screens/settings_adhan/adhan_list_item.tsx:177
 msgid "Show Adhan Options"
-msgstr "Afficher les options d'Adhan"
+msgstr "Afficher les options pour l'Adhan"
 
-#: src/screens/home/index.tsx:107
+#: src/screens/home/index.tsx:130
 msgid "Show Today"
 msgstr "Montrer aujourd'hui"
+
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:13
+msgid "Show next in notification?"
+msgstr "Montrer le prochain dans la notification ?"
 
 #: src/screens/settings_widget/index.tsx:32
 msgid "Show notification widget?"
@@ -574,9 +601,13 @@ msgstr "Afficher le widget de notification ?"
 msgid "Singapore"
 msgstr "Singapour"
 
-#: src/intro/intro.tsx:90
+#: src/intro/intro.tsx:102
 msgid "Skip"
 msgstr "Passer"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:31
+msgid "Solar Hijri"
+msgstr "Hijri solaire"
 
 #: src/screens/settings_battery_optimizations/index.tsx:72
 msgid ""
@@ -588,7 +619,8 @@ msgstr ""
 "pour éviter que l'application ne soit arrêtée en arrière-plan.\n"
 "Dans ce cas, désactivez toute option d'économie d'énergie pour l'application."
 
-#: src/screens/settings_notifications/index.tsx:21
+#: src/screens/settings_notifications/notification_setting.tsx:287
+#: src/screens/settings_notifications/notification_setting.tsx:329
 msgid "Sound"
 msgstr "Son"
 
@@ -600,19 +632,17 @@ msgstr "Administration spirituelle des musulmans de Russie"
 msgid "Status"
 msgstr "Statut"
 
+#: src/components/week_day_selector.tsx:11
+msgid "Sunday"
+msgstr "Dimanche"
+
 #: src/screens/settings_display/theme_settings.tsx:44
 msgid "System Default"
 msgstr "Système par défaut"
 
-#. short week day, thursday
-#: src/components/week_day_selector.tsx:26
-msgid "THU"
-msgstr "jeu."
-
-#. short week day, tuesday
-#: src/components/week_day_selector.tsx:18
-msgid "TUE"
-msgstr "mar."
+#: src/screens/settings_display/calendar_secondary_settings.tsx:33
+msgid "Thai Solar"
+msgstr "Thai Solar"
 
 #: src/intro/slides/welcome.tsx:9
 msgid ""
@@ -626,18 +656,25 @@ msgstr ""
 msgid "The Gulf Region (Dubai)"
 msgstr "La région du Golfe (Dubaï)"
 
+#: src/screens/settings_display/calendar_secondary_settings.tsx:23
+msgid "The type of calendar that is shown on top of home screen and beside lunar date in widgets"
+msgstr "Le type de calendrier qui s'affiche en haut de l'écran d'accueil et à côté de la date lunaire dans les widgets"
+
 #: src/screens/settings_display/calendar_settings.tsx:23
-msgid "The type of calendar shown in main screen and widgets"
-msgstr "Le type de calendrier affiché dans l'écran principal et les widgets"
+msgid "The type of lunar calendar shown in main screen and widgets"
+msgstr "Le type de calendrier lunaire affiché dans l'écran principal et les widgets"
 
 #: src/screens/settings_display/theme_settings.tsx:28
 #: src/screens/settings_display/theme_settings.tsx:33
 msgid "Theme Color"
 msgstr "Couleur du thème"
 
+#: src/components/week_day_selector.tsx:23
+msgid "Thursday"
+msgstr "Jeudi"
+
 #: src/screens/settings_display/hide_prayer_settings.tsx:57
-#: src/screens/settings_notifications/index.tsx:16
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:104
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:103
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:62
 msgid "Time"
 msgstr "Temps"
@@ -650,10 +687,13 @@ msgstr "Format de l'heure"
 msgid "To calculate Adhan, We need your location. You can use the \"Find My Location\" button, or use the country and city/area search, or enter your coordinates manually."
 msgstr "Pour calculer l'Adhan, nous avons besoin de votre position. Vous pouvez utiliser le bouton \"Trouver ma position\", ou utiliser la recherche par pays et ville/région, ou encore entrer vos coordonnées manuellement."
 
-#: src/tasks/set_next_adhan.ts:63
-#: src/tasks/set_reminder.ts:123
+#: src/utils/upcoming.ts:15
 msgid "Tomorrow"
 msgstr "Demain"
+
+#: src/components/week_day_selector.tsx:17
+msgid "Tuesday"
+msgstr "Mardi"
 
 #: src/screens/settings_calculation/index.tsx:125
 msgid "Twilight Angle"
@@ -671,16 +711,16 @@ msgstr "Union Organisation Islamique de France"
 msgid "University of Islamic Sciences, Karachi"
 msgstr "Université des sciences islamiques, Karachi"
 
-#: src/screens/settings_calculation/index.tsx:153
+#: src/screens/settings_calculation/index.tsx:156
 msgid "Unresolved (default)"
 msgstr "Non résolu (par défaut)"
 
-#: src/screens/settings_display/language_settings.tsx:46
+#: src/screens/settings_display/language_settings.tsx:58
 msgid "Unsupported"
 msgstr "Non pris en charge"
 
 #. notification title
-#: src/tasks/set_pre_alarm.ts:65
+#: src/tasks/set_pre_alarm.ts:49
 msgid "Upcoming alarm"
 msgstr "Alarme à venir"
 
@@ -704,16 +744,15 @@ msgstr "Utilisation de la recherche"
 msgid "Version"
 msgstr "Version"
 
-#. short week day, wednesday
-#: src/components/week_day_selector.tsx:22
-msgid "WED"
-msgstr "mer."
-
 #: src/intro/slides/welcome.tsx:14
 msgid "We'll help you do them quickly."
 msgstr "Nous vous aiderons à les réaliser rapidement."
 
-#: src/intro/intro.tsx:19
+#: src/components/week_day_selector.tsx:20
+msgid "Wednesday"
+msgstr "Mercredi"
+
+#: src/intro/intro.tsx:23
 msgid "Welcome"
 msgstr "Bienvenue sur"
 
@@ -721,7 +760,7 @@ msgstr "Bienvenue sur"
 msgid "You can access your device Power Manager using the button below."
 msgstr "Vous pouvez accéder au gestionnaire d'énergie de votre appareil en utilisant le bouton ci-dessous."
 
-#: src/screens/settings_location/index.tsx:326
+#: src/screens/settings_location/index.tsx:340
 msgid "You can also paste coords from clipboard"
 msgstr "Vous pouvez également coller les coordonnées à partir du presse-papiers"
 
@@ -745,21 +784,16 @@ msgstr ""
 msgid "about_settings"
 msgstr "À propos de"
 
-#. screen title
-#: src/navigation/types.ts:54
-msgid "adhan_settings"
-msgstr "Adhan"
-
 #. shown under adjustment accordion in calculation settings
 #: src/screens/settings_calculation/adjustment_settings.tsx:16
 msgid "adjustment.hint"
 msgstr "Nombre de minutes qui seront ajoutées aux temps calculés"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:155
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:158
 msgid "after"
 msgstr "après"
 
-#: src/adhan/prayer.ts:43
+#: src/adhan/prayer.ts:52
 msgid "asr.prayer"
 msgstr "Asr"
 
@@ -768,7 +802,7 @@ msgstr "Asr"
 msgid "battery_optimization_settings"
 msgstr "Optimisation de la batterie"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:154
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:157
 msgid "before"
 msgstr "avant"
 
@@ -777,22 +811,22 @@ msgstr "avant"
 msgid "calculation_settings"
 msgstr "Calcul"
 
-#: src/adhan/prayer.ts:39
+#: src/adhan/prayer.ts:48
 msgid "dhuhr.prayer"
 msgstr "Dhuhr"
 
 #. screen title
 #: src/navigation/types.ts:39
 msgid "display_settings"
-msgstr "Afficher"
+msgstr "Affichage"
 
-#: src/adhan/prayer.ts:31
+#: src/adhan/prayer.ts:40
 msgid "fajr.prayer"
 msgstr "Fajr"
 
 #: src/screens/settings_display/number_format_settings.tsx:22
 msgid "forces all numbers to be in the selected system"
-msgstr "force tous les numéros à être dans le système sélectionné"
+msgstr "Force tous les numéros à être dans le système sélectionné"
 
 #. screen title
 #: src/navigation/types.ts:34
@@ -806,9 +840,9 @@ msgstr "Accueil"
 #: src/screens/settings_display/hide_prayer_settings.tsx:63
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:68
 msgid "is prayer time hidden?"
-msgstr "le temps de prière est-il caché ?"
+msgstr "Le temps de prière est-il caché ?"
 
-#: src/adhan/prayer.ts:55
+#: src/adhan/prayer.ts:64
 msgid "isha.prayer"
 msgstr "Isha"
 
@@ -817,9 +851,14 @@ msgstr "Isha"
 msgid "location_settings"
 msgstr "Localisation"
 
-#: src/adhan/prayer.ts:51
+#: src/adhan/prayer.ts:60
 msgid "maghrib.prayer"
 msgstr "Maghrib"
+
+#. screen title
+#: src/navigation/types.ts:54
+msgid "muezzin_settings"
+msgstr "Muezzin"
 
 #. screen title
 #: src/navigation/types.ts:49
@@ -837,22 +876,26 @@ msgstr "Paramètres"
 
 #: src/screens/settings_widget/index.tsx:47
 msgid "should notification widget be shown?"
-msgstr "le widget de notification doit-il être affiché ?"
+msgstr "Le widget de notification doit-il être affiché ?"
 
 #: src/screens/settings_display/hide_prayer_settings.tsx:26
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:29
 msgid "should {prayerName} be hidden?"
 msgstr "{prayerName} doit-il être caché ?"
 
-#: src/adhan/prayer.ts:59
+#: src/adhan/prayer.ts:68
 msgid "sunnah.midnight"
 msgstr "Minuit"
 
-#: src/adhan/prayer.ts:35
+#: src/adhan/prayer.ts:72
+msgid "sunnah.tahajjud"
+msgstr "Tahajjud"
+
+#: src/adhan/prayer.ts:44
 msgid "sunrise"
 msgstr "Lever du soleil"
 
-#: src/adhan/prayer.ts:47
+#: src/adhan/prayer.ts:56
 msgid "sunset"
 msgstr "Coucher de soleil"
 
@@ -861,18 +904,18 @@ msgstr "Coucher de soleil"
 msgid "widget_settings"
 msgstr "Paramètres des widgets"
 
-#: src/screens/settings_reminders/reminder_item.tsx:93
+#: src/screens/settings_reminders/reminder_item.tsx:30
 msgid "{durationInMinutes} min after {prayer}"
 msgstr "{durationInMinutes} min après {prayer}"
 
-#: src/screens/settings_reminders/reminder_item.tsx:92
+#: src/screens/settings_reminders/reminder_item.tsx:29
 msgid "{durationInMinutes} min before {prayer}"
 msgstr "{durationInMinutes} min avant {prayer}"
 
-#: src/screens/settings_notifications/notification_setting.tsx:51
+#: src/screens/settings_notifications/notification_setting.tsx:244
 msgid "{prayerName} notification will be shown"
 msgstr "La notification du {prayerName} sera affichée"
 
-#: src/screens/settings_notifications/notification_setting.tsx:61
+#: src/screens/settings_notifications/notification_setting.tsx:296
 msgid "{prayerName} sound will be played"
 msgstr "le son {prayerName} sera joué"

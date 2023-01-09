@@ -3,9 +3,9 @@ import {IVStackProps} from 'native-base/lib/typescript/components/primitives/Sta
 import {useCallback, useEffect, useState} from 'react';
 import {Prayer, translatePrayer} from '@/adhan';
 import {
-  getAdhanSettingKey,
+  getPrayerAdjustmentSettingKey,
   useCalcSettingsHelper,
-} from '@/store/calculation_settings';
+} from '@/store/calculation';
 import useDebounce from '@/utils/hooks/use_debounce';
 
 type AdjustmentSettingProps = {
@@ -17,11 +17,11 @@ export function AdjustmentSetting({
   ...hStackProps
 }: AdjustmentSettingProps & IVStackProps) {
   const [adjustment, setAdjustment] = useCalcSettingsHelper(
-    getAdhanSettingKey(prayer, 'adjustment'),
+    getPrayerAdjustmentSettingKey(prayer),
   );
 
   const [localAdjustment, setLocalAdjustment] = useState(adjustment as number);
-  const debouncedAdjustment = useDebounce(localAdjustment, 500);
+  const debouncedAdjustment = useDebounce(localAdjustment, 600);
 
   const prayerName = translatePrayer(prayer);
 

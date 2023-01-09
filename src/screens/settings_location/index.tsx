@@ -19,7 +19,7 @@ import {ToastAndroid} from 'react-native';
 import LocationProvider from 'react-native-get-location';
 import {AutocompleteInput} from '@/components/AutocompleteInput';
 import Divider from '@/components/Divider';
-import {useCalcSettingsHelper} from '@/store/calculation_settings';
+import {useCalcSettingsHelper} from '@/store/calculation';
 import {useSettingsHelper} from '@/store/settings';
 import {getCached} from '@/utils/cached';
 import {
@@ -34,7 +34,7 @@ function isValidCoords(num: number) {
   return num >= -180 && num <= 180;
 }
 
-const clipboardCoordsRegex = /([-\d.]+)\s*,\s*([-\d.]+)/;
+const clipboardCoordsRegex = /\s*([-\d.]+)[\s°NS]*[,| ]{1}\s*([-\d.]+)[\s°EW]*/;
 
 export function LocationSettings(props: IScrollViewProps) {
   const [lat, setLat] = useCalcSettingsHelper('LOCATION_LAT');
@@ -286,7 +286,7 @@ export function LocationSettings(props: IScrollViewProps) {
       <Divider label={t`Using Coordinates`} mb="2" mt="4" />
 
       <HStack>
-        <FormControl width="1/2" pr="1" mb="1">
+        <FormControl flex={1} flexGrow={1} pr="1" mb="1">
           <FormControl.Label justifyContent="center">{t`Latitude`}</FormControl.Label>
           <Input
             py="0"
@@ -302,7 +302,7 @@ export function LocationSettings(props: IScrollViewProps) {
             {t`Latitude is invalid`}
           </FormControl.ErrorMessage>
         </FormControl>
-        <FormControl width="1/2" pl="1">
+        <FormControl flex={1} flexGrow={1} pl="1">
           <FormControl.Label justifyContent="center">{t`Longitude`}</FormControl.Label>
           <Input
             py="0"
@@ -318,25 +318,33 @@ export function LocationSettings(props: IScrollViewProps) {
             {t`Longitude is invalid`}
           </FormControl.ErrorMessage>
         </FormControl>
+
+        {(lat || long) && (
+          <FormControl flexShrink={1} flexGrow={0} width="10" pl="1">
+            <FormControl.Label> </FormControl.Label>
+            <Button
+              borderColor="danger.900"
+              variant="outline"
+              colorScheme="danger"
+              size="sm"
+              onPress={clearCoordinates}>
+              <CloseIcon />
+            </Button>
+          </FormControl>
+        )}
       </HStack>
-      <HStack>
+      <HStack mt="5">
         <FormControl alignItems="center" justifyContent="center">
-          <FormControl.Label>
-            <Text fontSize="xs" textAlign="justify">
+          <FormControl.Label mb="3">
+            <Text fontSize="sm" textAlign="justify">
               {t`You can also paste coords from clipboard`}
             </Text>
           </FormControl.Label>
-          <HStack alignItems="center">
-            <Button
-              onPress={onPasteButtonPressed}
-              textAlign="center"
-              width="1/3">{t`Paste`}</Button>
-            <Spacer />
-            <Button
-              onPress={clearCoordinates}
-              textAlign="center"
-              width="1/3">{t`Clear`}</Button>
-          </HStack>
+          <Button
+            onPress={onPasteButtonPressed}
+            textAlign="center"
+            width="1/3">{t`Paste`}</Button>
+          <Spacer />
         </FormControl>
       </HStack>
     </ScrollView>

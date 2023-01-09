@@ -1,6 +1,6 @@
 import {t} from '@lingui/macro';
-import {Modal, Box, StatusBar, Button} from 'native-base';
-import {useState} from 'react';
+import {Modal, Box, Button} from 'native-base';
+import {useCallback, useState} from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {isMinimumSettingsAvailable} from '@/adhan';
 import {IntroItem} from '@/intro/intro_item';
@@ -10,9 +10,13 @@ import {LocationSlide} from '@/intro/slides/location';
 import {NotificationAndSoundSlide} from '@/intro/slides/notification';
 import {WelcomeSlide} from '@/intro/slides/welcome';
 import {StepLabel} from '@/intro/step_label';
-import {useSettingsHelper} from '@/store/settings';
+import {alarmSettings} from '@/store/alarm';
+import {calcSettings} from '@/store/calculation';
+import {reminderSettings} from '@/store/reminder';
+import {settings, useSettingsHelper} from '@/store/settings';
 import {setNextAdhan} from '@/tasks/set_next_adhan';
 import {updateWidgets} from '@/tasks/update_widgets';
+import {sha256} from '@/utils/hash';
 
 const data = [
   {
@@ -37,7 +41,7 @@ const data = [
   },
 ];
 
-type Item = typeof data[0];
+type Item = (typeof data)[0];
 
 function _keyExtractor(item: Item) {
   return item.title();
@@ -50,30 +54,38 @@ export function Intro() {
 
   const [configAlertIsOpen, setConfigAlertIsOpen] = useState(false);
 
-  const onDonePressed = async () => {
-    if (isMinimumSettingsAvailable()) {
+  const onDonePressed = useCallback(async () => {
+    if (isMinimumSettingsAvailable(calcSettings.getState())) {
+      // update settings hash
+      settings.setState({
+        CALC_SETTINGS_HASH: sha256(JSON.stringify(calcSettings.getState())),
+        ALARM_SETTINGS_HASH: sha256(JSON.stringify(alarmSettings.getState())),
+        REMINDER_SETTINGS_HASH: sha256(
+          JSON.stringify(reminderSettings.getState()),
+        ),
+      });
+      // continue to home screen
       setAppIntroDone(true);
       setNextAdhan();
       updateWidgets();
     } else {
       setConfigAlertIsOpen(true);
     }
-  };
+  }, [setAppIntroDone, setConfigAlertIsOpen]);
 
-  const onConfigAlertClose = () => {
+  const onConfigAlertClose = useCallback(() => {
     setConfigAlertIsOpen(false);
-  };
+  }, [setConfigAlertIsOpen]);
 
-  const onConfigAlertOk = () => {
+  const onConfigAlertOk = useCallback(() => {
     setConfigAlertIsOpen(false);
     setAppIntroDone(true);
     setNextAdhan();
     updateWidgets();
-  };
+  }, [setConfigAlertIsOpen, setAppIntroDone]);
 
   return (
     <Box flex="1" safeArea>
-      <StatusBar />
       <AppIntroSlider<Item>
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"

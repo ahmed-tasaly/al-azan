@@ -1,6 +1,6 @@
 # Al-Azan
 
-an open-source adhan - prayer times application built using react-native.
+an open-source Adhan (أذان) - prayer times application built using react-native.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -8,9 +8,48 @@ an open-source adhan - prayer times application built using react-native.
 
 or get the APK from [the Releases section](https://github.com/meypod/al-azan/releases/latest).
 
-## How to run this project
+Apks released on GitHub are per CPU architecture, if you don't know which one to download, simply download the file that has "universal" in It's name.
 
-It's important to note that this project uses [re-pack](https://github.com/callstack/repack)(webpack) to bundle the files, to be able to provide chunking and lazy imports. So running it is a little bit different.
+## Features
+
+* Ad-Free
+
+* Doesn't use any kind of trackers
+
+* Open-source
+
+* You can search for your location online Or use GPS offline
+
+* Set custom Adhan audio
+
+* Select different Adhan audio for Fajr namaz
+
+* In addition to five daily prayers, it has settings for Sunrise, Sunset, Midnight and Night Prayer (Tahajjud)
+
+* Many options for Adhan (اذان) calculation
+
+* Light/Dark theme
+
+* Hide times you don't need
+
+* Set reminders before or after a prayer time
+
+* Homescreen and notification Widgets
+
+* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German
+
+## Screenshots
+
+<table style="width:100%">
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1-main-light.png"/></th>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2-main-dark.png"/></th>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6-homescreen-widget-light.png"/></th>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/7-notification-widget-light.png"/></th>
+  </tr>
+</table>
+
+## How to run this project
 
 for development:
 
@@ -29,7 +68,7 @@ yarn start
 for creating a release build locally to debug:
 
 ```bash
-cd android && ./gradlew build -PnoDebug
+cd android && ./gradlew :app:assembleRelease
 ```
 
 to uninstall app while keeping data:
@@ -44,17 +83,31 @@ All translations are synced with [translation.io](https://translation.io/) with 
 
 ### Translators
 
+Translation to other languages has been done by these awesome people:
+
 #### Turkish
 
-- [@Serince](https://github.com/Serince)
+* [@Serince](https://github.com/Serince)
 
 #### Indonesian
 
-- [@muava12](https://github.com/muava12)
+* [@muava12](https://github.com/muava12)
 
 #### French
 
-- Unknown user (will be updated once their github user is known)
+* Contributor has chosen to stay anonymous
+
+#### Urdu
+
+* [Asjad Ahmad](https://twitter.com/Estcaliphate)
+
+#### Hindi
+
+* Contributor has chosen to stay anonymous
+
+#### German
+
+* [@b3r4t](https://github.com/b3r4t)
 
 ## Thanks to
 

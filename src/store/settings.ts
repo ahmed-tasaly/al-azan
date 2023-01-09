@@ -5,34 +5,19 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 import create from 'zustand';
 import {persist} from 'zustand/middleware';
 import createVanilla from 'zustand/vanilla';
+import {alarmSettings} from './alarm';
 import {zustandStorage} from './mmkv';
 import {Prayer} from '@/adhan';
 import {AdhanEntry, INITIAL_ADHAN_AUDIO_ENTRIES} from '@/assets/adhan_entries';
+import {ADHAN_NOTIFICATION_ID} from '@/constants/notification';
 import {CountryInfo, SearchResult} from '@/utils/geonames';
 import {PREFERRED_LOCALE} from '@/utils/locale';
 
 const SETTINGS_STORAGE_KEY = 'SETTINGS_STORAGE';
 
-export type WeekDay = 'sat' | 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri';
-
-export type Reminder = {
-  id: string;
-  label?: string;
-  enabled: boolean;
-  prayer: Prayer;
-  /** in milliseconds. negative to set before, positive to set after */
-  duration: number;
-  /** has a value of `-1` or `+1` */
-  durationModifier: number;
-  /** when is this reminder scheduled to be fired. can be undefined if not scheduled yet. or an outdated timestamp. */
-  whenIsFired?: number;
-  /** timestamp of when it was scheduled. */
-  whenScheduled?: number;
-  /** timestamp of when it was modified. */
-  modified?: number;
-};
-
 export type SettingsStore = {
+  /** an object that keeps track of dismissed alarms timestamp by their notification id */
+  DISMISSED_ALARM_TIMESTAMPS: Record<string, number | undefined>;
   // theme
   THEME_COLOR?: ColorMode | 'default';
   // display
@@ -41,6 +26,7 @@ export type SettingsStore = {
   // other
   SELECTED_LOCALE: string;
   SELECTED_ARABIC_CALENDAR: string;
+  SELECTED_SECONDARY_CALENDAR: string;
   APP_INITIAL_CONFIG_DONE: boolean;
   APP_INTRO_DONE: boolean;
   SAVED_ADHAN_AUDIO_ENTRIES: AdhanEntry[];
@@ -48,22 +34,23 @@ export type SettingsStore = {
   SELECTED_FAJR_ADHAN_ENTRY: AdhanEntry | undefined;
   LOCATION_COUNTRY: CountryInfo | undefined;
   LOCATION_CITY: SearchResult | undefined;
-  SCHEDULED_ALARM_TIMESTAMP?: number;
   LAST_APP_FOCUS_TIMESTAMP?: number;
   HIDDEN_PRAYERS: Array<Prayer>;
   HIDDEN_WIDGET_PRAYERS: Array<Prayer>;
   SHOW_WIDGET: boolean;
-  DISMISSED_ALARM_TIMESTAMP: number;
   ADHAN_VOLUME: number;
-  REMINDERS: Array<Reminder>;
-  // widget update
-  LAST_ALARM_DATE_VALUEOF: number;
+  // to detect settings change
+  CALC_SETTINGS_HASH: string;
+  ALARM_SETTINGS_HASH: string;
+  REMINDER_SETTINGS_HASH: string;
+  /** timestamp of when the alarm for updating widget is going to Or was fired */
+  LAST_WIDGET_UPDATE: number;
 
   // helper functions
   saveAdhanEntry: (entry: AdhanEntry) => void;
   deleteAdhanEntry: (entry: AdhanEntry) => void;
-  saveReminder: (reminder: Reminder) => void;
-  deleteReminder: (reminder: Reminder) => void;
+  saveTimestamp: (alarmId: string, timestamp: number) => void;
+  deleteTimestamp: (alarmId: string) => void;
   setSetting: <T extends keyof SettingsStore>(
     key: T,
     val: SettingsStore[T],
@@ -74,7 +61,15 @@ export type SettingsStore = {
   removeSetting: (key: keyof SettingsStore) => () => void;
 };
 
-const invalidKeys = ['setSetting', 'setSettingCurry', 'removeSetting'];
+const invalidKeys = [
+  'setSetting',
+  'setSettingCurry',
+  'removeSetting',
+  'saveAdhanEntry',
+  'deleteAdhanEntry',
+  'saveTimestamp',
+  'deleteTimestamp',
+];
 
 export const settings = createVanilla<SettingsStore>()(
   persist(
@@ -82,6 +77,7 @@ export const settings = createVanilla<SettingsStore>()(
       THEME_COLOR: 'default',
       SELECTED_LOCALE: PREFERRED_LOCALE,
       SELECTED_ARABIC_CALENDAR: '',
+      SELECTED_SECONDARY_CALENDAR: 'gregory',
       APP_INITIAL_CONFIG_DONE: false,
       APP_INTRO_DONE: false,
       SAVED_ADHAN_AUDIO_ENTRIES: INITIAL_ADHAN_AUDIO_ENTRIES,
@@ -89,15 +85,17 @@ export const settings = createVanilla<SettingsStore>()(
       SELECTED_FAJR_ADHAN_ENTRY: undefined,
       LOCATION_COUNTRY: undefined,
       LOCATION_CITY: undefined,
-      HIDDEN_PRAYERS: [],
-      HIDDEN_WIDGET_PRAYERS: [Prayer.Sunset, Prayer.Midnight],
+      HIDDEN_PRAYERS: [Prayer.Tahajjud],
+      HIDDEN_WIDGET_PRAYERS: [Prayer.Sunset, Prayer.Midnight, Prayer.Tahajjud],
       SHOW_WIDGET: false,
       ADHAN_VOLUME: 70,
-      DISMISSED_ALARM_TIMESTAMP: 0,
-      REMINDERS: [],
-      LAST_ALARM_DATE_VALUEOF: 0,
       IS_24_HOUR_FORMAT: true,
       NUMBERING_SYSTEM: '',
+      CALC_SETTINGS_HASH: '',
+      ALARM_SETTINGS_HASH: '',
+      REMINDER_SETTINGS_HASH: '',
+      DISMISSED_ALARM_TIMESTAMPS: {},
+      LAST_WIDGET_UPDATE: 0,
 
       // adhan entry helper
       saveAdhanEntry: entry =>
@@ -143,25 +141,17 @@ export const settings = createVanilla<SettingsStore>()(
           }),
         ),
 
-      saveReminder: reminder =>
+      // for timestamps
+      saveTimestamp: (alarmId, timestamp) =>
         set(
           produce<SettingsStore>(draft => {
-            let fIndex = draft.REMINDERS.findIndex(e => e.id === reminder.id);
-            if (fIndex !== -1) {
-              draft.REMINDERS.splice(fIndex, 1, reminder);
-            } else {
-              draft.REMINDERS.push(reminder);
-            }
+            draft.DISMISSED_ALARM_TIMESTAMPS[alarmId] = timestamp;
           }),
         ),
-
-      deleteReminder: reminder =>
+      deleteTimestamp: alarmId =>
         set(
           produce<SettingsStore>(draft => {
-            let fIndex = draft.REMINDERS.findIndex(e => e.id === reminder.id);
-            if (fIndex !== -1) {
-              draft.REMINDERS.splice(fIndex, 1);
-            }
+            delete draft.DISMISSED_ALARM_TIMESTAMPS[alarmId];
           }),
         ),
 
@@ -200,7 +190,7 @@ export const settings = createVanilla<SettingsStore>()(
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !invalidKeys.includes(key)),
         ),
-      version: 2,
+      version: 4,
       migrate: (persistedState, version) => {
         /* eslint-disable no-fallthrough */
         // fall through cases is exactly the use case for migration.
@@ -211,6 +201,45 @@ export const settings = createVanilla<SettingsStore>()(
           case 1:
             // added NUMBERING_SYSTEM field in v2
             (persistedState as SettingsStore).NUMBERING_SYSTEM = '';
+          case 2:
+            // moved reminders to alarm settings store
+            (alarmSettings as any).setState({
+              REMINDERS: (persistedState as any)['REMINDERS'],
+            });
+            delete (persistedState as any)['REMINDERS'];
+            (persistedState as SettingsStore)['LAST_WIDGET_UPDATE'] = (
+              persistedState as any
+            )['LAST_ALARM_DATE_VALUEOF'];
+            delete (persistedState as any)['LAST_ALARM_DATE_VALUEOF'];
+
+            // we check before pushing because some users may go back between versions,
+            // we don't want to make their settings bigger each time.
+            if (
+              !(persistedState as SettingsStore).HIDDEN_PRAYERS.includes(
+                Prayer.Tahajjud,
+              )
+            ) {
+              (persistedState as SettingsStore).HIDDEN_PRAYERS.push(
+                Prayer.Tahajjud,
+              );
+            }
+            if (
+              !(persistedState as SettingsStore).HIDDEN_WIDGET_PRAYERS.includes(
+                Prayer.Tahajjud,
+              )
+            ) {
+              (persistedState as SettingsStore).HIDDEN_WIDGET_PRAYERS.push(
+                Prayer.Tahajjud,
+              );
+            }
+          case 3:
+            (persistedState as SettingsStore).DISMISSED_ALARM_TIMESTAMPS = {
+              [ADHAN_NOTIFICATION_ID]: (persistedState as any)
+                .DISMISSED_ALARM_TIMESTAMP,
+            };
+            delete (persistedState as any).DISMISSED_ALARM_TIMESTAMP;
+            delete (persistedState as any).SCHEDULED_ALARM_TIMESTAMP;
+            (persistedState as any).SELECTED_SECONDARY_CALENDAR = 'gregory';
             break;
         }
         /* eslint-enable no-fallthrough */

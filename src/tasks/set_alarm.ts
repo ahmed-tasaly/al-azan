@@ -7,91 +7,97 @@ import notifee, {
   AndroidVisibility,
   AndroidLaunchActivityFlag,
 } from '@notifee/react-native';
-import {Prayer, translatePrayer} from '@/adhan';
-import {
-  ADHAN_CHANNEL_ID,
-  ADHAN_CHANNEL_NAME,
-  ADHAN_NOTIFICATION_ID,
-} from '@/constants/notification';
-import {settings} from '@/store/settings';
+import {Prayer} from '@/adhan';
 
 export type SetAlarmTaskOptions = {
-  /** When the adhan is  */
+  /** notification id */
+  notifId: string;
+  /** notification channel id */
+  notifChannelId: string;
+  /** notification cahnnel name */
+  notifChannelName: string;
+  /** When the alarm is going to be triggered */
   date: Date;
-  /** which adhan it is ? */
-  prayer: Prayer;
-  /** Default: `true` */
-  showNotification?: boolean;
+  /** notification title */
+  title: string;
+  /** notification subtitle */
+  subtitle?: string;
+  /** notification body */
+  body?: string;
   /** Default: `true` */
   playSound?: boolean;
-  /** Default: `true` */
-  fullScreen?: boolean;
+  /** Default: `false`. this is passed to notification options. */
+  isReminder?: Boolean;
+  /** which prayer this is about */
+  prayer: Prayer;
 };
 
 export async function setAlarmTask(options: SetAlarmTaskOptions) {
-  if (options.date === undefined) {
-    throw new Error('No date given for main alarm task');
-  }
-  if (options.showNotification === undefined) {
-    options.showNotification = true;
-  }
-  if (options.fullScreen === undefined) {
-    options.fullScreen = true;
-  }
-  if (options.playSound === undefined) {
-    options.playSound = true;
-  }
+  /**
+   *  general note: we don't check options because we are on typescript and we are not a library,
+   *  otherwise all options should have neen checked.
+   */
+
+  const {
+    date,
+    title,
+    body,
+    subtitle,
+    playSound,
+    notifChannelId,
+    notifChannelName,
+    notifId,
+  } = options;
 
   const channelId = await notifee.createChannel({
-    id: ADHAN_CHANNEL_ID,
-    name: ADHAN_CHANNEL_NAME,
+    id: notifChannelId,
+    name: notifChannelName,
     importance: AndroidImportance.HIGH,
     visibility: AndroidVisibility.PUBLIC,
   });
 
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
-    timestamp: options.date.getTime(),
+    timestamp: date.getTime(),
     alarmManager: {
       allowWhileIdle: true,
     },
   };
 
   // to replace the notification settings
-  await notifee
-    .cancelTriggerNotification(ADHAN_NOTIFICATION_ID)
-    .catch(console.error);
+  await notifee.cancelTriggerNotification(notifId).catch(console.error);
 
   await notifee.createTriggerNotification(
     {
-      id: ADHAN_NOTIFICATION_ID,
-      title: translatePrayer(options.prayer),
+      id: notifId,
+      title: title,
+      subtitle: subtitle,
+      body: body,
       android: {
         smallIcon: 'ic_stat_name',
         channelId,
         category: AndroidCategory.ALARM,
         importance: AndroidImportance.HIGH,
-        autoCancel: !options.playSound,
-        fullScreenAction:
-          options.playSound && options.fullScreen
-            ? {
-                id: 'default',
-                launchActivityFlags: [
-                  AndroidLaunchActivityFlag.NO_HISTORY,
-                  AndroidLaunchActivityFlag.SINGLE_TOP,
-                  AndroidLaunchActivityFlag.EXCLUDE_FROM_RECENTS,
-                ],
-              }
-            : undefined,
+        autoCancel: !playSound,
+        fullScreenAction: playSound
+          ? {
+              id: 'default',
+              launchActivityFlags: [
+                AndroidLaunchActivityFlag.NO_HISTORY,
+                AndroidLaunchActivityFlag.SINGLE_TOP,
+                AndroidLaunchActivityFlag.EXCLUDE_FROM_RECENTS,
+              ],
+            }
+          : undefined,
         pressAction: {
           id: 'default',
         },
-        asForegroundService: options.playSound,
+        asForegroundService: !!playSound,
         actions: [
           {
             title: t`Dismiss`,
             pressAction: {
-              id: 'dismiss',
+              id: 'dismiss_alarm',
             },
           },
         ],
@@ -102,7 +108,4 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
     },
     trigger,
   );
-  settings.setState({
-    SCHEDULED_ALARM_TIMESTAMP: options.date.getTime().valueOf(),
-  });
 }

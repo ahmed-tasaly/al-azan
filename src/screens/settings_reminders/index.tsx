@@ -1,14 +1,18 @@
 import {t} from '@lingui/macro';
 import {FlatList, Box, Button, IBoxProps} from 'native-base';
-import {useState} from 'react';
+import {useCallback, useMemo, useState} from 'react';
 
 import {EditReminderModal} from '@/screens/settings_reminders/edit_reminder_modal';
 import {ReminderItem} from '@/screens/settings_reminders/reminder_item';
-import {Reminder, settings, useSettingsHelper} from '@/store/settings';
+import {
+  Reminder,
+  reminderSettings,
+  useReminderSettingsHelper,
+} from '@/store/reminder';
 import {setReminders} from '@/tasks/set_reminder';
 
 export function RemindersSettings(props: IBoxProps) {
-  const [reminderEntries] = useSettingsHelper('REMINDERS');
+  const [reminderEntries] = useReminderSettingsHelper('REMINDERS');
   const [creatingReminder, setCreatingReminder] =
     useState<Partial<Reminder> | null>(null);
 
@@ -22,27 +26,31 @@ export function RemindersSettings(props: IBoxProps) {
     setCreatingReminder(null);
   };
 
-  const onReminderChange = (newReminderState: Reminder) => {
-    settings.getState().saveReminder(newReminderState);
-    setReminders({reminders: [newReminderState]});
-  };
+  const onReminderChange = useCallback((newReminderState: Reminder) => {
+    reminderSettings.getState().saveReminder(newReminderState);
+    setReminders({reminders: [newReminderState], force: true});
+  }, []);
 
-  const onReminderDelete = (newReminderState: Reminder) => {
-    settings.getState().deleteReminder(newReminderState);
+  const onReminderDelete = useCallback((newReminderState: Reminder) => {
+    reminderSettings.getState().deleteReminder(newReminderState);
     // clears the reminder trigger:
     setReminders({reminders: [{...newReminderState, enabled: false}]});
-  };
+  }, []);
+
+  const renderItemMemoized = useMemo(() => {
+    return ReminderItem.bind(undefined, {
+      onEditPressed: setCreatingReminder,
+      onToggle: onReminderChange,
+      onDelete: onReminderDelete,
+    });
+  }, [onReminderChange, onReminderDelete]);
 
   return (
     <Box flex={1} safeArea py="3" {...props}>
       <FlatList
         flex={1}
         data={reminderEntries}
-        renderItem={ReminderItem.bind(undefined, {
-          onEditPressed: setCreatingReminder,
-          onToggle: onReminderChange,
-          onDelete: onReminderDelete,
-        })}
+        renderItem={renderItemMemoized}
       />
       <Button
         onPress={onAddReminderPressed}

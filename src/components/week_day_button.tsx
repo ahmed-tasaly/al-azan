@@ -1,41 +1,43 @@
 import {Button} from 'native-base';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
+import {WeekDayIndex} from '@/utils/date';
 
 type WeekDayButtonProps = {
+  dayIndex: WeekDayIndex;
   isActive?: boolean;
-  onChanged?: (isActive: boolean) => void;
+  onChanged?: (isActive: boolean, dayIndex: WeekDayIndex) => void;
   label: string;
+  /** color scheme when button is active, defaults to 'primary' */
+  colorScheme?: string;
 };
 
 export function WeekDayButton(props: WeekDayButtonProps) {
   const [isActive, setIsActive] = useState(!!props.isActive);
+  const [colorScheme] = useState(props.colorScheme || 'primary');
 
-  const setIsActiveProxy = (isAct: boolean) => {
-    setIsActive(isAct);
-    typeof props.onChanged === 'function' && props.onChanged(isAct);
-  };
+  const setIsActiveProxy = useCallback(
+    (isAct: boolean) => {
+      setIsActive(isAct);
+      typeof props.onChanged === 'function' &&
+        props.onChanged(isAct, props.dayIndex);
+    },
+    [setIsActive, props],
+  );
 
   return (
     <Button
-      mx="2"
-      mt="2"
-      height={'12'}
-      width={'12'}
-      padding="0"
-      borderRadius={'full'}
-      variant="outline"
-      _text={{noOfLines: 1, fontSize: 'xs', allowFontScaling: false}}
+      mr="1.5"
+      mb="1.5"
+      padding="1"
+      variant="unstyled"
+      _text={{noOfLines: 1, fontSize: 'xs'}}
       _light={{
-        backgroundColor: isActive ? 'primary.600:alpha.70' : 'white:alpha.70',
-        borderColor: isActive
-          ? 'primary.600:alpha.70'
-          : 'coolGray.800:alpha.70',
+        backgroundColor: isActive ? colorScheme + '.500' : 'black:alpha.5',
         _text: {color: isActive ? 'white' : 'black:alpha.70'},
       }}
       _dark={{
-        backgroundColor: isActive ? 'white:alpha.80' : 'black:alpha.15',
-        borderColor: 'white:alpha.80',
-        _text: {color: isActive ? 'black:alpha.80' : 'white:alpha.70'},
+        backgroundColor: isActive ? colorScheme + '.800' : 'black',
+        _text: {color: 'white:alpha.90'},
       }}
       onPress={() => setIsActiveProxy(!isActive)}>
       {props.label}

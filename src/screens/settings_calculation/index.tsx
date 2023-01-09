@@ -13,7 +13,7 @@ import {
 import {CalculationMethods} from '@/adhan';
 import {MenuIcon} from '@/assets/icons/menu';
 import {AdjustmentSettings} from '@/screens/settings_calculation/adjustment_settings';
-import {useCalcSettingsHelper} from '@/store/calculation_settings';
+import {useCalcSettingsHelper} from '@/store/calculation';
 
 export function CalculationSettings(props: IScrollViewProps) {
   const [calculationMethodKey, setCalculationMethodKey] = useCalcSettingsHelper(
@@ -134,7 +134,10 @@ export function CalculationSettings(props: IScrollViewProps) {
                 selectedValue={asrCalculationSetting || Madhab.Shafi}
                 onValueChange={asrCalculationSettingChanged}
                 flex="1">
-                <Select.Item label={t`Shafi (Default)`} value={Madhab.Shafi} />
+                <Select.Item
+                  label={t`Shafi, Maliki, Hanbali (Default)`}
+                  value={Madhab.Shafi}
+                />
                 <Select.Item label={t`Hanafi`} value={Madhab.Hanafi} />
               </Select>
             </FormControl>

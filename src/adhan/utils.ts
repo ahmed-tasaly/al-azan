@@ -1,26 +1,48 @@
-import {Prayer, PrayerTimesExtended} from '@/adhan';
-import {getNextDayBeginning} from '@/utils/date';
+import {Prayer, getPrayerTimes, PrayerTime} from '@/adhan';
+import {addDays, getDayBeginning} from '@/utils/date';
 
 export function getActivePrayer(
-  prayerTimes: PrayerTimesExtended | undefined,
+  lookingAtDay: Date,
   prayersList: Prayer[],
-) {
-  if (!prayerTimes?.date) return;
+): Prayer | undefined {
+  if (!lookingAtDay || !prayersList.length) return;
+  const now = new Date();
+  const tomorrow = addDays(now, 1);
+  const yesterday = addDays(now, -1);
 
-  let activePrayer: Prayer | undefined;
-  const nextDayBeginning = getNextDayBeginning(prayerTimes.date);
+  const activePrayer: PrayerTime | undefined = getPrayerTimes(now)?.nextPrayer({
+    prayers: prayersList,
+    checkNextDay: true,
+  });
+
+  if (!activePrayer) return;
 
   if (
-    [prayerTimes.date.toDateString(), nextDayBeginning.toDateString()].includes(
-      new Date().toDateString(),
-    )
+    lookingAtDay.toDateString() === now.toDateString() &&
+    activePrayer.date.toDateString() === now.toDateString()
   ) {
-    for (let prayer of prayersList) {
-      if (prayerTimes[prayer] && prayerTimes[prayer].valueOf() > Date.now()) {
-        activePrayer = prayer;
-        break;
-      }
+    return activePrayer.prayer;
+  }
+
+  if (
+    lookingAtDay.toDateString() === tomorrow.toDateString() &&
+    activePrayer.date.toDateString() === tomorrow.toDateString()
+  ) {
+    return prayersList[0];
+  }
+
+  if (lookingAtDay.toDateString() === yesterday.toDateString()) {
+    const yesterdayPrayers = getPrayerTimes(
+      new Date(getDayBeginning(now).valueOf() - 1000),
+    );
+    if (
+      yesterdayPrayers &&
+      now.valueOf() <
+        yesterdayPrayers[prayersList[prayersList.length - 1]].valueOf()
+    ) {
+      return prayersList[prayersList.length - 1];
     }
   }
-  return activePrayer;
+
+  return;
 }

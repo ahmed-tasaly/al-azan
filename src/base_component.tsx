@@ -3,7 +3,9 @@ import {I18nProvider} from '@lingui/react';
 import {ColorMode, extendTheme, NativeBaseProvider} from 'native-base';
 import React, {StrictMode, useEffect} from 'react';
 import {PixelRatio, useColorScheme} from 'react-native';
-import {setupNotifeeForegroundHandler} from '@/notifee';
+import {replace} from './navigation/root_navigation';
+import {isPlayingAdhan, stopAdhan} from './services/azan_service';
+import {getFgSvcNotification, setupNotifeeForegroundHandler} from '@/notifee';
 import {useSettingsHelper} from '@/store/settings';
 import {colors} from '@/theme/colors';
 
@@ -36,7 +38,7 @@ const config = {
   suppressColorAccessibilityWarning: true,
 };
 
-export function BaseComponent<T>(
+export function BaseComponent<T extends JSX.IntrinsicAttributes>(
   ChildComponent: React.FunctionComponent<T>,
   args: T,
 ) {
@@ -46,6 +48,20 @@ export function BaseComponent<T>(
     return () => {
       unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    if (isPlayingAdhan()) {
+      getFgSvcNotification().then(dn => {
+        if (dn?.notification?.data?.options) {
+          replace('FullscreenAlarm', {
+            options: dn.notification.data.options,
+          });
+        } else {
+          stopAdhan();
+        }
+      });
+    }
   }, []);
 
   const systemColorScheme = useColorScheme();

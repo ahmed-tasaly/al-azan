@@ -9,63 +9,31 @@ import {
   PolarCircleResolution,
 } from 'adhan';
 import {CalculationMethods} from './calculation_methods';
-import {Prayer, PrayersInOrder} from './prayer';
-import {getAdhanSettingKey, calcSettings} from '@/store/calculation_settings';
 
-export type PrayerTime = {
-  date: Date;
-  prayer: Prayer;
-  playSound?: boolean;
-};
-
-function shouldNotifyPrayer(prayer: Prayer, useSettings?: boolean) {
-  if (useSettings) {
-    return calcSettings.getState()[getAdhanSettingKey(prayer, 'notify')];
-  } else {
-    return true;
-  }
-}
-
-export class PrayerTimesExtended extends PrayerTimes {
-  midnight!: Date;
-
-  // @ts-ignore
-  nextPrayer(useSettings?: boolean) {
-    let prayerTime: PrayerTime | undefined;
-
-    for (let prayer of PrayersInOrder) {
-      if (
-        this.date <= this[prayer] &&
-        shouldNotifyPrayer(prayer, useSettings)
-      ) {
-        prayerTime = {
-          date: this[prayer],
-          prayer,
-        };
-        break;
-      }
-    }
-
-    if (prayerTime && useSettings) {
-      prayerTime.playSound = !!calcSettings.getState()[
-        getAdhanSettingKey(prayerTime.prayer, 'sound')
-      ] as boolean;
-    }
-
-    return prayerTime;
-  }
-}
+import {PrayersInOrder, Prayer} from './prayer';
+import {
+  CachedPrayerTimes,
+  getCachedPrayerTimes,
+} from '@/store/adhan_calc_cache';
+import {
+  alarmSettings,
+  getAdhanSettingKey,
+  PrayerAlarmSettings,
+} from '@/store/alarm';
+import {calcSettings, CalcSettingsStore} from '@/store/calculation';
+import {addDays, getDayBeginning, WeekDayIndex} from '@/utils/date';
 
 export type PrayerTimesOptions = {
   calculationParameters: CalculationParameters;
   coordinates: Coordinates;
 };
 
-export function isMinimumSettingsAvailable() {
-  const state = calcSettings.getState();
-  const lat = state['LOCATION_LAT']!;
-  const long = state['LOCATION_LONG']!;
-  const calcMethodKey = state['CALCULATION_METHOD_KEY'];
+export function isMinimumSettingsAvailable(calcState?: CalcSettingsStore) {
+  if (!calcState) return false;
+
+  const lat = calcState['LOCATION_LAT']!;
+  const long = calcState['LOCATION_LONG']!;
+  const calcMethodKey = calcState['CALCULATION_METHOD_KEY'];
 
   if (![lat, long, calcMethodKey].every(Boolean)) return false;
 
@@ -77,8 +45,8 @@ export function isMinimumSettingsAvailable() {
 }
 
 function getPrayerTimesOptionsFromSettings() {
-  if (!isMinimumSettingsAvailable()) return;
   const state = calcSettings.getState();
+  if (!isMinimumSettingsAvailable(state)) return;
 
   const lat = state.LOCATION_LAT!;
   const long = state.LOCATION_LONG!;
@@ -162,20 +130,157 @@ function getPrayerTimesOptionsFromSettings() {
   return prayerTimeOptions;
 }
 
-export function getPrayerTimes(date: Date) {
+export function calculatePrayerTimes(date: Date) {
   const options = getPrayerTimesOptionsFromSettings();
   if (!options) return;
 
-  const prayerTimes = new PrayerTimesExtended(
+  const prayerTimes: Partial<CachedPrayerTimes> = new PrayerTimes(
     options.coordinates,
     date,
     options.calculationParameters,
   );
 
-  const middleOfTheNightTime = new SunnahTimes(
-    prayerTimes as any as PrayerTimes,
-  ).middleOfTheNight;
-  prayerTimes.midnight = middleOfTheNightTime;
+  const sunnahTimes = new SunnahTimes(prayerTimes as any as PrayerTimes);
+  prayerTimes.midnight = sunnahTimes.middleOfTheNight;
+  prayerTimes.tahajjud = sunnahTimes.lastThirdOfTheNight;
 
-  return prayerTimes;
+  return prayerTimes as Required<CachedPrayerTimes>;
+}
+
+export type PrayerTime = {
+  date: Date;
+  prayer: Prayer;
+  playSound?: boolean;
+};
+
+function shouldNotifyPrayer(prayer: Prayer, date: Date, useSettings?: boolean) {
+  if (useSettings) {
+    const notifySetting = alarmSettings.getState()[
+      getAdhanSettingKey(prayer, 'notify')
+    ] as PrayerAlarmSettings;
+    if (
+      typeof notifySetting === 'boolean' ||
+      typeof notifySetting === 'undefined'
+    ) {
+      return !!notifySetting;
+    } else if (notifySetting[date.getDay() as WeekDayIndex]) {
+      return true;
+    }
+    return false;
+  } else {
+    return true;
+  }
+}
+
+type NextPrayerOptions = {
+  useSettings?: boolean;
+  /** check only the next day for prayers */
+  checkNextDay?: boolean;
+  /** check the next 6 days, so a full week is checked */
+  checkNextDays?: boolean;
+  /** if set, next prayer of only given prayers is returned */
+  prayers?: Array<Prayer>;
+};
+
+/** do not use this class directly. use getPrayerTimes instead */
+export class PrayerTimesHelper {
+  date: Date;
+
+  fajr: Date;
+  sunrise: Date;
+  dhuhr: Date;
+  asr: Date;
+  sunset: Date;
+  maghrib: Date;
+  isha: Date;
+  midnight: Date;
+  tahajjud: Date;
+
+  constructor(date: Date) {
+    const cachedTimes = getCachedPrayerTimes(date);
+    // we need the current date for calculating next prayer
+    // thus not using the cachedTimes date
+    this.date = date;
+    this.fajr = cachedTimes.fajr;
+    this.sunrise = cachedTimes.sunrise;
+    this.dhuhr = cachedTimes.dhuhr;
+    this.asr = cachedTimes.asr;
+    this.sunset = cachedTimes.sunset;
+    this.maghrib = cachedTimes.maghrib;
+    this.isha = cachedTimes.isha;
+    this.midnight = cachedTimes.midnight;
+    this.tahajjud = cachedTimes.tahajjud;
+  }
+
+  nextPrayer(
+    options: NextPrayerOptions = {
+      useSettings: false,
+      checkNextDay: false,
+      checkNextDays: false,
+    },
+  ): PrayerTime | undefined {
+    const {
+      useSettings,
+      checkNextDay,
+      checkNextDays,
+      prayers = PrayersInOrder,
+    } = options || {};
+    let prayerTime: PrayerTime | undefined;
+
+    for (let prayer of prayers) {
+      if (
+        this.date <= this[prayer] &&
+        shouldNotifyPrayer(prayer, this.date, useSettings)
+      ) {
+        prayerTime = {
+          date: this[prayer],
+          prayer,
+        };
+        break;
+      }
+    }
+
+    if (prayerTime && useSettings) {
+      const soundSetting = alarmSettings.getState()[
+        getAdhanSettingKey(prayerTime.prayer, 'sound')
+      ] as PrayerAlarmSettings;
+      if (typeof soundSetting === 'boolean') {
+        prayerTime.playSound = soundSetting;
+      } else if (
+        soundSetting &&
+        soundSetting[this.date.getDay() as WeekDayIndex]
+      ) {
+        prayerTime.playSound = true;
+      } else {
+        prayerTime.playSound = false;
+      }
+    }
+
+    if (!prayerTime && (checkNextDay || checkNextDays)) {
+      // n+1 for limit (n starts from 1)
+      let limit = 2;
+      if (checkNextDays) {
+        limit = 8;
+      }
+      for (let i = 1; i < limit; i++) {
+        prayerTime = new PrayerTimesHelper(
+          getDayBeginning(addDays(this.date, i)),
+        ).nextPrayer({
+          useSettings,
+        });
+        if (prayerTime) {
+          break;
+        }
+      }
+    }
+
+    return prayerTime;
+  }
+}
+
+export function getPrayerTimes(date: Date) {
+  const options = getPrayerTimesOptionsFromSettings();
+  if (!options) return;
+
+  return new PrayerTimesHelper(date);
 }

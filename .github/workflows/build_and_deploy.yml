@@ -62,20 +62,17 @@ jobs:
       run: |
         sed -E -i 's/^.*(fabric|com\.(crashlytics|google\.(firebase|android.gms))).*$//g' ./node_modules/@notifee/react-native/android/build.gradle
 
-    - name: Sync and compile lingui.js locales
-      if: ${{ github.event_name == 'release'}}
+    - name: Compile lingui.js locales
       run: |
-        sed "s/<TRANSLATION_IO_APIKEY>/$TRANSLATION_IO_APIKEY/" lingui.config.js.example > lingui.config.js;
-        yarn sync;
-      env:
-        TRANSLATION_IO_APIKEY: ${{ secrets.TRANSLATION_IO_APIKEY }}
+        sed "s/<TRANSLATION_IO_APIKEY>//" lingui.config.js.example > lingui.config.js;
+        yarn lingui compile;
 
     - name: Make Gradlew Executable
       run: cd android && chmod +x ./gradlew
 
     - name: build
       run: |
-        cd android && ./gradlew --no-daemon build -PnoDebug -PnoSign;
+        cd android && ./gradlew --no-daemon :app:assembleRelease -PnoSign;
 
     - name: Sign App Bundle
       if: ${{ github.event_name == 'release'}}
@@ -89,13 +86,18 @@ jobs:
         keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
       env: 
         # build tools version is found inside cimg/android related tag pulled layers details inside docker hub. after `...-c SDK_TOOLS_URL=...`
-        BUILD_TOOLS_VERSION: "30.0.3" 
-    
+        BUILD_TOOLS_VERSION: "33.0.0" 
+       
     - name: Release
       if: ${{ github.event_name == 'release'}}
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       with:
         prerelease: true
-        generate_release_notes: true
-        fail_on_unmatched_files: true
-        files: ${{steps.sign_app.outputs.signedReleaseFile}}
+        omitBody: true
+        omitBodyDuringUpdate: true
+        omitName: true
+        allowUpdates: true
+        replacesArtifacts: true
+        updateOnlyUnreleased: true
+        artifacts: android/app/build/outputs/apk/release/*signed.apk
+

@@ -1,0 +1,153 @@
+import {produce} from 'immer';
+import {useCallback} from 'react';
+import create from 'zustand';
+import {persist} from 'zustand/middleware';
+import createVanilla from 'zustand/vanilla';
+import {zustandStorage} from './mmkv';
+import {reminderSettings} from './reminder';
+import {Prayer, PrayersInOrder} from '@/adhan';
+import {WeekDayIndex} from '@/utils/date';
+
+const ALARM_SETTINGS_STORAGE_KEY = 'ALARM_SETTINGS_STORAGE';
+
+export const ADHAN_NOTIFICATION_SUFFIX = '_NOTIFY';
+export const ADHAN_SOUND_SUFFIX = '_SOUND';
+
+export function getAdhanSettingKey(
+  prayer: Prayer,
+  k: 'sound' | 'notify',
+): keyof AlarmSettingsStore {
+  if (k === 'notify') {
+    return (prayer.toUpperCase() +
+      ADHAN_NOTIFICATION_SUFFIX) as keyof AlarmSettingsStore;
+  } else {
+    return (prayer.toUpperCase() +
+      ADHAN_SOUND_SUFFIX) as keyof AlarmSettingsStore;
+  }
+}
+
+export type PrayerAlarmSettings =
+  | boolean
+  | Partial<Record<WeekDayIndex, boolean>>
+  | undefined;
+
+export type AlarmSettingsStore = {
+  //prayer notification settings
+  FAJR_NOTIFY?: PrayerAlarmSettings;
+  SUNRISE_NOTIFY?: PrayerAlarmSettings;
+  DHUHR_NOTIFY?: PrayerAlarmSettings;
+  ASR_NOTIFY?: PrayerAlarmSettings;
+  SUNSET_NOTIFY?: PrayerAlarmSettings;
+  MAGHRIB_NOTIFY?: PrayerAlarmSettings;
+  ISHA_NOTIFY?: PrayerAlarmSettings;
+  MIDNIGHT_NOTIFY?: PrayerAlarmSettings;
+  TAHAJJUD_NOTIFY?: PrayerAlarmSettings;
+  // prayer sound settings
+  FAJR_SOUND?: PrayerAlarmSettings;
+  SUNRISE_SOUND?: PrayerAlarmSettings;
+  DHUHR_SOUND?: PrayerAlarmSettings;
+  ASR_SOUND?: PrayerAlarmSettings;
+  SUNSET_SOUND?: PrayerAlarmSettings;
+  MAGHRIB_SOUND?: PrayerAlarmSettings;
+  ISHA_SOUND?: PrayerAlarmSettings;
+  MIDNIGHT_SOUND?: PrayerAlarmSettings;
+  TAHAJJUD_SOUND?: PrayerAlarmSettings;
+  // alarm notification
+  SHOW_NEXT_PRAYER_TIME: boolean;
+
+  setSetting: <T extends keyof AlarmSettingsStore>(
+    key: T,
+    val: AlarmSettingsStore[T],
+  ) => void;
+  setSettingCurry: <T extends keyof AlarmSettingsStore>(
+    key: T,
+  ) => (val: AlarmSettingsStore[T]) => void;
+  removeSetting: (key: keyof AlarmSettingsStore) => () => void;
+};
+
+const invalidKeys = ['setSetting', 'setSettingCurry', 'removeSetting'];
+
+export const alarmSettings = createVanilla<AlarmSettingsStore>()(
+  persist(
+    set => ({
+      SHOW_NEXT_PRAYER_TIME: false,
+
+      // general
+      setSetting: <T extends keyof AlarmSettingsStore>(
+        key: T,
+        val: AlarmSettingsStore[T],
+      ) =>
+        set(
+          produce<AlarmSettingsStore>(draft => {
+            if (invalidKeys.includes(key)) return;
+            draft[key] = val;
+          }),
+        ),
+      setSettingCurry:
+        <T extends keyof AlarmSettingsStore>(key: T) =>
+        (val: AlarmSettingsStore[T]) =>
+          set(
+            produce<AlarmSettingsStore>(draft => {
+              if (invalidKeys.includes(key)) return;
+              draft[key] = val;
+            }),
+          ),
+      removeSetting: key => () =>
+        set(
+          produce<AlarmSettingsStore>(draft => {
+            if (invalidKeys.includes(key)) return;
+            delete draft[key];
+          }),
+        ),
+    }),
+    {
+      name: ALARM_SETTINGS_STORAGE_KEY,
+      getStorage: () => zustandStorage,
+      partialize: state =>
+        Object.fromEntries(
+          Object.entries(state).filter(([key]) => !invalidKeys.includes(key)),
+        ),
+      version: 1,
+      migrate: (persistedState, version) => {
+        /* eslint-disable no-fallthrough */
+        // fall through cases is exactly the use case for migration.
+        switch (version) {
+          case 0:
+            reminderSettings.setState({
+              REMINDERS: (persistedState as any)['REMINDERS'],
+            });
+            delete (persistedState as any)['REMINDERS'];
+          case 1:
+            // this will be run when storage version is changed to 2
+            break;
+        }
+        /* eslint-enable no-fallthrough */
+        return persistedState as AlarmSettingsStore;
+      },
+    },
+  ),
+);
+
+export const useAlarmSettings = create(alarmSettings);
+
+export function useAlarmSettingsHelper<T extends keyof AlarmSettingsStore>(
+  key: T,
+) {
+  const state = useAlarmSettings(s => s[key]);
+  const setterCurry = useAlarmSettings(s => s.setSettingCurry);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const setCallback = useCallback(setterCurry(key), [key]);
+  return [state, setCallback] as [
+    AlarmSettingsStore[T],
+    (val: AlarmSettingsStore[T]) => void,
+  ];
+}
+
+export function hasAtLeastOneNotificationSetting() {
+  for (let prayer of PrayersInOrder) {
+    if (alarmSettings.getState()[getAdhanSettingKey(prayer, 'notify')]) {
+      return true;
+    }
+  }
+  return false;
+}

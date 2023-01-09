@@ -9,12 +9,13 @@ import {
   Select,
   FormControl,
   Input,
+  Switch,
 } from 'native-base';
 import {useEffect, useState} from 'react';
 import {Modal} from 'react-native';
 import {Prayer, translatePrayer} from '@/adhan';
 import {CloseIcon} from '@/assets/icons/close';
-import {Reminder} from '@/store/settings';
+import {Reminder} from '@/store/reminder';
 
 const minute = 60 * 1000;
 const defaultDuration = 5 * minute;
@@ -45,8 +46,6 @@ export function EditReminderModal({
         duration: reminderState?.duration || defaultDuration,
         durationModifier: reminderState?.durationModifier || -1,
         prayer: reminderState?.prayer || Prayer.Fajr,
-        modified: Date.now(),
-        whenIsFired: undefined,
       });
     } else {
       setDraftReminderState(null);
@@ -135,6 +134,10 @@ export function EditReminderModal({
                       label={t`60 min`}
                       value={(60 * minute).toString()}
                     />
+                    <Select.Item
+                      label={t`90 min`}
+                      value={(90 * minute).toString()}
+                    />
                   </Select>
                   <Select
                     borderRadius={0}
@@ -177,6 +180,46 @@ export function EditReminderModal({
                   ))}
                 </Select>
               </VStack>
+            </FormControl>
+            <FormControl>
+              <FormControl.Label>{t`Options`}:</FormControl.Label>
+              <HStack mb="2" alignItems="center" justifyContent="space-between">
+                <Text>
+                  {t({
+                    message: `Play adhan?`,
+                    comment: 'shown in add/edit reminder dialog',
+                  })}
+                </Text>
+                <Switch
+                  value={!!draftReminderState?.playSound}
+                  onToggle={(state: boolean) =>
+                    setDraftReminderState({
+                      ...draftReminderState,
+                      playSound: state,
+                    })
+                  }
+                  size="lg"
+                />
+              </HStack>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text>
+                  {t({
+                    message: `Only once?`,
+                    comment: 'shown in add/edit reminder dialog',
+                  })}
+                </Text>
+
+                <Switch
+                  value={!!draftReminderState?.once}
+                  onToggle={(state: boolean) =>
+                    setDraftReminderState({
+                      ...draftReminderState,
+                      once: state,
+                    })
+                  }
+                  size="lg"
+                />
+              </HStack>
             </FormControl>
           </VStack>
           <HStack

@@ -39,9 +39,21 @@ export function LanguageSettings(props: IStackProps) {
       label: `Français`,
       value: 'fr',
     },
+    {
+      label: `اُردُو`,
+      value: 'ur',
+    },
+    {
+      label: `हिन्दी`,
+      value: 'hi',
+    },
+    {
+      label: `Deutsch`,
+      value: 'de',
+    },
   ];
 
-  if (!['en', 'fa', 'ar', 'tr', 'id', 'fr'].includes(lang)) {
+  if (!['en', 'fa', 'ar', 'tr', 'id', 'fr', 'ur', 'hi', 'de'].includes(lang)) {
     languageEntries.push({
       label: lang + ' (' + t`Unsupported` + ')',
       value: lang,
@@ -51,15 +63,10 @@ export function LanguageSettings(props: IStackProps) {
   useEffect(() => {
     const unsub = settings.subscribe((state, prevState) => {
       if (state.SELECTED_LOCALE !== prevState.SELECTED_LOCALE) {
-        loadLocale(state.SELECTED_LOCALE)
-          .then(() => {
-            I18nManager.forceRTL(isRTL);
-            // allow some time for forceRTL to work
-            setTimeout(restart, 200);
-          })
-          .catch(err => {
-            console.error(err);
-          });
+        loadLocale(state.SELECTED_LOCALE);
+        I18nManager.forceRTL(isRTL);
+        // allow some time for forceRTL to work
+        setTimeout(restart, 200);
       }
     });
 

@@ -12,13 +12,29 @@ import {
 import {translatePrayer} from '@/adhan';
 import {DeleteIcon} from '@/assets/icons/delete';
 import {EditIcon} from '@/assets/icons/edit';
-import {Reminder} from '@/store/settings';
+import {Reminder} from '@/store/reminder';
 
 export type ReminderItemProps = {
   onEditPressed?: (reminderState: Reminder) => void;
   onToggle?: (reminderState: Reminder) => void;
   onDelete?: (reminderState: Reminder) => void;
 };
+
+export function getReminderSubtitle(reminder: Reminder) {
+  const durationInMinutes = (reminder.duration / (60 * 1000)).toString();
+  const prayer = translatePrayer(reminder.prayer);
+
+  let subtitle =
+    reminder.durationModifier === -1
+      ? t`${durationInMinutes} min before ${prayer}`
+      : t`${durationInMinutes} min after ${prayer}`;
+
+  if (reminder.once) {
+    subtitle += ` (${t`Once`})`;
+  }
+
+  return subtitle;
+}
 
 export function ReminderItem(
   options: ReminderItemProps,
@@ -27,8 +43,10 @@ export function ReminderItem(
   const onDelete =
     (() => options.onDelete && options.onDelete(item)) || (() => {});
 
-  const durationInMinutes = (item.duration / (60 * 1000)).toString();
-  const prayer = translatePrayer(item.prayer);
+  const onToggle = (state: boolean) => {
+    const newReminderState = {...item, enabled: state};
+    options.onToggle && options.onToggle(newReminderState);
+  };
 
   return (
     <Pressable>
@@ -88,18 +106,9 @@ export function ReminderItem(
           </HStack>
           <HStack>
             <Text p="3" flex={1}>
-              {item.durationModifier === -1
-                ? t`${durationInMinutes} min before ${prayer}`
-                : t`${durationInMinutes} min after ${prayer}`}
+              {getReminderSubtitle(item)}
             </Text>
-            <Switch
-              isChecked={item.enabled}
-              onValueChange={state => {
-                const newReminderState = {...item, enabled: state};
-                options.onToggle && options.onToggle(newReminderState);
-              }}
-              size="lg"
-            />
+            <Switch isChecked={item.enabled} onToggle={onToggle} size="lg" />
           </HStack>
         </Box>
       )}

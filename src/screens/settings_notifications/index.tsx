@@ -1,9 +1,23 @@
-import {t} from '@lingui/macro';
-import {HStack, ScrollView, Text, IScrollViewProps} from 'native-base';
-import {PrayersInOrder} from '@/adhan';
-import {NotificationSetting} from '@/screens/settings_notifications/notification_setting';
+import {ScrollView, IScrollViewProps} from 'native-base';
+import {useCallback, useState} from 'react';
+import {NotifyNextAdhanSetting} from './notify_next_adhan_setting';
+import {Prayer, PrayersInOrder} from '@/adhan';
+import NotificationSetting from '@/screens/settings_notifications/notification_setting';
 
 export function NotificationSettings(props: IScrollViewProps) {
+  const [expandedPrayer, setExpandedPrayer] = useState<Prayer | undefined>();
+
+  const onExpandChanged = useCallback(
+    (isExpanded: boolean, prayer: Prayer) => {
+      if (isExpanded) {
+        setExpandedPrayer(prayer);
+      } else {
+        setExpandedPrayer(undefined);
+      }
+    },
+    [setExpandedPrayer],
+  );
+
   return (
     <ScrollView
       p="4"
@@ -12,23 +26,16 @@ export function NotificationSettings(props: IScrollViewProps) {
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       {...props}>
-      <HStack p="2" justifyContent="space-between">
-        <Text width="1/3">{t`Time`}</Text>
-        <Text width="1/3" textAlign="center">
-          {t`Notification`}
-        </Text>
-        <Text width="1/6" textAlign="center">
-          {t`Sound`}
-        </Text>
-      </HStack>
-      {PrayersInOrder.map((p, i) => (
+      {PrayersInOrder.map(p => (
         <NotificationSetting
-          p="2"
           key={p.toString()}
           prayer={p}
-          backgroundColor={i % 2 === 0 ? 'coolGray.400:alpha.20' : undefined}
+          onExpandChanged={onExpandChanged}
+          expanded={expandedPrayer === p}
         />
       ))}
+
+      <NotifyNextAdhanSetting mt="4" />
     </ScrollView>
   );
 }

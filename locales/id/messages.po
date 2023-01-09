@@ -1,31 +1,35 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-10-30 15:01+0330\n"
+"POT-Creation-Date: 2023-01-08 19:16+0330\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: id\n"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:123
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:122
 msgid "10 min"
 msgstr "10 menit"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:127
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:126
 msgid "15 min"
 msgstr "15 menit"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:131
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:130
 msgid "30 min"
 msgstr "30 menit"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:119
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:118
 msgid "5 min"
 msgstr "5 menit"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:135
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:134
 msgid "60 min"
 msgstr "60 menit"
+
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:138
+msgid "90 min"
+msgstr "90 menit"
 
 #: src/assets/adhan_entries.ts:23
 msgid "Abdul-Basit Abdus-Samad"
@@ -33,7 +37,7 @@ msgstr ""
 "Abdul-Basit Abdus-Samad\n"
 ""
 
-#: src/screens/settings_calculation/index.tsx:184
+#: src/screens/settings_calculation/index.tsx:187
 msgid "Abyad"
 msgstr "Abyad"
 
@@ -46,11 +50,11 @@ msgstr "Tambah"
 msgid "Add Custom Adhan"
 msgstr "Tambah Suara Adzan Kustom"
 
-#: src/screens/settings_reminders/index.tsx:50
+#: src/screens/settings_reminders/index.tsx:58
 msgid "Add Reminder"
 msgstr "Buat Pengingat"
 
-#: src/screens/fullscreen_alarm/index.tsx:77
+#: src/screens/fullscreen_alarm/index.tsx:40
 msgid "Adhan"
 msgstr "Adzan"
 
@@ -66,7 +70,7 @@ msgstr "Penyesuaian"
 msgid "Advanced Calculation Settings"
 msgstr "Pengaturan Lanjutan"
 
-#: src/screens/settings_calculation/index.tsx:183
+#: src/screens/settings_calculation/index.tsx:186
 msgid "Ahmer"
 msgstr "Ahmer"
 
@@ -94,11 +98,11 @@ msgstr "Perhitungan Waktu Ashar"
 msgid "At least one prayer time must be shown"
 msgstr "Setidaknya satu waktu sholat harus ditampilkan"
 
-#: src/intro/intro.tsx:106
+#: src/intro/intro.tsx:118
 msgid "Attention"
 msgstr "Perhatian"
 
-#: src/intro/intro.tsx:35
+#: src/intro/intro.tsx:39
 #: src/screens/settings_battery_optimizations/index.tsx:46
 msgid "Battery Optimization"
 msgstr "Optimasi Baterai"
@@ -107,7 +111,7 @@ msgstr "Optimasi Baterai"
 msgid "Calculating Adhan has many different methods. Each method provides different results. It is your responsibility to search and use the right method."
 msgstr "Perhitungan Adzan memiliki banyak metode yang berbeda. Setiap metode menghasilkan waktu azan yang berbeda. Pilih motode perhitungan yang sesuai."
 
-#: src/intro/intro.tsx:27
+#: src/intro/intro.tsx:31
 msgid "Calculation"
 msgstr "Perhitungan"
 
@@ -120,13 +124,10 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: src/screens/settings_adhan/index.tsx:180
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:195
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:238
+#: src/tasks/set_pre_alarm.ts:63
 msgid "Cancel"
 msgstr "Batal"
-
-#: src/tasks/set_pre_alarm.ts:84
-msgid "Cancel Adhan"
-msgstr "Lewati Adzan"
 
 #: src/screens/settings_calculation/index.tsx:133
 msgid "Choose Asr Calculation Madhab"
@@ -140,18 +141,19 @@ msgstr "Pilih Metode Perhitungan"
 msgid "Choose High Latitude Setting"
 msgstr "Pilih Pengaturan Lintang Tinggi"
 
-#: src/screens/settings_display/language_settings.tsx:75
+#: src/screens/settings_display/language_settings.tsx:82
 msgid "Choose Language"
 msgstr "Pilih Bahasa"
 
-#: src/screens/settings_calculation/index.tsx:146
+#: src/screens/settings_calculation/index.tsx:149
 msgid "Choose Polar Resolution"
 msgstr "Pilih Resolusi Kutub"
 
-#: src/screens/settings_calculation/index.tsx:175
+#: src/screens/settings_calculation/index.tsx:178
 msgid "Choose Shafaq method"
 msgstr "Pilih metode Shafaq"
 
+#: src/screens/settings_display/calendar_secondary_settings.tsx:26
 #: src/screens/settings_display/calendar_settings.tsx:26
 msgid "Choose calendar type"
 msgstr "Pilih jenis kalender"
@@ -164,23 +166,19 @@ msgstr "Pilih sistem penomoran"
 msgid "City/Area"
 msgstr "Kota/Daerah"
 
-#: src/screens/settings_location/index.tsx:338
-msgid "Clear"
-msgstr "Bersihkan"
-
 #: src/screens/settings_location/index.tsx:144
 msgid "Clipboard data does not contain coordinates"
 msgstr "Data clipboard tidak mengandung koordinat"
 
-#: src/screens/settings_calculation/index.tsx:157
+#: src/screens/settings_calculation/index.tsx:160
 msgid "Closest City"
 msgstr "Kota terdekat"
 
-#: src/screens/settings_calculation/index.tsx:161
+#: src/screens/settings_calculation/index.tsx:164
 msgid "Closest Date"
 msgstr "Tanggal terdekat"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:194
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:237
 msgid "Confirm"
 msgstr "Selesai"
 
@@ -218,8 +216,8 @@ msgstr "Batalkan pilihan sebagai Adzan Subuh"
 msgid "Disabled"
 msgstr "Tidak Aktif"
 
-#: src/screens/fullscreen_alarm/index.tsx:105
-#: src/tasks/set_alarm.ts:92
+#: src/screens/fullscreen_alarm/index.tsx:123
+#: src/tasks/set_alarm.ts:98
 msgid "Dismiss"
 msgstr "Hentikan"
 
@@ -227,11 +225,11 @@ msgstr "Hentikan"
 msgid "Diyanet İşleri Başkanlığı, Turkey"
 msgstr "Presidensi Urusan Agama Republik Turki (Diyanet)"
 
-#: src/intro/intro.tsx:89
+#: src/intro/intro.tsx:101
 msgid "Done"
 msgstr "Selesai"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:86
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
 msgid "Edit Reminder"
 msgstr "Ubah Pengingat"
 
@@ -263,16 +261,19 @@ msgstr "Kesalahan saat mengunduh audio"
 msgid "Error while getting coordinates"
 msgstr "Kesalahan saat mendapatkan koordinat"
 
-#. short week day, friday
-#: src/components/week_day_selector.tsx:30
-msgid "FRI"
-msgstr "JUM"
+#: src/screens/settings_display/calendar_secondary_settings.tsx:32
+msgid "Ethiopic"
+msgstr "Etiopia"
 
 #: src/screens/settings_location/index.tsx:198
 msgid "Find My Location"
 msgstr "Temukan Lokasi Saya"
 
-#: src/screens/settings_calculation/index.tsx:180
+#: src/components/week_day_selector.tsx:26
+msgid "Friday"
+msgstr "Jumat"
+
+#: src/screens/settings_calculation/index.tsx:183
 msgid "General (default)"
 msgstr "Umum (default)"
 
@@ -280,15 +281,19 @@ msgstr "Umum (default)"
 msgid "Getting coordinates"
 msgstr "Mendapatkan Koordinat"
 
-#: src/intro/intro.tsx:112
+#: src/intro/intro.tsx:124
 msgid "Got it"
 msgstr "Mengerti"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:30
+msgid "Gregorian"
+msgstr "Gregorian"
 
 #: src/adhan/calculation_methods.ts:58
 msgid "Gulf region"
 msgstr "Wilayah Gulf"
 
-#: src/screens/settings_calculation/index.tsx:138
+#: src/screens/settings_calculation/index.tsx:141
 msgid "Hanafi"
 msgstr "Hanafi"
 
@@ -309,6 +314,10 @@ msgstr "Lintang Tinggi"
 #: src/screens/settings_about/index.tsx:24
 msgid "Home"
 msgstr "Situs"
+
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:21
+msgid "If enabled, when a notification is shown, it will contain info for the next prayer time"
+msgstr "Jika diaktifkan, ketika notifikasi ditampilkan, maka akan berisi info untuk waktu shalat berikutnya"
 
 #: src/screens/settings_battery_optimizations/index.tsx:52
 msgid "If you want to make sure the app can work reliably, You have to disable power optimization for this app. You can open related settings using the button below."
@@ -342,11 +351,11 @@ msgstr "Kementrian Agama Republik Indonesia (KEMENAG)"
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:94
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:93
 msgid "Label"
 msgstr "Judul"
 
-#: src/screens/settings_display/language_settings.tsx:72
+#: src/screens/settings_display/language_settings.tsx:79
 msgid "Language"
 msgstr "Bahasa"
 
@@ -371,7 +380,7 @@ msgstr "Lisensi"
 msgid "Light"
 msgstr "Terang"
 
-#: src/intro/intro.tsx:23
+#: src/intro/intro.tsx:27
 msgid "Location"
 msgstr "Lokasi"
 
@@ -384,11 +393,6 @@ msgstr "Longitud"
 msgid "Longitude is invalid"
 msgstr "Longitud tidak valid"
 
-#. short week day, monday
-#: src/components/week_day_selector.tsx:14
-msgid "MON"
-msgstr "SEN"
-
 #: src/assets/adhan_entries.ts:19
 msgid "Masjid An Nabawi"
 msgstr "Masjid Nabawi"
@@ -400,6 +404,10 @@ msgstr "Pertengahan malam"
 #: src/assets/adhan_entries.ts:33
 msgid "Moazen Zade"
 msgstr "Moazen Zade"
+
+#: src/components/week_day_selector.tsx:14
+msgid "Monday"
+msgstr "Senin"
 
 #: src/adhan/calculation_methods.ts:22
 msgid "Moonsighting Committee"
@@ -414,16 +422,17 @@ msgstr "Liga Muslim Dunia"
 msgid "Name"
 msgstr "Nama"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:86
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
 msgid "New Reminder"
 msgstr "Buat Pengingat"
 
-#: src/intro/intro.tsx:88
-#: src/tasks/set_next_adhan.ts:58
+#: src/intro/intro.tsx:100
+#: src/tasks/set_next_adhan.ts:62
+#: src/tasks/set_next_adhan.ts:94
 msgid "Next"
 msgstr "Lanjut"
 
-#: src/screens/home/index.tsx:113
+#: src/screens/home/index.tsx:136
 msgid "Next Day"
 msgstr "Hari Brkut"
 
@@ -435,11 +444,12 @@ msgstr "Tidak"
 msgid "None (Automatic)"
 msgstr "Tidak ada (Otomatis)"
 
-#: src/screens/settings_notifications/index.tsx:18
+#: src/screens/settings_notifications/notification_setting.tsx:236
+#: src/screens/settings_notifications/notification_setting.tsx:321
 msgid "Notification"
 msgstr "Notifikasi"
 
-#: src/intro/intro.tsx:31
+#: src/intro/intro.tsx:35
 msgid "Notification & Sound"
 msgstr "Notifikasi & Suara"
 
@@ -447,9 +457,18 @@ msgstr "Notifikasi & Suara"
 msgid "Numbering system"
 msgstr "Sistem penomoran"
 
+#: src/screens/settings_reminders/reminder_item.tsx:33
+msgid "Once"
+msgstr "Sekali"
+
 #: src/screens/settings_calculation/index.tsx:121
 msgid "One-Seventh of the Night"
 msgstr "Sepertujuh Malam"
+
+#. shown in add/edit reminder dialog
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:206
+msgid "Only once?"
+msgstr "Hanya sekali?"
 
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:44
 msgid "Only six items can be shown at the same time"
@@ -463,11 +482,20 @@ msgstr "Buka Pengaturan"
 msgid "Open Power Manager Settings"
 msgstr "Buka Pengaturan"
 
-#: src/screens/settings_location/index.tsx:333
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:185
+msgid "Options"
+msgstr "Opsi"
+
+#: src/screens/settings_location/index.tsx:346
 msgid "Paste"
 msgstr "Tempel"
 
-#: src/screens/settings_calculation/index.tsx:143
+#. shown in add/edit reminder dialog
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:188
+msgid "Play adhan?"
+msgstr "Bermain adzan?"
+
+#: src/screens/settings_calculation/index.tsx:146
 msgid "Polar Resolution"
 msgstr "Resolusi Kutub"
 
@@ -475,7 +503,7 @@ msgstr "Resolusi Kutub"
 msgid "Power Manager"
 msgstr "Pengelola Daya"
 
-#: src/screens/home/index.tsx:91
+#: src/screens/home/index.tsx:107
 msgid "Prev Day"
 msgstr "Hari Sblum"
 
@@ -493,28 +521,15 @@ msgstr ""
 msgid "Referred to as the ISNA method"
 msgstr "Mengacu pada metode ISNA"
 
-#: src/tasks/set_reminder.ts:94
-#: src/tasks/set_reminder.ts:119
+#: src/screens/fullscreen_alarm/index.tsx:44
+#: src/tasks/set_reminder.ts:70
+#: src/tasks/set_reminder.ts:96
 msgid "Reminder"
 msgstr "Pengingat"
 
-#: src/components/week_day_selector.tsx:60
-msgid "Repeat"
-msgstr "Ulangi"
-
-#: src/intro/intro.tsx:108
+#: src/intro/intro.tsx:120
 msgid "Required settings are incomplete. For app to show prayer times, You have to configure it from settings later."
 msgstr "Pengaturan yang diperlukan tidak lengkap. Agar aplikasi menampilkan waktu sholat, proses pengaturan perlu dilanjutkan kembali nanti."
-
-#. short week day, saturday
-#: src/components/week_day_selector.tsx:34
-msgid "SAT"
-msgstr "SAB"
-
-#. short week day, sunday
-#: src/components/week_day_selector.tsx:10
-msgid "SUN"
-msgstr "MIN"
 
 #: src/screens/settings_battery_optimizations/index.tsx:82
 msgid ""
@@ -524,6 +539,14 @@ msgid ""
 "and add this app to the list."
 msgstr "Perangkat Samsung memiliki Power Manajer kustom mereka sendiri yang disebut \"Perawatan Perangkat\" (Device Care). Setelah menekan tombol di bawah, Anda akan diarahkan ke menu Baterai (Battery) di Perawatan Perangkat (Device Care). Di menu Baterai (Battery), ketuk \"Manajemen daya aplikasi\" (App power management), lalu ketuk \"Aplikasi yang tidak akan ditidurkan\" (Apps that won't be put to sleep), dan tambahkan aplikasi ini ke daftar."
 
+#: src/components/week_day_selector.tsx:29
+msgid "Saturday"
+msgstr "Sabtu"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:21
+msgid "Secondary Calendar"
+msgstr "Kalender Sekunder"
+
 #: src/screens/settings_adhan/adhan_list_item.tsx:187
 msgid "Select as Fajr Adhan"
 msgstr "Pilih sebagai Adzan Subuh"
@@ -532,20 +555,20 @@ msgstr "Pilih sebagai Adzan Subuh"
 msgid "Selecting a name is required"
 msgstr "Nama wajib diisi"
 
-#: src/screens/settings_calculation/index.tsx:167
+#: src/screens/settings_calculation/index.tsx:170
 msgid "Shafaq"
 msgstr "Shafaq"
 
-#: src/screens/settings_calculation/index.tsx:169
+#: src/screens/settings_calculation/index.tsx:172
 msgid ""
 "Shafaq is used by the MoonsightingCommittee method to \n"
 "determine what type of twilight to use in order to\n"
 "determine the time for Isha"
 msgstr "Shafaq digunakan metode Komite Moonsighting untuk menentukan jenis senja yang digunakan untuk menentukan waktu Isya'"
 
-#: src/screens/settings_calculation/index.tsx:137
-msgid "Shafi (Default)"
-msgstr "Syafi'i (default)"
+#: src/screens/settings_calculation/index.tsx:138
+msgid "Shafi, Maliki, Hanbali (Default)"
+msgstr "Syafi'i, Maliki, Hanbali (Default)"
 
 #: src/adhan/calculation_methods.ts:106
 msgid "Shia Ithna Ashari, Leva Institute, Qum"
@@ -561,9 +584,13 @@ msgstr "Shia, Institute of Geophysics, University of Tehran"
 msgid "Show Adhan Options"
 msgstr "Tampilkan Pilihan Adzan"
 
-#: src/screens/home/index.tsx:107
+#: src/screens/home/index.tsx:130
 msgid "Show Today"
 msgstr "Hari Ini"
+
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:13
+msgid "Show next in notification?"
+msgstr "Tampilkan pemberitahuan berikutnya?"
 
 #: src/screens/settings_widget/index.tsx:32
 msgid "Show notification widget?"
@@ -573,9 +600,13 @@ msgstr "Tampilkan widget notifikasi?"
 msgid "Singapore"
 msgstr "Singapura"
 
-#: src/intro/intro.tsx:90
+#: src/intro/intro.tsx:102
 msgid "Skip"
 msgstr "Lewati"
+
+#: src/screens/settings_display/calendar_secondary_settings.tsx:31
+msgid "Solar Hijri"
+msgstr "Matahari Hijriah"
 
 #: src/screens/settings_battery_optimizations/index.tsx:72
 msgid ""
@@ -584,7 +615,8 @@ msgid ""
 "In that case disable any power saving option for the app."
 msgstr "Beberapa perangkat memerlukan pengaturan tambahan pada Power Manager untuk mencegah aplikasi berhenti di latar belakang. Nonaktifkan opsi hemat daya untuk aplikasi ini."
 
-#: src/screens/settings_notifications/index.tsx:21
+#: src/screens/settings_notifications/notification_setting.tsx:287
+#: src/screens/settings_notifications/notification_setting.tsx:329
 msgid "Sound"
 msgstr "Suara"
 
@@ -596,19 +628,17 @@ msgstr "Administrasi Keagamaan Muslim Rusia"
 msgid "Status"
 msgstr "Status"
 
+#: src/components/week_day_selector.tsx:11
+msgid "Sunday"
+msgstr "Minggu"
+
 #: src/screens/settings_display/theme_settings.tsx:44
 msgid "System Default"
 msgstr "Default Sistem"
 
-#. short week day, thursday
-#: src/components/week_day_selector.tsx:26
-msgid "THU"
-msgstr "KAM"
-
-#. short week day, tuesday
-#: src/components/week_day_selector.tsx:18
-msgid "TUE"
-msgstr "SEL"
+#: src/screens/settings_display/calendar_secondary_settings.tsx:33
+msgid "Thai Solar"
+msgstr "Thai Solar"
 
 #: src/intro/slides/welcome.tsx:9
 msgid ""
@@ -620,18 +650,25 @@ msgstr "Terima kasih telah memilih Al-Azan! Lakukan pengaturan awal sebelum mula
 msgid "The Gulf Region (Dubai)"
 msgstr "The Gulf Region (Dubai)"
 
+#: src/screens/settings_display/calendar_secondary_settings.tsx:23
+msgid "The type of calendar that is shown on top of home screen and beside lunar date in widgets"
+msgstr "Jenis kalender yang ditampilkan di bagian atas layar beranda dan di samping tanggal lunar di widget"
+
 #: src/screens/settings_display/calendar_settings.tsx:23
-msgid "The type of calendar shown in main screen and widgets"
-msgstr "Jenis kalender yang ditampilkan di layar utama dan widget"
+msgid "The type of lunar calendar shown in main screen and widgets"
+msgstr "Jenis kalender lunar yang ditampilkan di layar utama dan widget"
 
 #: src/screens/settings_display/theme_settings.tsx:28
 #: src/screens/settings_display/theme_settings.tsx:33
 msgid "Theme Color"
 msgstr "Warna Tema"
 
+#: src/components/week_day_selector.tsx:23
+msgid "Thursday"
+msgstr "Kamis"
+
 #: src/screens/settings_display/hide_prayer_settings.tsx:57
-#: src/screens/settings_notifications/index.tsx:16
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:104
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:103
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:62
 msgid "Time"
 msgstr "Waktu"
@@ -644,10 +681,13 @@ msgstr "Format waktu"
 msgid "To calculate Adhan, We need your location. You can use the \"Find My Location\" button, or use the country and city/area search, or enter your coordinates manually."
 msgstr "Lokasi dibutuhkan untuk menghitung waktu adzan. Gunakan tombol \"Temukan Lokasi Saya\", atau gunakan pencarian negara dan kota/daerah, atau masukkan koordinat secara manual."
 
-#: src/tasks/set_next_adhan.ts:63
-#: src/tasks/set_reminder.ts:123
+#: src/utils/upcoming.ts:15
 msgid "Tomorrow"
 msgstr "Besok"
+
+#: src/components/week_day_selector.tsx:17
+msgid "Tuesday"
+msgstr "Selasa"
 
 #: src/screens/settings_calculation/index.tsx:125
 msgid "Twilight Angle"
@@ -665,16 +705,16 @@ msgstr "Serikat Organisasi Islam Perancis (UOIF)"
 msgid "University of Islamic Sciences, Karachi"
 msgstr "Universitas Ilmu Islam, Karachi"
 
-#: src/screens/settings_calculation/index.tsx:153
+#: src/screens/settings_calculation/index.tsx:156
 msgid "Unresolved (default)"
 msgstr "Tidak ada (default)"
 
-#: src/screens/settings_display/language_settings.tsx:46
+#: src/screens/settings_display/language_settings.tsx:58
 msgid "Unsupported"
 msgstr "Tidak didukung"
 
 #. notification title
-#: src/tasks/set_pre_alarm.ts:65
+#: src/tasks/set_pre_alarm.ts:49
 msgid "Upcoming alarm"
 msgstr "Alarm selanjutnya"
 
@@ -698,16 +738,15 @@ msgstr "Menggunakan Pencarian"
 msgid "Version"
 msgstr "Versi"
 
-#. short week day, wednesday
-#: src/components/week_day_selector.tsx:22
-msgid "WED"
-msgstr "KAM"
-
 #: src/intro/slides/welcome.tsx:14
 msgid "We'll help you do them quickly."
 msgstr "Pengaturan hanya butuh beberapa langkah saja."
 
-#: src/intro/intro.tsx:19
+#: src/components/week_day_selector.tsx:20
+msgid "Wednesday"
+msgstr "Rabu"
+
+#: src/intro/intro.tsx:23
 msgid "Welcome"
 msgstr "Selamat Datang!"
 
@@ -715,7 +754,7 @@ msgstr "Selamat Datang!"
 msgid "You can access your device Power Manager using the button below."
 msgstr "Akses pengaturan Power Manager menggunakan tombol di bawah ini."
 
-#: src/screens/settings_location/index.tsx:326
+#: src/screens/settings_location/index.tsx:340
 msgid "You can also paste coords from clipboard"
 msgstr "Anda juga dapat menempelkan koordinat dari clipboard"
 
@@ -736,21 +775,16 @@ msgstr "Semua hak cipta untuk suara adzan adalah milik masing-masing pemiliknya.
 msgid "about_settings"
 msgstr "Tentang"
 
-#. screen title
-#: src/navigation/types.ts:54
-msgid "adhan_settings"
-msgstr "Adzan"
-
 #. shown under adjustment accordion in calculation settings
 #: src/screens/settings_calculation/adjustment_settings.tsx:16
 msgid "adjustment.hint"
 msgstr "Jumlah menit yang akan ditambahkan ke waktu yang dihitung"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:155
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:158
 msgid "after"
 msgstr "setelah"
 
-#: src/adhan/prayer.ts:43
+#: src/adhan/prayer.ts:52
 msgid "asr.prayer"
 msgstr "Ashar"
 
@@ -759,7 +793,7 @@ msgstr "Ashar"
 msgid "battery_optimization_settings"
 msgstr "Optimasi Baterai"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:154
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:157
 msgid "before"
 msgstr "sebelum"
 
@@ -768,7 +802,7 @@ msgstr "sebelum"
 msgid "calculation_settings"
 msgstr "Perhitungan"
 
-#: src/adhan/prayer.ts:39
+#: src/adhan/prayer.ts:48
 msgid "dhuhr.prayer"
 msgstr "Dhuhur"
 
@@ -777,7 +811,7 @@ msgstr "Dhuhur"
 msgid "display_settings"
 msgstr "Tampilan"
 
-#: src/adhan/prayer.ts:31
+#: src/adhan/prayer.ts:40
 msgid "fajr.prayer"
 msgstr "Subuh"
 
@@ -799,7 +833,7 @@ msgstr "Situs"
 msgid "is prayer time hidden?"
 msgstr "apakah waktu sholat tersembunyi?"
 
-#: src/adhan/prayer.ts:55
+#: src/adhan/prayer.ts:64
 msgid "isha.prayer"
 msgstr "Isya'"
 
@@ -808,9 +842,14 @@ msgstr "Isya'"
 msgid "location_settings"
 msgstr "Lokasi"
 
-#: src/adhan/prayer.ts:51
+#: src/adhan/prayer.ts:60
 msgid "maghrib.prayer"
 msgstr "Maghrib"
+
+#. screen title
+#: src/navigation/types.ts:54
+msgid "muezzin_settings"
+msgstr "Muazin"
 
 #. screen title
 #: src/navigation/types.ts:49
@@ -835,15 +874,19 @@ msgstr "Apakah ingin menampilkan widget notifikasi?"
 msgid "should {prayerName} be hidden?"
 msgstr "Apakah {prayerName} disembunyikan?"
 
-#: src/adhan/prayer.ts:59
+#: src/adhan/prayer.ts:68
 msgid "sunnah.midnight"
 msgstr "Tengah malam"
 
-#: src/adhan/prayer.ts:35
+#: src/adhan/prayer.ts:72
+msgid "sunnah.tahajjud"
+msgstr "Tahajjud"
+
+#: src/adhan/prayer.ts:44
 msgid "sunrise"
 msgstr "Terbit"
 
-#: src/adhan/prayer.ts:47
+#: src/adhan/prayer.ts:56
 msgid "sunset"
 msgstr "Terbenam"
 
@@ -852,18 +895,18 @@ msgstr "Terbenam"
 msgid "widget_settings"
 msgstr "Pengaturan Widget"
 
-#: src/screens/settings_reminders/reminder_item.tsx:93
+#: src/screens/settings_reminders/reminder_item.tsx:30
 msgid "{durationInMinutes} min after {prayer}"
 msgstr "{durationInMinutes} menit setelah {prayer}"
 
-#: src/screens/settings_reminders/reminder_item.tsx:92
+#: src/screens/settings_reminders/reminder_item.tsx:29
 msgid "{durationInMinutes} min before {prayer}"
 msgstr "{durationInMinutes} menit sebelum {prayer}"
 
-#: src/screens/settings_notifications/notification_setting.tsx:51
+#: src/screens/settings_notifications/notification_setting.tsx:244
 msgid "{prayerName} notification will be shown"
 msgstr "Pemberitahuan waktu {prayerName} akan ditampilkan"
 
-#: src/screens/settings_notifications/notification_setting.tsx:61
+#: src/screens/settings_notifications/notification_setting.tsx:296
 msgid "{prayerName} sound will be played"
 msgstr "Suara adzan {prayerName} akan diputar"

@@ -1,75 +1,107 @@
 import {MessageDescriptor, i18n} from '@lingui/core';
-import {t, defineMessage} from '@lingui/macro';
+import {defineMessage} from '@lingui/macro';
 
+import keys from 'lodash/keys';
 import {Flex, FormControl, IFlexProps} from 'native-base';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import {WeekDayButton} from '@/components/week_day_button';
-import {WeekDay} from '@/store/settings';
+import {WeekDayIndex, WeekDayName, WeekDays} from '@/utils/date';
 
-export const WeekDaysShortInOrder = {
-  sun: defineMessage({
-    message: 'SUN',
-    comment: 'short week day, sunday',
+export const WeekDaysInOrder = {
+  sunday: defineMessage({
+    message: 'Sunday',
   }),
-  mon: defineMessage({
-    message: 'MON',
-    comment: 'short week day, monday',
+  monday: defineMessage({
+    message: 'Monday',
   }),
-  tue: defineMessage({
-    message: 'TUE',
-    comment: 'short week day, tuesday',
+  tuesday: defineMessage({
+    message: 'Tuesday',
   }),
-  wed: defineMessage({
-    message: 'WED',
-    comment: 'short week day, wednesday',
+  wednesday: defineMessage({
+    message: 'Wednesday',
   }),
-  thu: defineMessage({
-    message: 'THU',
-    comment: 'short week day, thursday',
+  thursday: defineMessage({
+    message: 'Thursday',
   }),
-  fri: defineMessage({
-    message: 'FRI',
-    comment: 'short week day, friday',
+  friday: defineMessage({
+    message: 'Friday',
   }),
-  sat: defineMessage({
-    message: 'SAT',
-    comment: 'short week day, saturday',
+  saturday: defineMessage({
+    message: 'Saturday',
   }),
 } as Record<string, MessageDescriptor>;
 
+export type SelectorValue = Partial<Record<WeekDayIndex, boolean>> | boolean;
+
 export function WeekDaySelector(
-  props: IFlexProps & {onChanged?: (weekDays: Array<WeekDay>) => void},
+  props: IFlexProps & {
+    value?: SelectorValue;
+    onChanged?: (weekDays: SelectorValue) => void;
+    label?: string;
+    colorScheme?: string;
+  },
 ) {
-  const [selectedDays, setSelectedDays] = useState<Record<WeekDay, boolean>>(
-    {} as Record<WeekDay, boolean>,
+  const [selectedDays, setSelectedDays] = useState<SelectorValue>(
+    props.value || false,
   );
 
-  const setSelectedDaysProxy = (obj: Record<WeekDay, boolean>) => {
-    setSelectedDays(obj);
-    if (typeof props.onChanged === 'function') {
-      props.onChanged(
-        Object.keys(obj)
-          .map(k => (obj[k as WeekDay] ? (k as WeekDay) : undefined))
-          .filter(Boolean) as Array<WeekDay>,
-      );
-    }
-  };
+  const setSelectedDaysProxy = useCallback(
+    (obj: SelectorValue) => {
+      setSelectedDays(obj);
+      if (typeof props.onChanged === 'function') {
+        props.onChanged(obj);
+      }
+    },
+    [setSelectedDays, props],
+  );
+
+  const dayChanged = useCallback(
+    (isActive: boolean, dayIndex: WeekDayIndex) => {
+      let values: SelectorValue = {
+        ...(typeof selectedDays === 'boolean'
+          ? selectedDays
+            ? {
+                0: true,
+                1: true,
+                2: true,
+                3: true,
+                4: true,
+                5: true,
+                6: true,
+              }
+            : {}
+          : selectedDays),
+        [dayIndex]: isActive,
+      };
+      if (!values[dayIndex]) delete values[dayIndex];
+      const keysLength = keys(values).length;
+      if (!keysLength) {
+        values = false;
+      } else if (keysLength === 7) {
+        values = true;
+      }
+      setSelectedDaysProxy(values);
+    },
+    [selectedDays, setSelectedDaysProxy],
+  );
 
   return (
     <FormControl>
-      <FormControl.Label>{t`Repeat`}:</FormControl.Label>
+      {props.label && <FormControl.Label>{props.label}:</FormControl.Label>}
       <Flex direction="row" flexWrap="wrap" {...props}>
-        {Object.keys(WeekDaysShortInOrder).map(k => {
+        {keys(WeekDaysInOrder).map((dayName: string) => {
           return (
             <WeekDayButton
-              onChanged={isActive => {
-                setSelectedDaysProxy({
-                  ...selectedDays,
-                  [k as WeekDay]: isActive,
-                });
-              }}
-              label={i18n._(WeekDaysShortInOrder[k])}
-              key={k}
+              dayIndex={WeekDays[dayName as WeekDayName]}
+              onChanged={dayChanged}
+              label={i18n._(WeekDaysInOrder[dayName])}
+              key={dayName}
+              colorScheme={props.colorScheme}
+              isActive={
+                typeof selectedDays === 'boolean'
+                  ? selectedDays
+                  : selectedDays[WeekDays[dayName as WeekDayName]]
+              }
             />
           );
         })}
