@@ -9,12 +9,12 @@ import {
   PolarCircleResolution,
 } from 'adhan';
 import {CalculationMethods} from './calculation_methods';
-
 import {PrayersInOrder, Prayer} from './prayer';
 import {
   CachedPrayerTimes,
   getCachedPrayerTimes,
 } from '@/store/adhan_calc_cache';
+
 import {
   alarmSettings,
   getAdhanSettingKey,

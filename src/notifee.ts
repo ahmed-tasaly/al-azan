@@ -5,7 +5,8 @@ import notifee, {
   AndroidVisibility,
   Notification,
 } from '@notifee/react-native';
-import {BackHandler} from 'react-native';
+import {finishAndRemoveTask, isDndActive} from './modules/activity';
+import {isIntrusive, isSilent} from './modules/media_player';
 import {Reminder, reminderSettings} from './store/reminder';
 import {settings} from './store/settings';
 import {SetPreAlarmTaskOptions} from './tasks/set_pre_alarm';
@@ -13,29 +14,23 @@ import {setReminders} from './tasks/set_reminder';
 import {bootstrap} from '@/bootstrap';
 import {
   ADHAN_CHANNEL_ID,
+  PRE_ADHAN_CHANNEL_ID,
+  PRE_REMINDER_CHANNEL_ID,
   REMINDER_CHANNEL_ID,
   WIDGET_CHANNEL_ID,
   WIDGET_CHANNEL_NAME,
   WIDGET_NOTIFICATION_ID,
+  WIDGET_UPDATE_CHANNEL_ID,
 } from '@/constants/notification';
 import {
   updateNotification,
   UpdateWidgetOptions,
 } from '@/modules/notification_widget';
-import {replace} from '@/navigation/root_navigation';
-import {playAdhan, stopAdhan} from '@/services/azan_service';
+import {playAudio, stopAudio} from '@/services/audio_service';
 import {SetAlarmTaskOptions} from '@/tasks/set_alarm';
 import {setNextAdhan} from '@/tasks/set_next_adhan';
 import {setUpdateWidgetsAlarms} from '@/tasks/set_update_widgets_alarms';
 import {updateWidgets} from '@/tasks/update_widgets';
-
-// TODO: remove when notifee has added FG_ALREADY_EXIST to their npm package
-declare module '@notifee/react-native' {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  export enum EventType {
-    FG_ALREADY_EXIST = 8,
-  }
-}
 
 export type NotifeeEvent = {
   type: EventType;
@@ -46,31 +41,62 @@ export type NotifeeEvent = {
 export type CancelNotifOptions = {
   notification: Notification | undefined;
   options: SetAlarmTaskOptions | undefined;
+  /** should the notification be replaced with a notification without actions after it was cancelled ? */
+  replaceWithNormal?: boolean;
 };
 
 export async function cancelAlarmNotif({
   options,
   notification,
+  replaceWithNormal,
 }: CancelNotifOptions) {
-  if (notification?.android?.asForegroundService) {
-    if (options?.playSound) {
-      await stopAdhan().catch(console.error);
-      await notifee.stopForegroundService();
-      replace('Home');
-    }
+  if (!isSilent(options?.sound)) {
+    await stopAudio().catch(console.error);
+    await notifee.stopForegroundService().catch(console.error);
   }
 
   if (options?.notifId) {
-    await notifee.cancelDisplayedNotification(options.notifId);
+    await notifee
+      .cancelDisplayedNotification(options.notifId)
+      .catch(console.error);
+  }
+
+  if (replaceWithNormal && notification) {
+    await notifee
+      .displayNotification({
+        ...notification,
+        id: undefined, // to assign a unique id to it
+        android: {
+          ...notification.android,
+          actions: undefined,
+          asForegroundService: false,
+          fullScreenAction: undefined,
+          pressAction: {
+            id: 'default',
+          },
+          importance: AndroidImportance.DEFAULT,
+        },
+      })
+      .catch(console.error);
   }
 }
 
 export function getAlarmOptions(notification: Notification | undefined) {
-  if (!notification) return;
+  if (!notification || !notification.data?.options) return;
 
-  const options = JSON.parse(
-    notification.data?.options as string,
-  ) as SetAlarmTaskOptions;
+  let options;
+  try {
+    options = JSON.parse(
+      notification.data.options as string,
+    ) as SetAlarmTaskOptions;
+  } catch (e) {
+    console.error(
+      'Faulty options: ',
+      notification.data?.options,
+      ' Error: ',
+      e,
+    );
+  }
 
   if (options) {
     options.date = new Date(options.date);
@@ -84,56 +110,9 @@ export function getAlarmOptions(notification: Notification | undefined) {
 export async function getSecheduledAlarmOptions(targetAlarmNotifId: string) {
   const scheduledNotif = await notifee
     .getTriggerNotifications()
-    .then(
-      notifs => notifs.filter(n => n.notification.id === targetAlarmNotifId)[0],
-    )
+    .then(notifs => notifs.find(n => n.notification.id === targetAlarmNotifId))
     .catch(console.error);
   return getAlarmOptions(scheduledNotif?.notification);
-}
-
-export async function cancelNotifOnDismissed({
-  detail,
-  options,
-  type,
-}: NotifeeEvent) {
-  if (type === EventType.TRIGGER_NOTIFICATION_CREATED) return;
-  const {pressAction} = detail;
-
-  if (type === EventType.DISMISSED || pressAction?.id === 'dismiss_alarm') {
-    if (options?.date) {
-      settings
-        .getState()
-        .saveTimestamp(options.notifId, options.date.valueOf());
-    }
-    await cancelAlarmNotif({notification: detail.notification, options});
-  } else if (pressAction?.id === 'cancel_alarm') {
-    // 'cancel_alarm' only exists on a pre-alarm notification
-    const scheduledAlarmOptions = await getSecheduledAlarmOptions(
-      (options as SetPreAlarmTaskOptions).targetAlarmNotifId,
-    );
-    if (scheduledAlarmOptions) {
-      // save date of upcoming alarm to prevent setting alarm/prealarm before it
-      settings
-        .getState()
-        .saveTimestamp(
-          scheduledAlarmOptions.notifId,
-          scheduledAlarmOptions.date.valueOf(),
-        );
-
-      await notifee.cancelNotification(scheduledAlarmOptions.notifId);
-    }
-  }
-}
-
-function openFullscreenAlarmIfNeeded({detail, options, type}: NotifeeEvent) {
-  if (
-    (type === EventType.PRESS || type === EventType.DELIVERED) &&
-    options?.playSound
-  ) {
-    replace('FullscreenAlarm', {
-      options: detail.notification?.data?.options,
-    });
-  }
 }
 
 export async function getFgSvcNotification() {
@@ -141,9 +120,9 @@ export async function getFgSvcNotification() {
     const fgNotify = await notifee
       .getDisplayedNotifications()
       .then(list =>
-        list.find(n => n.notification.android?.asForegroundService),
+        list.find(n => !!n.notification.android?.asForegroundService),
       );
-    return fgNotify;
+    return fgNotify?.notification;
   } catch (e) {
     console.error(e);
   }
@@ -153,23 +132,42 @@ export async function getFgSvcNotification() {
 async function handleNotification({
   detail,
   type,
-  bgEvent,
-}: Omit<NotifeeEvent, 'options'> & {bgEvent: boolean}) {
-  if (bgEvent) {
-    bootstrap();
-  }
-  const {notification} = detail;
-  const channelId = notification?.android?.channelId;
+}: Omit<NotifeeEvent, 'options'>) {
+  bootstrap();
 
-  if (channelId === ADHAN_CHANNEL_ID || channelId === REMINDER_CHANNEL_ID) {
+  const {notification} = detail;
+  const channelId = notification?.android?.channelId || '';
+
+  if (
+    [
+      ADHAN_CHANNEL_ID,
+      REMINDER_CHANNEL_ID,
+      PRE_ADHAN_CHANNEL_ID,
+      PRE_REMINDER_CHANNEL_ID,
+    ].includes(channelId)
+  ) {
     const options = getAlarmOptions(notification)!;
 
     if (
       type === EventType.DELIVERED ||
       type === EventType.UNKNOWN ||
-      type === 8
+      type === EventType.FG_ALREADY_EXIST
     ) {
-      if ((type === 8 || type === EventType.UNKNOWN) && notification) {
+      if (
+        settings.getState().DELIVERED_ALARM_TIMESTAMPS[options.notifId] ===
+        options.date.getTime()
+      ) {
+        // we already have processed this notification
+        return;
+      }
+      settings
+        .getState()
+        .saveTimestamp(options.notifId, options.date.getTime());
+
+      if (
+        (type === EventType.FG_ALREADY_EXIST || type === EventType.UNKNOWN) &&
+        notification
+      ) {
         await notifee
           .displayNotification({
             ...notification,
@@ -183,7 +181,8 @@ async function handleNotification({
           })
           .catch(console.error);
       }
-      if (options.playSound) {
+
+      if (isIntrusive(options.sound)) {
         // even though we could not check options.playSound and
         // this would simply become a noop,
         // we have to reduce the cpu usage as much as we can
@@ -192,32 +191,78 @@ async function handleNotification({
           .cancelNotification('pre-' + options.notifId)
           .catch(console.error);
       }
+
       if (channelId === ADHAN_CHANNEL_ID) {
-        setNextAdhan();
-        updateWidgets();
-        setUpdateWidgetsAlarms();
+        await Promise.all([
+          setNextAdhan(),
+          updateWidgets(),
+          setUpdateWidgetsAlarms(),
+        ]);
       } else if (channelId === REMINDER_CHANNEL_ID) {
         if ((options as Pick<Reminder, 'once'>).once) {
           reminderSettings.getState().disableReminder({id: options.notifId});
         }
         await setReminders();
       }
-    } else {
-      await cancelNotifOnDismissed({type, detail, options});
+    } else if (type !== EventType.TRIGGER_NOTIFICATION_CREATED) {
+      const {pressAction} = detail;
+
+      if (type === EventType.DISMISSED || pressAction?.id === 'dismiss_alarm') {
+        await cancelAlarmNotif({notification: detail.notification, options});
+      } else if (pressAction?.id === 'cancel_alarm') {
+        // 'cancel_alarm' only exists on a pre-alarm notification
+        const scheduledAlarmOptions = await getSecheduledAlarmOptions(
+          (options as SetPreAlarmTaskOptions).targetAlarmNotifId,
+        );
+
+        if (scheduledAlarmOptions) {
+          await notifee.cancelNotification(scheduledAlarmOptions.notifId);
+
+          // save date of upcoming alarm to prevent setting alarm/prealarm before it
+          settings
+            .getState()
+            .saveTimestamp(
+              scheduledAlarmOptions.notifId,
+              scheduledAlarmOptions.date.getTime(),
+            );
+
+          if (scheduledAlarmOptions.notifChannelId === ADHAN_CHANNEL_ID) {
+            await setNextAdhan();
+          } else if (
+            scheduledAlarmOptions.notifChannelId === REMINDER_CHANNEL_ID
+          ) {
+            if ((scheduledAlarmOptions as Pick<Reminder, 'once'>).once) {
+              reminderSettings.getState().disableReminder({
+                id: scheduledAlarmOptions.notifId,
+              });
+            }
+            await setReminders();
+          }
+        }
+      }
     }
-    openFullscreenAlarmIfNeeded({type, detail, options});
+  } else if (channelId === WIDGET_UPDATE_CHANNEL_ID) {
+    if (type !== EventType.TRIGGER_NOTIFICATION_CREATED) {
+      const notifId = notification!.id!;
+      const triggerDate = notification?.data?.timestamp as number | undefined;
+      if (triggerDate) {
+        settings.getState().saveTimestamp(notifId, triggerDate);
+      }
+      await Promise.all([updateWidgets(), setUpdateWidgetsAlarms()]);
+      await notifee.cancelNotification(notifId).catch(console.error);
+    }
   }
 }
 
 export function setupNotifeeForegroundHandler() {
   return notifee.onForegroundEvent(({type, detail}) =>
-    handleNotification({type, detail, bgEvent: true}),
+    handleNotification({type, detail}),
   );
 }
 
 export function setupNotifeeHandlers() {
   notifee.onBackgroundEvent(({type, detail}) =>
-    handleNotification({type, detail, bgEvent: true}),
+    handleNotification({type, detail}),
   );
 
   notifee.registerForegroundService(async notification => {
@@ -227,14 +272,26 @@ export function setupNotifeeHandlers() {
     if (channelId === ADHAN_CHANNEL_ID || channelId === REMINDER_CHANNEL_ID) {
       const options = getAlarmOptions(notification);
 
-      if (options?.playSound) {
-        return playAdhan(options.prayer)
-          .then(() => cancelAlarmNotif({notification, options}))
-          .then(() => BackHandler.exitApp());
+      if (!isSilent(options?.sound)) {
+        const canBypassDnd = (
+          await notifee.getChannel(channelId).catch(console.error)
+        )?.bypassDnd;
+
+        const isDnd = await isDndActive();
+
+        if (!isDnd || canBypassDnd) {
+          await playAudio(options!.sound!)
+            .then(interrupted =>
+              cancelAlarmNotif({
+                notification,
+                options,
+                replaceWithNormal: !interrupted,
+              }),
+            )
+            .finally(() => finishAndRemoveTask());
+        }
       }
     }
-
-    return Promise.resolve();
   });
 }
 
@@ -255,7 +312,7 @@ export async function updatePermanentNotifWidget({
     visibility: AndroidVisibility.PUBLIC,
   });
 
-  return updateNotification({
+  await updateNotification({
     dayAndMonth,
     hijriDate,
     prayers,

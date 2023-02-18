@@ -16,13 +16,6 @@ module.exports = {
     jest: true,
   },
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module', // Allows for the use of imports
-  },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'import', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
@@ -39,6 +32,8 @@ module.exports = {
         },
       },
     ],
+    'import/no-namespace': 'error',
+    'import/namespace': 'off',
     'object-curly-spacing': ['error', 'never'],
     'no-multiple-empty-lines': ['error', {max: 2, maxEOF: 0}],
     'no-unused-vars': 'off',
@@ -68,5 +63,6 @@ module.exports = {
         alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
       },
     },
+    'import/extensions': ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
 };

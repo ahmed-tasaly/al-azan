@@ -13,6 +13,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build.VERSION;
@@ -28,8 +29,12 @@ import androidx.core.content.ContextCompat;
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MediaPlayerService extends HeadlessJsTaskService implements
     MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -39,12 +44,16 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
   private static final String STATE_STARTED = "started";
   private static final String STATE_PAUSED = "paused";
 
+  private static final long LOOP_SOUND_TIMER_LIMIT = 5 * 60 * 1000;
+
 
   private MediaPlayer player;
   private boolean wasPlaying = false;
   private boolean isStarted = false;
   private boolean isPaused = false;
   private Promise setDataSourcePromise = null;
+  private boolean isLoopUri = false;
+  private Timer timer = null;
   private TelephonyManager telephonyManager;
   private TelephonyStateListener telephonyStateListener;
   private PhoneStateListener phoneStateListener;
@@ -98,11 +107,18 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
   }
 
   public void stop() {
+    stop(true);
+  }
+  public void stop(boolean wasInterrupted) {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
     try {
       player.stop();
     } catch (Exception ignored) {
     } finally {
-      onCompletion(player);
+      onCompletion(wasInterrupted);
       ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
           .emit("state", STATE_STOPPED);
     }
@@ -128,6 +144,15 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
         wasPlaying = false;
         ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit("state", STATE_STARTED);
+        if (isLoopUri) {
+          timer= new Timer();
+          timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              stop(false);
+            }
+          }, LOOP_SOUND_TIMER_LIMIT);
+        }
       } else {
         isStarted = true;
         wasPlaying = true;
@@ -158,14 +183,21 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
   }
 
 
-  public void setDataSource(Uri uri, Promise promise) {
+  /** plays default notification sound if uri is null */
+  public void setDataSource(@Nullable Uri uri, boolean isLoopUri, Promise promise) {
     if (setDataSourcePromise != null) {
       promise.reject("ERROR", "A setDataSource Call is already pending");
       return;
     }
     try {
       setDataSourcePromise = promise;
+      this.isLoopUri = isLoopUri;
       player.reset();
+      player.setLooping(this.isLoopUri);
+      if (uri == null) {
+        // NOTIFICATION DEFAULT
+        uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+      }
       int id = getIdFromRawResourceUri(uri);
       if (id > 0) {
         try {
@@ -187,6 +219,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
     } catch (Exception e) {
       promise.reject("ERROR", "setDataSource: " + e.getLocalizedMessage());
       setDataSourcePromise = null;
+      this.isLoopUri = false;
     }
   }
 
@@ -252,15 +285,19 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
 
   @Override
   public void onCompletion(MediaPlayer mp) {
+    onCompletion(false);
+  }
+
+  public void onCompletion(boolean wasInterrupted) {
     isStarted = false;
     isPaused = false;
     wasPlaying = false;
     AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     audioManager.abandonAudioFocus(this);
     ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("completed", null);
+            .emit("completed", wasInterrupted);
     ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("state", STATE_STOPPED);
+            .emit("state", STATE_STOPPED);
   }
 
   class MusicBinder extends Binder {

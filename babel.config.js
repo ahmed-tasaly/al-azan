@@ -22,21 +22,13 @@ module.exports = function (api) {
     ],
     presets: ['module:metro-react-native-babel-preset'],
     comments: true,
-    env: {
-      production: {
-        plugins: [],
-      },
-    },
   };
 
   if (
     process.env.NODE_ENV === 'production' ||
     process.env.BABEL_ENV === 'production'
   ) {
-    config.plugins.push([
-      'transform-remove-console',
-      {exclude: ['error', 'warn']},
-    ]);
+    config.plugins.push(['transform-remove-console', {exclude: ['error']}]);
   }
 
   return config;

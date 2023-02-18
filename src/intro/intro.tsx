@@ -13,7 +13,7 @@ import {StepLabel} from '@/intro/step_label';
 import {alarmSettings} from '@/store/alarm';
 import {calcSettings} from '@/store/calculation';
 import {reminderSettings} from '@/store/reminder';
-import {settings, useSettingsHelper} from '@/store/settings';
+import {settings, useSettings} from '@/store/settings';
 import {setNextAdhan} from '@/tasks/set_next_adhan';
 import {updateWidgets} from '@/tasks/update_widgets';
 import {sha256} from '@/utils/hash';
@@ -50,7 +50,7 @@ function _keyExtractor(item: Item) {
 export default Intro;
 
 export function Intro() {
-  const [, setAppIntroDone] = useSettingsHelper('APP_INTRO_DONE');
+  const [, setAppIntroDone] = useSettings('APP_INTRO_DONE');
 
   const [configAlertIsOpen, setConfigAlertIsOpen] = useState(false);
 

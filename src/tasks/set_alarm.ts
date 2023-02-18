@@ -5,9 +5,9 @@ import notifee, {
   AndroidImportance,
   AndroidCategory,
   AndroidVisibility,
-  AndroidLaunchActivityFlag,
 } from '@notifee/react-native';
 import {Prayer} from '@/adhan';
+import {AudioEntry, isIntrusive, isSilent} from '@/modules/media_player';
 
 export type SetAlarmTaskOptions = {
   /** notification id */
@@ -24,8 +24,7 @@ export type SetAlarmTaskOptions = {
   subtitle?: string;
   /** notification body */
   body?: string;
-  /** Default: `true` */
-  playSound?: boolean;
+  sound?: AudioEntry;
   /** Default: `false`. this is passed to notification options. */
   isReminder?: Boolean;
   /** which prayer this is about */
@@ -43,7 +42,7 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
     title,
     body,
     subtitle,
-    playSound,
+    sound,
     notifChannelId,
     notifChannelName,
     notifId,
@@ -64,8 +63,8 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
     },
   };
 
-  // to replace the notification settings
-  await notifee.cancelTriggerNotification(notifId).catch(console.error);
+  const intrusive = isIntrusive(sound);
+  const silent = isSilent(sound);
 
   await notifee.createTriggerNotification(
     {
@@ -74,33 +73,38 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
       subtitle: subtitle,
       body: body,
       android: {
+        lightUpScreen: intrusive,
         smallIcon: 'ic_stat_name',
         channelId,
         category: AndroidCategory.ALARM,
         importance: AndroidImportance.HIGH,
-        autoCancel: !playSound,
-        fullScreenAction: playSound
+        autoCancel: !intrusive,
+        fullScreenAction: intrusive
           ? {
-              id: 'default',
-              launchActivityFlags: [
-                AndroidLaunchActivityFlag.NO_HISTORY,
-                AndroidLaunchActivityFlag.SINGLE_TOP,
-                AndroidLaunchActivityFlag.EXCLUDE_FROM_RECENTS,
-              ],
+              id: 'fullscreen',
+              launchActivity: 'com.github.meypod.al_azan.AlarmActivity',
             }
           : undefined,
-        pressAction: {
-          id: 'default',
-        },
-        asForegroundService: !!playSound,
-        actions: [
-          {
-            title: t`Dismiss`,
-            pressAction: {
+        pressAction: intrusive
+          ? {
+              id: 'fullscreen',
+              launchActivity: 'com.github.meypod.al_azan.AlarmActivity',
+            }
+          : {
               id: 'dismiss_alarm',
+              launchActivity: 'com.github.meypod.al_azan.MainActivity',
             },
-          },
-        ],
+        asForegroundService: !silent,
+        actions: silent
+          ? undefined
+          : [
+              {
+                title: t`Dismiss`,
+                pressAction: {
+                  id: 'dismiss_alarm',
+                },
+              },
+            ],
       },
       data: {
         options: JSON.stringify(options),

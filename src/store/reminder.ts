@@ -1,10 +1,12 @@
 import {produce} from 'immer';
 import {useCallback} from 'react';
-import create from 'zustand';
-import {persist} from 'zustand/middleware';
-import createVanilla from 'zustand/vanilla';
+import {useStore} from 'zustand';
+import {createJSONStorage, persist} from 'zustand/middleware';
+import {shallow} from 'zustand/shallow';
+import {createStore} from 'zustand/vanilla';
 import {zustandStorage} from './mmkv';
 import {Prayer} from '@/adhan';
+import type {AudioEntry} from '@/modules/media_player';
 
 const REMINDER_STORAGE_KEY = 'REMINDER_STORAGE';
 
@@ -17,8 +19,8 @@ export type Reminder = {
   duration: number;
   /** has a value of `-1` or `+1` */
   durationModifier: number;
-  /** should reminder play adhan ? */
-  playSound?: boolean;
+  /** should reminder play sound and what sound ? */
+  sound?: AudioEntry;
   /** should reminder be set only once? */
   once?: boolean;
 };
@@ -48,7 +50,7 @@ const invalidKeys = [
   'disableReminder',
 ];
 
-export const reminderSettings = createVanilla<ReminderStore>()(
+export const reminderSettings = createStore<ReminderStore>()(
   persist(
     set => ({
       REMINDERS: [],
@@ -117,7 +119,7 @@ export const reminderSettings = createVanilla<ReminderStore>()(
     }),
     {
       name: REMINDER_STORAGE_KEY,
-      getStorage: () => zustandStorage,
+      storage: createJSONStorage(() => zustandStorage),
       partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !invalidKeys.includes(key)),
@@ -138,13 +140,13 @@ export const reminderSettings = createVanilla<ReminderStore>()(
   ),
 );
 
-export const useReminderSettings = create(reminderSettings);
-
-export function useReminderSettingsHelper<T extends keyof ReminderStore>(
-  key: T,
-) {
-  const state = useReminderSettings(s => s[key]);
-  const setterCurry = useReminderSettings(s => s.setSettingCurry);
+export function useReminderSettings<T extends keyof ReminderStore>(key: T) {
+  const state = useStore(reminderSettings, s => s[key], shallow);
+  const setterCurry = useStore(
+    reminderSettings,
+    s => s.setSettingCurry,
+    shallow,
+  );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const setCallback = useCallback(setterCurry(key), [key]);
   return [state, setCallback] as [

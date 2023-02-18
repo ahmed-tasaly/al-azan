@@ -14,16 +14,17 @@ import {
 import {useEffect, useState} from 'react';
 import {ToastAndroid} from 'react-native';
 import {pickSingle} from 'react-native-document-picker';
-
 import {AdhanEntry} from '@/assets/adhan_entries';
 import MediaPlayer, {
+  AudioEntry,
   PlaybackState,
   usePlaybackState,
 } from '@/modules/media_player';
 import {RootStackParamList} from '@/navigation/types';
+
 import {AdhanListItem} from '@/screens/settings_adhan/adhan_list_item';
 import {play, stop, destroy} from '@/services/play_sound';
-import {settings, useSettingsHelper} from '@/store/settings';
+import {settings, useSettings} from '@/store/settings';
 
 type AdhanSettingsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -36,17 +37,17 @@ export function AdhanSettings(props: IBoxProps & AdhanSettingsProps) {
   const [playingAdhanEntry, setPlayingAdhanEntry] = useState<
     AdhanEntry | undefined
   >();
-  const [selectedAdhanEntry, setSelectedAdhanEntry] = useSettingsHelper(
+  const [selectedAdhanEntry, setSelectedAdhanEntry] = useSettings(
     'SELECTED_ADHAN_ENTRY',
   );
-  const [selectedFajrAdhanEntry, setSelectedFajrAdhanEntry] = useSettingsHelper(
+  const [selectedFajrAdhanEntry, setSelectedFajrAdhanEntry] = useSettings(
     'SELECTED_FAJR_ADHAN_ENTRY',
   );
 
-  const [savedAdhanEntries] = useSettingsHelper('SAVED_ADHAN_AUDIO_ENTRIES');
+  const [savedAdhanEntries] = useSettings('SAVED_ADHAN_AUDIO_ENTRIES');
 
   const [selectedFilePath, setSelectedFilePath] = useState<string>();
-  const [newAdhanName, setNewAdhanName] = useState<string>();
+  const [newAdhanName, setNewAdhanName] = useState<string | null>();
   const playerState = usePlaybackState();
 
   useEffect(() => {
@@ -79,7 +80,9 @@ export function AdhanSettings(props: IBoxProps & AdhanSettingsProps) {
       } else {
         setPlayingAdhanEntry(item);
         await stop();
-        await play((item?.filepath || item?.remoteUri) as string | number);
+        if (item.filepath) {
+          await play(item as AudioEntry);
+        }
       }
     } catch (e) {
       console.error(e);
@@ -129,7 +132,7 @@ export function AdhanSettings(props: IBoxProps & AdhanSettingsProps) {
 
   const onNewAdhanCancel = () => {
     setSelectedFilePath(undefined);
-    setNewAdhanName(undefined);
+    setNewAdhanName(null);
   };
 
   const onNewAdhanAdd = () => {
@@ -163,7 +166,7 @@ export function AdhanSettings(props: IBoxProps & AdhanSettingsProps) {
             <FormControl isInvalid={!newAdhanName}>
               <FormControl.Label>{t`Name`}</FormControl.Label>
               <Input
-                value={newAdhanName}
+                value={newAdhanName || ''}
                 placeholder={t`Name`}
                 onChangeText={str => setNewAdhanName(str)}
               />

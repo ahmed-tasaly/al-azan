@@ -1,82 +1,82 @@
 import {t} from '@lingui/macro';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Text, Box, Button, Spacer} from 'native-base';
 import {memo, useCallback, useEffect, useState} from 'react';
-import {BackHandler} from 'react-native';
+import {finishAndRemoveTask, getActivityName} from '@/modules/activity';
 import {replace} from '@/navigation/root_navigation';
-import {RootStackParamList} from '@/navigation/types';
-import {cancelAlarmNotif} from '@/notifee';
-import {isPlayingAdhan} from '@/services/azan_service';
+import {
+  cancelAlarmNotif,
+  getAlarmOptions,
+  getFgSvcNotification,
+} from '@/notifee';
+import {stopAudio} from '@/services/audio_service';
+import {useSettings} from '@/store/settings';
 import {SetAlarmTaskOptions} from '@/tasks/set_alarm';
 import {getTime} from '@/utils/date';
 
-type ScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'FullscreenAlarm'
->;
-
-function FullscreenAlarm({route}: ScreenProps) {
+function FullscreenAlarm() {
   const [fullscreenOptions, setFullscreenOptions] = useState<{
-    date: Date;
     title: String;
     subtitle: String;
     body: String;
   }>({
-    date: new Date(),
     title: '',
     subtitle: '',
     body: '',
   });
 
+  const [isPlayingAudio] = useSettings('IS_PLAYING_AUDIO');
+
+  const [taskOptions, setTaskOptions] = useState<
+    SetAlarmTaskOptions | undefined
+  >(undefined);
+
   useEffect(() => {
-    const parsedAlarmOptions = JSON.parse(
-      route.params.options || 'false',
-    ) as SetAlarmTaskOptions;
-    if (!parsedAlarmOptions) {
-      replace('Home');
-      return;
-    }
-    parsedAlarmOptions.date = new Date(parsedAlarmOptions.date);
+    getFgSvcNotification().then(async notification => {
+      const options = getAlarmOptions(notification);
+      if (!isPlayingAudio || !options) {
+        if ((await getActivityName()) === 'AlarmActivity') {
+          return finishAndRemoveTask();
+        } else {
+          await stopAudio();
+          return replace('Home');
+        }
+      }
+      setTaskOptions(options);
+    });
+  }, [isPlayingAudio]);
+
+  useEffect(() => {
+    if (!taskOptions) return;
     let title = t`Adhan`;
-    let body = parsedAlarmOptions.body || '';
+    let body = taskOptions.body || '';
     let subtitle = '';
-    if (parsedAlarmOptions.isReminder) {
+    if (taskOptions.isReminder) {
       title = t`Reminder`;
-      subtitle = parsedAlarmOptions.subtitle || '';
+      subtitle = taskOptions.subtitle || '';
     } else {
-      subtitle = parsedAlarmOptions.title;
-      body = getTime(parsedAlarmOptions.date);
+      subtitle = taskOptions.title;
+      body = getTime(taskOptions.date);
     }
     setFullscreenOptions({
       title,
       body,
       subtitle,
-      date: parsedAlarmOptions.date,
     });
-
-    if (!isPlayingAdhan()) {
-      replace('Home');
-    }
-  }, [route]);
+  }, [taskOptions]);
 
   const onDismissPress = useCallback(async () => {
-    const parsedAlarmOptions = JSON.parse(
-      route.params.options || 'false',
-    ) as SetAlarmTaskOptions;
-    if (!parsedAlarmOptions) {
-      replace('Home');
-      return;
-    }
-    if (isPlayingAdhan()) {
+    try {
+      if (!taskOptions) {
+        return;
+      }
       await cancelAlarmNotif({
-        options: parsedAlarmOptions,
+        options: taskOptions,
         notification: {android: {asForegroundService: true}},
       });
-      BackHandler.exitApp();
-    } else {
-      replace('Home');
+    } finally {
+      finishAndRemoveTask();
     }
-  }, [route]);
+  }, [taskOptions]);
 
   return (
     <Box

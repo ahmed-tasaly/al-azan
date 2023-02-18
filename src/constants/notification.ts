@@ -10,6 +10,10 @@ export const WIDGET_CHANNEL_ID = 'widget-channel';
 export const WIDGET_CHANNEL_NAME = 'Widget';
 export const WIDGET_NOTIFICATION_ID = 'widget-notification';
 
+export const WIDGET_UPDATE_CHANNEL_ID = 'widget-update-channel';
+export const WIDGET_UPDATE_CHANNEL_NAME = 'Widget Update';
+export const WIDGET_UPDATE_NOTIFICATION_ID = 'widget-update-notification';
+
 export const REMINDER_CHANNEL_ID = 'reminder-channel';
 export const REMINDER_CHANNEL_NAME = 'Reminder';
 export const PRE_REMINDER_CHANNEL_ID = 'pre-reminder-channel';

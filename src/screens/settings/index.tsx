@@ -1,6 +1,6 @@
 import {Box, FlatList, Text, Pressable, HStack} from 'native-base';
 import {memo, useEffect} from 'react';
-
+import {useStore} from 'zustand';
 import {AlarmIcon} from '@/assets/icons/alarm';
 import {BatteryChargingIcon} from '@/assets/icons/battery_charging';
 import {BrightnessMediumIcon} from '@/assets/icons/brightness_medium';
@@ -13,15 +13,16 @@ import {WidgetIcon} from '@/assets/icons/widget';
 import {push} from '@/navigation/root_navigation';
 import {RootStackParamList, translateRoute} from '@/navigation/types';
 import {clearCache} from '@/store/adhan_calc_cache';
-import {useAlarmSettings} from '@/store/alarm';
-import {useCalcSettings} from '@/store/calculation';
-import {useReminderSettings} from '@/store/reminder';
-import {settings, useSettingsHelper} from '@/store/settings';
+import {alarmSettings} from '@/store/alarm';
+import {calcSettings} from '@/store/calculation';
+import {reminderSettings} from '@/store/reminder';
+import {settings, useSettings} from '@/store/settings';
 import {setNextAdhan} from '@/tasks/set_next_adhan';
 import {setReminders} from '@/tasks/set_reminder';
 import {updateWidgets} from '@/tasks/update_widgets';
 import {sha256} from '@/utils/hash';
 import useNoInitialEffect from '@/utils/hooks/use_update_effect';
+import {askPermissions} from '@/utils/permission';
 
 type ScreenListItem = {
   name: keyof RootStackParamList;
@@ -86,15 +87,15 @@ function renderItem({item}: {item: ScreenListItem}) {
 }
 
 function Settings() {
-  const calcSettingsState = useCalcSettings(state => state);
-  const alarmSettingsState = useAlarmSettings(state => state);
-  const reminderSettingsState = useReminderSettings(state => state);
+  const calcSettingsState = useStore(calcSettings, state => state);
+  const alarmSettingsState = useStore(alarmSettings, state => state);
+  const reminderSettingsState = useStore(reminderSettings, state => state);
   const [calcSettingsHash, setCalcSettingsHash] =
-    useSettingsHelper('CALC_SETTINGS_HASH');
-  const [alarmSettingsHash, setAlarmSettingsHash] = useSettingsHelper(
+    useSettings('CALC_SETTINGS_HASH');
+  const [alarmSettingsHash, setAlarmSettingsHash] = useSettings(
     'ALARM_SETTINGS_HASH',
   );
-  const [reminderSettingsHash, setReminderSettingsHash] = useSettingsHelper(
+  const [reminderSettingsHash, setReminderSettingsHash] = useSettings(
     'REMINDER_SETTINGS_HASH',
   );
 
@@ -102,7 +103,7 @@ function Settings() {
     const stateHash = sha256(JSON.stringify(calcSettingsState));
     if (calcSettingsHash !== stateHash) {
       setCalcSettingsHash(stateHash);
-      settings.setState({DISMISSED_ALARM_TIMESTAMPS: {}});
+      settings.setState({DELIVERED_ALARM_TIMESTAMPS: {}});
       clearCache();
     }
   }, [calcSettingsState, calcSettingsHash, setCalcSettingsHash]);
@@ -110,8 +111,10 @@ function Settings() {
   useEffect(() => {
     const stateHash = sha256(JSON.stringify(alarmSettingsState));
     if (alarmSettingsHash !== stateHash) {
-      setAlarmSettingsHash(stateHash);
-      settings.setState({DISMISSED_ALARM_TIMESTAMPS: {}});
+      askPermissions().then(() => {
+        setAlarmSettingsHash(stateHash);
+        settings.setState({DELIVERED_ALARM_TIMESTAMPS: {}});
+      });
     }
   }, [alarmSettingsState, alarmSettingsHash, setAlarmSettingsHash]);
 

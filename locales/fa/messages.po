@@ -1,62 +1,59 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-01-08 19:16+0330\n"
+"POT-Creation-Date: 2023-02-01 04:08+0330\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fa\n"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:122
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:134
 msgid "10 min"
 msgstr "10 دقیقه"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:126
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:138
 msgid "15 min"
 msgstr "15 دقیقه"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:130
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:142
 msgid "30 min"
 msgstr "30 دقیقه"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:118
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:130
 msgid "5 min"
 msgstr "5 دقیقه"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:134
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:146
 msgid "60 min"
 msgstr "60 دقیقه"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:138
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:150
 msgid "90 min"
 msgstr "90 دقیقه"
-
-#: src/assets/adhan_entries.ts:23
-msgid "Abdul-Basit Abdus-Samad"
-msgstr "عبد الباسط عبد الصمد"
 
 #: src/screens/settings_calculation/index.tsx:187
 msgid "Abyad"
 msgstr "سفید"
 
-#: src/screens/settings_adhan/index.tsx:183
+#: src/components/audio_picker.tsx:387
+#: src/screens/settings_adhan/index.tsx:186
 msgid "Add"
 msgstr "اضافه کردن"
 
-#: src/screens/settings_adhan/index.tsx:156
-#: src/screens/settings_adhan/index.tsx:161
+#: src/screens/settings_adhan/index.tsx:159
+#: src/screens/settings_adhan/index.tsx:164
 msgid "Add Custom Adhan"
 msgstr "اضافه کردن اذان دلخواه"
 
-#: src/screens/settings_reminders/index.tsx:58
+#: src/screens/settings_reminders/index.tsx:66
 msgid "Add Reminder"
 msgstr " اضافه کردن یادآوری"
 
-#: src/screens/fullscreen_alarm/index.tsx:40
+#: src/screens/fullscreen_alarm/index.tsx:50
 msgid "Adhan"
 msgstr "اذان"
 
-#: src/screens/settings_adhan/index.tsx:94
+#: src/screens/settings_adhan/index.tsx:97
 msgid "Adhan audio file is not downloaded yet"
 msgstr "فایل صوتی اذان هنوز دانلود نشده است"
 
@@ -72,19 +69,24 @@ msgstr "تنظیمات پیشرفته محاسبه"
 msgid "Ahmer"
 msgstr "قرمز"
 
-#: src/screens/settings_adhan/index.tsx:55
+#: src/utils/permission.ts:60
+msgid "Alarms Permission"
+msgstr "مجوز هشدارها"
+
+#: src/screens/settings_adhan/index.tsx:56
 msgid "An error occured while playing the current track"
 msgstr "هنگام پخش صوت فعلی خطایی روی داد"
 
-#: src/screens/settings_display/number_format_settings.tsx:31
+#: src/screens/settings_display/number_format_settings.tsx:30
 msgid "Arabic"
 msgstr "عربی"
 
-#: src/screens/settings_display/number_format_settings.tsx:32
+#: src/screens/settings_display/number_format_settings.tsx:31
 msgid "Arabic/Persian"
 msgstr "عربی/فارسی"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:98
+#: src/components/audio_picker.tsx:147
+#: src/screens/settings_adhan/adhan_list_item.tsx:101
 msgid "Are you sure you want to delete \"{0}\" ?"
 msgstr "آیا مطمئن هستید که می خواهید \"{0}\" را حذف کنید؟"
 
@@ -92,7 +94,7 @@ msgstr "آیا مطمئن هستید که می خواهید \"{0}\" را حذف 
 msgid "Asr Calculation"
 msgstr "محاسبه عصر"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:39
+#: src/screens/settings_display/hide_prayer_settings.tsx:22
 msgid "At least one prayer time must be shown"
 msgstr "حداقل یک وقت شرعی باید نشان داده شود"
 
@@ -121,9 +123,9 @@ msgstr "نحوه محاسبه"
 msgid "Calendar"
 msgstr "تقویم"
 
-#: src/screens/settings_adhan/index.tsx:180
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:238
-#: src/tasks/set_pre_alarm.ts:63
+#: src/screens/settings_adhan/index.tsx:183
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:245
+#: src/tasks/set_pre_alarm.ts:61
 msgid "Cancel"
 msgstr "لغو"
 
@@ -156,15 +158,16 @@ msgstr "روش \"شفق\" را انتخاب کنید"
 msgid "Choose calendar type"
 msgstr "نوع تقویم را انتخاب کنید"
 
-#: src/screens/settings_display/number_format_settings.tsx:25
+#: src/screens/settings_display/number_format_settings.tsx:24
 msgid "Choose numbering system"
 msgstr "سیستم شماره گذاری را انتخاب کنید"
 
-#: src/screens/settings_location/index.tsx:246
+#: src/screens/settings_location/index.tsx:248
+#: src/screens/settings_location/index.tsx:250
 msgid "City/Area"
 msgstr "شهر/ناحیه"
 
-#: src/screens/settings_location/index.tsx:144
+#: src/screens/settings_location/index.tsx:134
 msgid "Clipboard data does not contain coordinates"
 msgstr "داده های کلیپ بورد حاوی مختصات نیستند"
 
@@ -176,15 +179,16 @@ msgstr "نزدیک ترین شهر"
 msgid "Closest Date"
 msgstr "نزدیک ترین تاریخ"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:237
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:244
 msgid "Confirm"
 msgstr "تایید"
 
-#: src/screens/settings_location/index.tsx:170
+#: src/screens/settings_location/index.tsx:154
 msgid "Coordinates updated"
 msgstr "مختصات به روز شد"
 
-#: src/screens/settings_location/index.tsx:216
+#: src/screens/settings_location/index.tsx:225
+#: src/screens/settings_location/index.tsx:227
 msgid "Country"
 msgstr "کشور"
 
@@ -192,13 +196,17 @@ msgstr "کشور"
 msgid "Dark"
 msgstr "تاریک"
 
+#: src/components/audio_picker.tsx:58
+#: src/components/audio_picker.tsx:87
 #: src/screens/settings_display/calendar_settings.tsx:30
-#: src/screens/settings_display/number_format_settings.tsx:29
+#: src/screens/settings_display/number_format_settings.tsx:28
 msgid "Default"
 msgstr "پیش فرض"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:97
-#: src/screens/settings_adhan/adhan_list_item.tsx:191
+#: src/components/audio_picker.tsx:146
+#: src/components/audio_picker_item.tsx:63
+#: src/screens/settings_adhan/adhan_list_item.tsx:100
+#: src/screens/settings_adhan/adhan_list_item.tsx:198
 msgid "Delete"
 msgstr "حذف"
 
@@ -206,16 +214,20 @@ msgstr "حذف"
 msgid "Depending on your device and android version, Sometimes your device may kill the app in the background to save battery. This can prevent alarms/notifications from being delivered."
 msgstr "بسته به دستگاه و نسخه اندروید شما، گاهی اوقات ممکن است دستگاه شما برای صرفه جویی در باتری، برنامه را در پس‌زمینه ببندد. این می تواند از ارسال هشدارها/اعلان ها جلوگیری کند."
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:186
+#: src/screens/settings_adhan/adhan_list_item.tsx:193
 msgid "Deselect as Fajr Adhan"
 msgstr "لغو انتخاب به عنوان اذان فجر"
+
+#: src/components/audio_picker.tsx:133
+msgid "Device sounds"
+msgstr "صداهای دستگاه"
 
 #: src/screens/settings_battery_optimizations/index.tsx:57
 msgid "Disabled"
 msgstr "غیرفعال"
 
 #: src/screens/fullscreen_alarm/index.tsx:123
-#: src/tasks/set_alarm.ts:98
+#: src/tasks/set_alarm.ts:105
 msgid "Dismiss"
 msgstr "رد کردن"
 
@@ -223,11 +235,17 @@ msgstr "رد کردن"
 msgid "Diyanet İşleri Başkanlığı, Turkey"
 msgstr "ریاست امور مذهبی، ترکیه"
 
+#: src/utils/permission.ts:25
+#: src/utils/permission.ts:64
+#: src/utils/permission.ts:96
+msgid "Don't ask again"
+msgstr "دیگه نپرس"
+
 #: src/intro/intro.tsx:101
 msgid "Done"
 msgstr "اتمام"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:97
 msgid "Edit Reminder"
 msgstr "ویرایش یادآوری"
 
@@ -239,23 +257,23 @@ msgstr "اداره کل بررسی مصر"
 msgid "Enabled"
 msgstr "فعال"
 
-#: src/screens/settings_location/index.tsx:150
+#: src/screens/settings_location/index.tsx:140
 msgid "Error getting clipboard data"
 msgstr "خطا در دریافت داده های کلیپ بورد"
 
-#: src/screens/settings_location/index.tsx:236
+#: src/screens/settings_location/index.tsx:238
 msgid "Error in loading countries"
 msgstr "خطا در بارگیری کشورها"
 
-#: src/screens/settings_location/index.tsx:267
+#: src/screens/settings_location/index.tsx:264
 msgid "Error in loading search results"
 msgstr "خطا در بارگیری نتایج جستجو"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:82
+#: src/screens/settings_adhan/adhan_list_item.tsx:85
 msgid "Error while downloading audio"
 msgstr "خطا هنگام دانلود صوت"
 
-#: src/screens/settings_location/index.tsx:174
+#: src/screens/settings_location/index.tsx:158
 msgid "Error while getting coordinates"
 msgstr "خطا هنگام گرفتن مختصات"
 
@@ -263,7 +281,7 @@ msgstr "خطا هنگام گرفتن مختصات"
 msgid "Ethiopic"
 msgstr "اتیوپیایی"
 
-#: src/screens/settings_location/index.tsx:198
+#: src/screens/settings_location/index.tsx:210
 msgid "Find My Location"
 msgstr "پیدا کردن مکان من"
 
@@ -275,7 +293,7 @@ msgstr "جمعه"
 msgid "General (default)"
 msgstr "عمومی (پیش فرض)"
 
-#: src/screens/settings_location/index.tsx:202
+#: src/screens/settings_location/index.tsx:214
 msgid "Getting coordinates"
 msgstr "درحال گرفتن مختصات"
 
@@ -295,12 +313,12 @@ msgstr "منطقه خلیج"
 msgid "Hanafi"
 msgstr "حنفی"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:58
+#: src/screens/settings_display/hide_prayer_settings.tsx:41
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:63
 msgid "Hidden?"
 msgstr "پنهان؟"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:54
+#: src/screens/settings_display/hide_prayer_settings.tsx:37
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:59
 msgid "Hide Prayer Times"
 msgstr "مخفی کردن اوقات شرعی"
@@ -313,9 +331,13 @@ msgstr "عرض جغرافیایی بالا"
 msgid "Home"
 msgstr "خانه"
 
-#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:21
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:22
 msgid "If enabled, when a notification is shown, it will contain info for the next prayer time"
 msgstr "در صورت فعال بودن، هنگامی که اعلان نشان داده می شود، حاوی اطلاعاتی برای وقت نماز بعدی خواهد بود"
+
+#: src/screens/settings_battery_optimizations/index.tsx:105
+msgid "If you still had problem with app stopping after some time, please visit dontkillmyapp.com for more solutions."
+msgstr "اگر پس از مدتی همچنان با توقف برنامه مشکل داشتید، لطفاً برای راه حل های بیشتر به dontkillmyapp.com مراجعه کنید."
 
 #: src/screens/settings_battery_optimizations/index.tsx:52
 msgid "If you want to make sure the app can work reliably, You have to disable power optimization for this app. You can open related settings using the button below."
@@ -349,7 +371,7 @@ msgstr "وزارت دین جمهوری اندونزی (KEMENAG)"
 msgid "Kuwait"
 msgstr "کویت"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:93
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:105
 msgid "Label"
 msgstr "برچسب"
 
@@ -357,16 +379,16 @@ msgstr "برچسب"
 msgid "Language"
 msgstr "زبان"
 
-#: src/screens/settings_display/number_format_settings.tsx:30
+#: src/screens/settings_display/number_format_settings.tsx:29
 msgid "Latin"
 msgstr "لاتین"
 
-#: src/screens/settings_location/index.tsx:290
-#: src/screens/settings_location/index.tsx:295
+#: src/screens/settings_location/index.tsx:289
+#: src/screens/settings_location/index.tsx:294
 msgid "Latitude"
 msgstr "عرض جغرافیایی"
 
-#: src/screens/settings_location/index.tsx:302
+#: src/screens/settings_location/index.tsx:301
 msgid "Latitude is invalid"
 msgstr "عرض جغرافیایی نامعتبر است"
 
@@ -382,26 +404,18 @@ msgstr "روشن"
 msgid "Location"
 msgstr "موقعیت"
 
-#: src/screens/settings_location/index.tsx:306
-#: src/screens/settings_location/index.tsx:311
+#: src/screens/settings_location/index.tsx:305
+#: src/screens/settings_location/index.tsx:310
 msgid "Longitude"
 msgstr "طول جغرافیایی"
 
-#: src/screens/settings_location/index.tsx:318
+#: src/screens/settings_location/index.tsx:317
 msgid "Longitude is invalid"
 msgstr "طول جغرافیایی نامعتبر است"
-
-#: src/assets/adhan_entries.ts:19
-msgid "Masjid An Nabawi"
-msgstr "مسجد النبی"
 
 #: src/screens/settings_calculation/index.tsx:117
 msgid "Middle of the Night"
 msgstr "نیمه شب شرعی"
-
-#: src/assets/adhan_entries.ts:33
-msgid "Moazen Zade"
-msgstr "موذن زاده"
 
 #: src/components/week_day_selector.tsx:14
 msgid "Monday"
@@ -415,35 +429,51 @@ msgstr "کمیته رویت هلال ماه"
 msgid "Muslim World League"
 msgstr "لیگ جهانی مسلمانان"
 
-#: src/screens/settings_adhan/index.tsx:164
 #: src/screens/settings_adhan/index.tsx:167
+#: src/screens/settings_adhan/index.tsx:170
 msgid "Name"
 msgstr "نام"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:85
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:97
 msgid "New Reminder"
 msgstr "یادآوری جدید"
 
 #: src/intro/intro.tsx:100
-#: src/tasks/set_next_adhan.ts:62
-#: src/tasks/set_next_adhan.ts:94
+#: src/tasks/set_next_adhan.ts:77
+#: src/tasks/set_next_adhan.ts:119
 msgid "Next"
 msgstr "بعدی"
 
-#: src/screens/home/index.tsx:136
+#: src/screens/home/index.tsx:144
 msgid "Next Day"
 msgstr "روز بعد"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:101
+#: src/components/audio_picker.tsx:154
+#: src/screens/settings_adhan/adhan_list_item.tsx:106
 msgid "No"
 msgstr "خیر"
+
+#: src/components/AutocompleteInput.tsx:136
+msgid "No Data"
+msgstr "بدون اطلاعات"
+
+#: src/components/audio_picker.tsx:403
+#: src/components/AutocompleteInput.tsx:140
+msgid "No Results"
+msgstr "نتیجه ای یافت نشد"
 
 #: src/screens/settings_calculation/index.tsx:115
 msgid "None (Automatic)"
 msgstr "هیچکدام (اتوماتیک)"
 
-#: src/screens/settings_notifications/notification_setting.tsx:236
-#: src/screens/settings_notifications/notification_setting.tsx:321
+#: src/utils/permission.ts:69
+msgid "Not now"
+msgstr "الان نه"
+
+#: src/components/audio_picker.tsx:58
+#: src/components/audio_picker.tsx:87
+#: src/screens/settings_notifications/notification_setting.tsx:239
+#: src/screens/settings_notifications/notification_setting.tsx:322
 msgid "Notification"
 msgstr "اعلان"
 
@@ -451,11 +481,24 @@ msgstr "اعلان"
 msgid "Notification & Sound"
 msgstr "اعلان و صدا"
 
-#: src/screens/settings_display/number_format_settings.tsx:20
+#: src/utils/permission.ts:21
+msgid "Notifications Permission"
+msgstr "مجوز اعلان"
+
+#: src/screens/settings_display/number_format_settings.tsx:19
 msgid "Numbering system"
 msgstr "سیستم شماره گذاری"
 
-#: src/screens/settings_reminders/reminder_item.tsx:33
+#: src/utils/permission.ts:31
+#: src/utils/permission.ts:102
+msgid "Okay"
+msgstr "باشه"
+
+#: src/utils/permission.ts:61
+msgid "On Android 12 and newer, the app also needs alarms permission to work properly, so you must allow this as well."
+msgstr "در اندروید 12 و جدیدتر، برنامه برای درست کار کردن به مجوز زنگ هشدار نیز نیاز دارد، بنابراین باید این اجازه را نیز بدهید."
+
+#: src/screens/settings_reminders/reminder_item.tsx:35
 msgid "Once"
 msgstr "یک بار"
 
@@ -464,7 +507,7 @@ msgid "One-Seventh of the Night"
 msgstr "یک هفتم شب"
 
 #. shown in add/edit reminder dialog
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:206
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:213
 msgid "Only once?"
 msgstr "فقط یک بار؟"
 
@@ -476,22 +519,21 @@ msgstr "فقط شش مورد را می توان همزمان نشان داد"
 msgid "Open Battery Optimization Settings"
 msgstr "تنظیمات بهینه سازی باتری را باز کن"
 
-#: src/screens/settings_battery_optimizations/index.tsx:92
+#: src/screens/settings_battery_optimizations/index.tsx:96
 msgid "Open Power Manager Settings"
 msgstr "تنظیمات مدیریت انرژی را باز کن"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:185
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:210
 msgid "Options"
 msgstr "گزینه ها"
 
-#: src/screens/settings_location/index.tsx:346
+#: src/screens/settings_location/index.tsx:345
 msgid "Paste"
 msgstr "چسباندن"
 
-#. shown in add/edit reminder dialog
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:188
-msgid "Play adhan?"
-msgstr "پخش اذان؟"
+#: src/utils/permission.ts:92
+msgid "Phone State Permission"
+msgstr "مجوز وضعیت تلفن"
 
 #: src/screens/settings_calculation/index.tsx:146
 msgid "Polar Resolution"
@@ -501,7 +543,7 @@ msgstr "محاسبه مناطق قطبی"
 msgid "Power Manager"
 msgstr "مدیریت انرژی"
 
-#: src/screens/home/index.tsx:107
+#: src/screens/home/index.tsx:115
 msgid "Prev Day"
 msgstr "روز قبل"
 
@@ -509,25 +551,25 @@ msgstr "روز قبل"
 msgid "Qatar"
 msgstr "قطر"
 
-#: src/assets/adhan_entries.ts:28
-msgid "Ragheb Mustafa Ghalwash"
-msgstr "راغب مصطفی غلوش"
-
 #: src/adhan/calculation_methods.ts:52
 msgid "Referred to as the ISNA method"
 msgstr "معروف به روش ایسنا"
 
-#: src/screens/fullscreen_alarm/index.tsx:44
-#: src/tasks/set_reminder.ts:70
-#: src/tasks/set_reminder.ts:96
+#: src/screens/fullscreen_alarm/index.tsx:54
+#: src/tasks/set_reminder.ts:75
+#: src/tasks/set_reminder.ts:101
 msgid "Reminder"
 msgstr "یادآوری"
+
+#: src/components/audio_picker.tsx:92
+msgid "Repeat"
+msgstr "تکرار"
 
 #: src/intro/intro.tsx:120
 msgid "Required settings are incomplete. For app to show prayer times, You have to configure it from settings later."
 msgstr "تنظیمات مورد نیاز ناقص هستند. برای اینکه برنامه اوقات شرعی را نشان دهد، بعداً باید آن را از صفحه تنظیمات تنظیم کنید."
 
-#: src/screens/settings_battery_optimizations/index.tsx:82
+#: src/screens/settings_battery_optimizations/index.tsx:86
 msgid ""
 "Samsung devices have their own custom Power Manager called \"Device Care\".\n"
 "After pressing the button below, You will be navigated to the Battery menu of Device Care.\n"
@@ -539,15 +581,20 @@ msgstr "دستگاه های سامسونگ دارای «مدیریت انرژی�
 msgid "Saturday"
 msgstr "شنبه"
 
+#: src/components/audio_picker.tsx:381
+#: src/components/AutocompleteInput.tsx:110
+msgid "Search"
+msgstr "جستجو"
+
 #: src/screens/settings_display/calendar_secondary_settings.tsx:21
 msgid "Secondary Calendar"
 msgstr "تقویم ثانویه"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:187
+#: src/screens/settings_adhan/adhan_list_item.tsx:194
 msgid "Select as Fajr Adhan"
 msgstr "به عنوان اذان فجر انتخاب کنید"
 
-#: src/screens/settings_adhan/index.tsx:173
+#: src/screens/settings_adhan/index.tsx:176
 msgid "Selecting a name is required"
 msgstr "انتخاب نام الزامی است"
 
@@ -574,21 +621,29 @@ msgstr "شیعه اثنا عشری، مؤسسه لوا، قم"
 msgid "Shia, Institute of Geophysics, University of Tehran"
 msgstr "شیعه، موسسه ژئوفیزیک دانشگاه تهران"
 
-#: src/screens/settings_adhan/adhan_list_item.tsx:177
+#: src/screens/settings_adhan/adhan_list_item.tsx:184
 msgid "Show Adhan Options"
 msgstr "نمایش گزینه های اذان"
 
-#: src/screens/home/index.tsx:130
+#: src/screens/home/index.tsx:138
 msgid "Show Today"
 msgstr "نمایش امروز"
 
-#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:13
+#: src/screens/settings_notifications/notify_next_adhan_setting.tsx:14
 msgid "Show next in notification?"
 msgstr "بعدی در اعلان نشان داده شود؟"
 
 #: src/screens/settings_widget/index.tsx:32
 msgid "Show notification widget?"
 msgstr "ابزارک اعلان نمایش داده شود؟"
+
+#: src/utils/permission.ts:73
+msgid "Show settings"
+msgstr "نمایش تنظیمات"
+
+#: src/components/audio_picker.tsx:101
+msgid "Silent"
+msgstr "بی صدا"
 
 #: src/adhan/calculation_methods.ts:82
 msgid "Singapore"
@@ -602,15 +657,17 @@ msgstr "رد کردن"
 msgid "Solar Hijri"
 msgstr "هجری شمسی"
 
-#: src/screens/settings_battery_optimizations/index.tsx:72
+#: src/screens/settings_battery_optimizations/index.tsx:74
 msgid ""
 "Some devices need extra settings inside their Power Manager \n"
 "to prevent the app from getting killed in the background.\n"
 "In that case disable any power saving option for the app."
 msgstr "برخی از دستگاه‌ها به تنظیمات اضافی در \"مدیریت انرژی\" (Power Manager) نیاز دارند تا از بسته شدن برنامه در پس‌زمینه جلوگیری کنند. در این صورت هر گزینه صرفه جویی در انرژی را برای برنامه غیرفعال کنید."
 
-#: src/screens/settings_notifications/notification_setting.tsx:287
-#: src/screens/settings_notifications/notification_setting.tsx:329
+#: src/screens/settings_notifications/notification_setting.tsx:290
+#: src/screens/settings_notifications/notification_setting.tsx:330
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:197
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:199
 msgid "Sound"
 msgstr "صدا"
 
@@ -629,6 +686,10 @@ msgstr "یکشنبه"
 #: src/screens/settings_display/theme_settings.tsx:44
 msgid "System Default"
 msgstr "پیش فرض سیستم"
+
+#: src/screens/settings_notifications/index.tsx:62
+msgid "Tahajjud time mentioned in the app is the last third of the night"
+msgstr "زمان تهجد ذکر شده در اپلیکیشن، ثلث آخر شب است"
 
 #: src/screens/settings_display/calendar_secondary_settings.tsx:33
 msgid "Thai Solar"
@@ -661,8 +722,8 @@ msgstr "رنگ پوسته"
 msgid "Thursday"
 msgstr "پنج شنبه"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:57
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:103
+#: src/screens/settings_display/hide_prayer_settings.tsx:40
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:115
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:62
 msgid "Time"
 msgstr "وقت"
@@ -671,9 +732,17 @@ msgstr "وقت"
 msgid "Time format"
 msgstr "قالب زمان"
 
-#: src/screens/settings_location/index.tsx:188
+#: src/screens/settings_location/index.tsx:200
 msgid "To calculate Adhan, We need your location. You can use the \"Find My Location\" button, or use the country and city/area search, or enter your coordinates manually."
 msgstr "برای محاسبه اذان، به موقعیت مکانی شما نیاز داریم. می‌توانید از دکمه «پیدا کردن مکان من» استفاده کنید یا از جستجوی کشور و شهر/منطقه استفاده کنید یا مختصات خود را به صورت دستی وارد کنید."
+
+#: src/utils/permission.ts:22
+msgid "To see notifications about adhan, we need your permission."
+msgstr "برای دیدن اعلان‌های اذان، به اجازه شما نیاز داریم."
+
+#: src/utils/permission.ts:93
+msgid "To stop playing adhan when you receive a call, we need to read your phone state. not allowing this permission simply disables the feature."
+msgstr "برای توقف پخش اذان هنگام دریافت تماس، باید وضعیت تلفن شما را بخوانیم. اجازه ندادن به این مجوز به سادگی این ویژگی را غیرفعال می کند."
 
 #: src/utils/upcoming.ts:15
 msgid "Tomorrow"
@@ -699,6 +768,10 @@ msgstr "سازمان اتحادیه اسلامی فرانسه"
 msgid "University of Islamic Sciences, Karachi"
 msgstr "دانشگاه علوم اسلامی کراچی"
 
+#: src/components/AutocompleteInput.tsx:131
+msgid "Unknown Error"
+msgstr "خطای نامشخص"
+
 #: src/screens/settings_calculation/index.tsx:156
 msgid "Unresolved (default)"
 msgstr "حل نشده (پیش فرض)"
@@ -708,23 +781,27 @@ msgid "Unsupported"
 msgstr "پشتیبانی نشده"
 
 #. notification title
-#: src/tasks/set_pre_alarm.ts:49
+#: src/tasks/set_pre_alarm.ts:47
 msgid "Upcoming alarm"
 msgstr "هشدار بعدی"
+
+#: src/tasks/set_update_widgets_alarms.ts:28
+msgid "Updating widgets"
+msgstr "در حال به روزرسانی ویجت ها"
 
 #: src/screens/settings_display/time_format_settings.tsx:13
 msgid "Use 24-Hour format"
 msgstr "استفاده از قالب 24 ساعته"
 
-#: src/screens/settings_location/index.tsx:286
+#: src/screens/settings_location/index.tsx:285
 msgid "Using Coordinates"
 msgstr "با استفاده از مختصات"
 
-#: src/screens/settings_location/index.tsx:190
+#: src/screens/settings_location/index.tsx:202
 msgid "Using GPS"
 msgstr "با استفاده از GPS"
 
-#: src/screens/settings_location/index.tsx:209
+#: src/screens/settings_location/index.tsx:221
 msgid "Using Search"
 msgstr "با استفاده از جستجو"
 
@@ -744,21 +821,34 @@ msgstr "چهار شنبه"
 msgid "Welcome"
 msgstr "خوش آمدید"
 
-#: src/screens/settings_battery_optimizations/index.tsx:75
+#: src/components/audio_picker.tsx:159
+#: src/screens/settings_adhan/adhan_list_item.tsx:110
+msgid "Yes"
+msgstr "بله"
+
+#: src/screens/settings_battery_optimizations/index.tsx:79
 msgid "You can access your device Power Manager using the button below."
 msgstr "با استفاده از دکمه زیر می توانید به \"مدیریت انرژی\" (Power Manager) دستگاه خود دسترسی پیدا کنید."
 
-#: src/screens/settings_location/index.tsx:340
+#: src/screens/settings_location/index.tsx:339
 msgid "You can also paste coords from clipboard"
 msgstr "همچنین می توانید مختصات را از کلیپ بورد بچسبانید"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:55
+#: src/screens/settings_display/hide_prayer_settings.tsx:38
 msgid "You can hide prayer times you don't want to see in the main screen here:"
 msgstr "در اینجا می توانید اوقات شرعی را که نمی خواهید در صفحه اصلی ببینید پنهان کنید:"
 
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:60
 msgid "You can hide prayer times you don't want to see in the widget here:"
 msgstr "می‌توانید اوقات شرعی را که نمی‌خواهید در ابزارک ببینید در اینجا پنهان کنید:"
+
+#: src/components/audio_picker.tsx:118
+msgid "Your sounds"
+msgstr "صداهای شما"
+
+#: src/assets/adhan_entries.ts:22
+msgid "abdul_basit_abdus_samad"
+msgstr "عبد الباسط عبد الصمد"
 
 #: src/screens/settings_about/index.tsx:36
 msgid "about.credits"
@@ -777,7 +867,7 @@ msgstr "درباره"
 msgid "adjustment.hint"
 msgstr "تعداد دقیقه هایی که به زمان های محاسبه شده اضافه می شود"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:158
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:170
 msgid "after"
 msgstr "بعد از"
 
@@ -790,7 +880,7 @@ msgstr "عصر"
 msgid "battery_optimization_settings"
 msgstr "بهینه سازی باتری"
 
-#: src/screens/settings_reminders/edit_reminder_modal.tsx:157
+#: src/screens/settings_reminders/edit_reminder_modal.tsx:169
 msgid "before"
 msgstr "قبل از"
 
@@ -812,7 +902,7 @@ msgstr "نمایش"
 msgid "fajr.prayer"
 msgstr "فجر"
 
-#: src/screens/settings_display/number_format_settings.tsx:22
+#: src/screens/settings_display/number_format_settings.tsx:21
 msgid "forces all numbers to be in the selected system"
 msgstr "همه اعداد را مجبور می کند که در سیستم انتخاب شده باشند"
 
@@ -825,7 +915,7 @@ msgstr "در حال پخش اذان"
 msgid "home"
 msgstr "خانه"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:63
+#: src/screens/settings_display/hide_prayer_settings.tsx:46
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:68
 msgid "is prayer time hidden?"
 msgstr "آیا وقت نماز پنهان است؟"
@@ -843,7 +933,16 @@ msgstr "موقعیت"
 msgid "maghrib.prayer"
 msgstr "مغرب"
 
+#: src/assets/adhan_entries.ts:18
+msgid "masjid_an_nabawi"
+msgstr "مسجد النبی"
+
+#: src/assets/adhan_entries.ts:30
+msgid "moazen_zade"
+msgstr "موذن زاده"
+
 #. screen title
+#: src/components/audio_picker.tsx:124
 #: src/navigation/types.ts:54
 msgid "muezzin_settings"
 msgstr "مؤذن"
@@ -852,6 +951,10 @@ msgstr "مؤذن"
 #: src/navigation/types.ts:49
 msgid "notification_settings"
 msgstr "اعلان و صدا"
+
+#: src/assets/adhan_entries.ts:26
+msgid "ragheb_mustafa_ghalwash"
+msgstr "راغب مصطفی غلوش"
 
 #. screen title
 #: src/navigation/types.ts:74
@@ -866,7 +969,7 @@ msgstr "تنظیمات"
 msgid "should notification widget be shown?"
 msgstr "آیا ابزارک اعلان نشان داده شود؟"
 
-#: src/screens/settings_display/hide_prayer_settings.tsx:26
+#: src/screens/settings_display/hide_prayer_setting.tsx:16
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:29
 msgid "should {prayerName} be hidden?"
 msgstr "آیا {prayerName} باید پنهان شود؟"
@@ -892,18 +995,18 @@ msgstr "غروب"
 msgid "widget_settings"
 msgstr "تنظیمات ابزارک"
 
-#: src/screens/settings_reminders/reminder_item.tsx:30
+#: src/screens/settings_reminders/reminder_item.tsx:32
 msgid "{durationInMinutes} min after {prayer}"
 msgstr "{durationInMinutes} دقیقه بعد از {prayer}"
 
-#: src/screens/settings_reminders/reminder_item.tsx:29
+#: src/screens/settings_reminders/reminder_item.tsx:31
 msgid "{durationInMinutes} min before {prayer}"
 msgstr "{durationInMinutes} دقیقه قبل از {prayer}"
 
-#: src/screens/settings_notifications/notification_setting.tsx:244
+#: src/screens/settings_notifications/notification_setting.tsx:247
 msgid "{prayerName} notification will be shown"
 msgstr "اعلان {prayerName} نشان داده خواهد شد"
 
-#: src/screens/settings_notifications/notification_setting.tsx:296
+#: src/screens/settings_notifications/notification_setting.tsx:299
 msgid "{prayerName} sound will be played"
 msgstr "صدای {prayerName} پخش خواهد شد"

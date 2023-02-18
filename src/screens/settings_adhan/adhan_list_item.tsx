@@ -1,3 +1,4 @@
+import {i18n} from '@lingui/core';
 import {t} from '@lingui/macro';
 import {
   Button,
@@ -10,12 +11,12 @@ import {
 } from 'native-base';
 import {useCallback, useState} from 'react';
 import {Alert, ToastAndroid} from 'react-native';
+// eslint-disable-next-line import/no-named-as-default
 import ReactNativeBlobUtil, {
   FetchBlobResponse,
   StatefulPromise,
-  // eslint-disable-next-line
 } from 'react-native-blob-util';
-import {AdhanEntry} from '@/assets/adhan_entries';
+import {AdhanEntry, adhanEntryTranslations} from '@/assets/adhan_entries';
 import {CheckIcon} from '@/assets/icons/check';
 import {CloseIcon} from '@/assets/icons/close';
 import {DownloadIcon} from '@/assets/icons/download';
@@ -72,6 +73,8 @@ export function AdhanListItem({
         .then(resp => {
           return settings.getState().saveAdhanEntry({
             ...item,
+            label: '',
+            internal: true,
             filepath: resp.path(),
           });
         })
@@ -95,14 +98,16 @@ export function AdhanListItem({
   const onDeletePressed = useCallback(() => {
     Alert.alert(
       t`Delete`,
-      t`Are you sure you want to delete "${item.label}" ?`,
+      t`Are you sure you want to delete "${
+        item.internal ? i18n._(adhanEntryTranslations[item.id]) : item.label
+      }" ?`,
       [
         {
           text: t`No`,
           style: 'cancel',
         },
         {
-          text: 'Yes',
+          text: t`Yes`,
           onPress: () => settings.getState().deleteAdhanEntry(item),
           style: 'destructive',
         },
@@ -152,7 +157,9 @@ export function AdhanListItem({
                 />
               )}
               <Text flex={1} flexGrow={1} noOfLines={1}>
-                {item.label}
+                {item.internal
+                  ? i18n._(adhanEntryTranslations[item.id])
+                  : item.label}
               </Text>
             </HStack>
 

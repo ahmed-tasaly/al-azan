@@ -1,18 +1,18 @@
 import {t} from '@lingui/macro';
 import {FlatList, Box, Button, IBoxProps} from 'native-base';
-import {useCallback, useMemo, useState} from 'react';
-
+import {useCallback, useState} from 'react';
+import {ListRenderItemInfo} from 'react-native';
 import {EditReminderModal} from '@/screens/settings_reminders/edit_reminder_modal';
-import {ReminderItem} from '@/screens/settings_reminders/reminder_item';
+import ReminderItem from '@/screens/settings_reminders/reminder_item';
 import {
   Reminder,
   reminderSettings,
-  useReminderSettingsHelper,
+  useReminderSettings,
 } from '@/store/reminder';
 import {setReminders} from '@/tasks/set_reminder';
 
 export function RemindersSettings(props: IBoxProps) {
-  const [reminderEntries] = useReminderSettingsHelper('REMINDERS');
+  const [reminderEntries] = useReminderSettings('REMINDERS');
   const [creatingReminder, setCreatingReminder] =
     useState<Partial<Reminder> | null>(null);
 
@@ -34,16 +34,24 @@ export function RemindersSettings(props: IBoxProps) {
   const onReminderDelete = useCallback((newReminderState: Reminder) => {
     reminderSettings.getState().deleteReminder(newReminderState);
     // clears the reminder trigger:
-    setReminders({reminders: [{...newReminderState, enabled: false}]});
+    setReminders({
+      reminders: [{...newReminderState, enabled: false}],
+    });
   }, []);
 
-  const renderItemMemoized = useMemo(() => {
-    return ReminderItem.bind(undefined, {
-      onEditPressed: setCreatingReminder,
-      onToggle: onReminderChange,
-      onDelete: onReminderDelete,
-    });
-  }, [onReminderChange, onReminderDelete]);
+  const renderItemMemoized = useCallback(
+    ({item}: ListRenderItemInfo<Reminder>) => {
+      return (
+        <ReminderItem
+          onEditPress={setCreatingReminder}
+          onChange={onReminderChange}
+          onDelete={onReminderDelete}
+          item={item}
+        />
+      );
+    },
+    [onReminderChange, onReminderDelete, setCreatingReminder],
+  );
 
   return (
     <Box flex={1} safeArea py="3" {...props}>

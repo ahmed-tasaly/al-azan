@@ -1,15 +1,22 @@
 import {produce} from 'immer';
 import {ColorMode} from 'native-base';
 import {useCallback} from 'react';
+// eslint-disable-next-line import/no-named-as-default
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import create from 'zustand';
-import {persist} from 'zustand/middleware';
-import createVanilla from 'zustand/vanilla';
+import {useStore} from 'zustand';
+import {persist, createJSONStorage} from 'zustand/middleware';
+import {shallow} from 'zustand/shallow';
+import {createStore} from 'zustand/vanilla';
 import {alarmSettings} from './alarm';
 import {zustandStorage} from './mmkv';
 import {Prayer} from '@/adhan';
-import {AdhanEntry, INITIAL_ADHAN_AUDIO_ENTRIES} from '@/assets/adhan_entries';
+import {
+  AdhanEntry,
+  adhanEntryTranslations,
+  INITIAL_ADHAN_AUDIO_ENTRIES,
+} from '@/assets/adhan_entries';
 import {ADHAN_NOTIFICATION_ID} from '@/constants/notification';
+import type {AudioEntry} from '@/modules/media_player';
 import {CountryInfo, SearchResult} from '@/utils/geonames';
 import {PREFERRED_LOCALE} from '@/utils/locale';
 
@@ -17,7 +24,7 @@ const SETTINGS_STORAGE_KEY = 'SETTINGS_STORAGE';
 
 export type SettingsStore = {
   /** an object that keeps track of dismissed alarms timestamp by their notification id */
-  DISMISSED_ALARM_TIMESTAMPS: Record<string, number | undefined>;
+  DELIVERED_ALARM_TIMESTAMPS: Record<string, number | undefined>;
   // theme
   THEME_COLOR?: ColorMode | 'default';
   // display
@@ -30,6 +37,7 @@ export type SettingsStore = {
   APP_INITIAL_CONFIG_DONE: boolean;
   APP_INTRO_DONE: boolean;
   SAVED_ADHAN_AUDIO_ENTRIES: AdhanEntry[];
+  SAVED_USER_AUDIO_ENTRIES: AudioEntry[];
   SELECTED_ADHAN_ENTRY: AdhanEntry;
   SELECTED_FAJR_ADHAN_ENTRY: AdhanEntry | undefined;
   LOCATION_COUNTRY: CountryInfo | undefined;
@@ -43,12 +51,17 @@ export type SettingsStore = {
   CALC_SETTINGS_HASH: string;
   ALARM_SETTINGS_HASH: string;
   REMINDER_SETTINGS_HASH: string;
-  /** timestamp of when the alarm for updating widget is going to Or was fired */
-  LAST_WIDGET_UPDATE: number;
+  IS_PLAYING_AUDIO: boolean;
+  /** permission related */
+  DONT_ASK_PERMISSION_NOTIFICATIONS: boolean;
+  DONT_ASK_PERMISSION_ALARM: boolean;
+  DONT_ASK_PERMISSION_PHONE_STATE: boolean;
 
   // helper functions
   saveAdhanEntry: (entry: AdhanEntry) => void;
   deleteAdhanEntry: (entry: AdhanEntry) => void;
+  saveAudioEntry: (entry: AudioEntry) => void;
+  deleteAudioEntry: (entry: AudioEntry) => void;
   saveTimestamp: (alarmId: string, timestamp: number) => void;
   deleteTimestamp: (alarmId: string) => void;
   setSetting: <T extends keyof SettingsStore>(
@@ -71,7 +84,7 @@ const invalidKeys = [
   'deleteTimestamp',
 ];
 
-export const settings = createVanilla<SettingsStore>()(
+export const settings = createStore<SettingsStore>()(
   persist(
     set => ({
       THEME_COLOR: 'default',
@@ -81,6 +94,7 @@ export const settings = createVanilla<SettingsStore>()(
       APP_INITIAL_CONFIG_DONE: false,
       APP_INTRO_DONE: false,
       SAVED_ADHAN_AUDIO_ENTRIES: INITIAL_ADHAN_AUDIO_ENTRIES,
+      SAVED_USER_AUDIO_ENTRIES: [],
       SELECTED_ADHAN_ENTRY: INITIAL_ADHAN_AUDIO_ENTRIES[0],
       SELECTED_FAJR_ADHAN_ENTRY: undefined,
       LOCATION_COUNTRY: undefined,
@@ -94,8 +108,11 @@ export const settings = createVanilla<SettingsStore>()(
       CALC_SETTINGS_HASH: '',
       ALARM_SETTINGS_HASH: '',
       REMINDER_SETTINGS_HASH: '',
-      DISMISSED_ALARM_TIMESTAMPS: {},
-      LAST_WIDGET_UPDATE: 0,
+      DELIVERED_ALARM_TIMESTAMPS: {},
+      IS_PLAYING_AUDIO: false,
+      DONT_ASK_PERMISSION_NOTIFICATIONS: false,
+      DONT_ASK_PERMISSION_ALARM: false,
+      DONT_ASK_PERMISSION_PHONE_STATE: false,
 
       // adhan entry helper
       saveAdhanEntry: entry =>
@@ -141,17 +158,49 @@ export const settings = createVanilla<SettingsStore>()(
           }),
         ),
 
+      // user audio entry helper
+      saveAudioEntry: entry =>
+        set(
+          produce<SettingsStore>(draft => {
+            let fIndex = draft.SAVED_USER_AUDIO_ENTRIES.findIndex(
+              e => e.id === entry.id,
+            );
+            if (fIndex !== -1) {
+              draft.SAVED_USER_AUDIO_ENTRIES.splice(fIndex, 1, entry);
+            } else {
+              draft.SAVED_USER_AUDIO_ENTRIES.push(entry);
+            }
+          }),
+        ),
+
+      deleteAudioEntry: entry =>
+        set(
+          produce<SettingsStore>(draft => {
+            let fIndex = draft.SAVED_USER_AUDIO_ENTRIES.findIndex(
+              e => e.id === entry.id,
+            );
+            if (fIndex !== -1) {
+              draft.SAVED_USER_AUDIO_ENTRIES.splice(fIndex, 1);
+              if (typeof entry.filepath === 'string') {
+                ReactNativeBlobUtil.fs.unlink(entry.filepath).catch(err => {
+                  console.error(err);
+                });
+              }
+            }
+          }),
+        ),
+
       // for timestamps
       saveTimestamp: (alarmId, timestamp) =>
         set(
           produce<SettingsStore>(draft => {
-            draft.DISMISSED_ALARM_TIMESTAMPS[alarmId] = timestamp;
+            draft.DELIVERED_ALARM_TIMESTAMPS[alarmId] = timestamp;
           }),
         ),
       deleteTimestamp: alarmId =>
         set(
           produce<SettingsStore>(draft => {
-            delete draft.DISMISSED_ALARM_TIMESTAMPS[alarmId];
+            delete draft.DELIVERED_ALARM_TIMESTAMPS[alarmId];
           }),
         ),
 
@@ -185,12 +234,12 @@ export const settings = createVanilla<SettingsStore>()(
     }),
     {
       name: SETTINGS_STORAGE_KEY,
-      getStorage: () => zustandStorage,
+      storage: createJSONStorage(() => zustandStorage),
       partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !invalidKeys.includes(key)),
         ),
-      version: 4,
+      version: 7,
       migrate: (persistedState, version) => {
         /* eslint-disable no-fallthrough */
         // fall through cases is exactly the use case for migration.
@@ -207,7 +256,7 @@ export const settings = createVanilla<SettingsStore>()(
               REMINDERS: (persistedState as any)['REMINDERS'],
             });
             delete (persistedState as any)['REMINDERS'];
-            (persistedState as SettingsStore)['LAST_WIDGET_UPDATE'] = (
+            (persistedState as any)['LAST_WIDGET_UPDATE'] = (
               persistedState as any
             )['LAST_ALARM_DATE_VALUEOF'];
             delete (persistedState as any)['LAST_ALARM_DATE_VALUEOF'];
@@ -233,13 +282,24 @@ export const settings = createVanilla<SettingsStore>()(
               );
             }
           case 3:
-            (persistedState as SettingsStore).DISMISSED_ALARM_TIMESTAMPS = {
+            (persistedState as SettingsStore).DELIVERED_ALARM_TIMESTAMPS = {
               [ADHAN_NOTIFICATION_ID]: (persistedState as any)
                 .DISMISSED_ALARM_TIMESTAMP,
             };
             delete (persistedState as any).DISMISSED_ALARM_TIMESTAMP;
             delete (persistedState as any).SCHEDULED_ALARM_TIMESTAMP;
             (persistedState as any).SELECTED_SECONDARY_CALENDAR = 'gregory';
+          case 4:
+          case 5:
+            for (const entry of (persistedState as SettingsStore)
+              .SAVED_ADHAN_AUDIO_ENTRIES) {
+              if (entry.id in adhanEntryTranslations) {
+                entry.label = '';
+                entry.internal = true;
+              }
+            }
+          case 6:
+            delete (persistedState as any)['LAST_WIDGET_UPDATE'];
             break;
         }
         /* eslint-enable no-fallthrough */
@@ -249,11 +309,9 @@ export const settings = createVanilla<SettingsStore>()(
   ),
 );
 
-export const useSettings = create(settings);
-
-export function useSettingsHelper<T extends keyof SettingsStore>(key: T) {
-  const state = useSettings(s => s[key]);
-  const setterCurry = useSettings(s => s.setSettingCurry);
+export function useSettings<T extends keyof SettingsStore>(key: T) {
+  const state = useStore(settings, s => s[key], shallow);
+  const setterCurry = useStore(settings, s => s.setSettingCurry, shallow);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const setCallback = useCallback(setterCurry(key), [key]);
   return [state, setCallback] as [
