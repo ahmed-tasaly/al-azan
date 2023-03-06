@@ -1,17 +1,18 @@
-import {Box, FlatList, Text, Pressable, HStack} from 'native-base';
-import {memo, useEffect} from 'react';
+import {Box, FlatList} from 'native-base';
+import {memo, useCallback, useEffect} from 'react';
 import {useStore} from 'zustand';
-import {AlarmIcon} from '@/assets/icons/alarm';
-import {BatteryChargingIcon} from '@/assets/icons/battery_charging';
-import {BrightnessMediumIcon} from '@/assets/icons/brightness_medium';
-import {CalculateIcon} from '@/assets/icons/calculate';
-import {ExploreIcon} from '@/assets/icons/explore';
-import {InfoIcon} from '@/assets/icons/info';
-import {NotificationsActiveIcon} from '@/assets/icons/notifications_active';
-import {VolumeUpIcon} from '@/assets/icons/volume_up';
-import {WidgetIcon} from '@/assets/icons/widget';
-import {push} from '@/navigation/root_navigation';
-import {RootStackParamList, translateRoute} from '@/navigation/types';
+import SettingsListItem from './settings_list_item';
+import {AlarmIcon} from '@/assets/icons/material_icons/alarm';
+import {BatteryChargingIcon} from '@/assets/icons/material_icons/battery_charging';
+import {BrightnessMediumIcon} from '@/assets/icons/material_icons/brightness_medium';
+import {CalculateIcon} from '@/assets/icons/material_icons/calculate';
+import {DevModeIcon} from '@/assets/icons/material_icons/dev_mode';
+import {ExploreIcon} from '@/assets/icons/material_icons/explore';
+import {InfoIcon} from '@/assets/icons/material_icons/info';
+import {NotificationsActiveIcon} from '@/assets/icons/material_icons/notifications_active';
+import {VolumeUpIcon} from '@/assets/icons/material_icons/volume_up';
+import {WidgetIcon} from '@/assets/icons/material_icons/widget';
+import {RootStackParamList} from '@/navigation/types';
 import {clearCache} from '@/store/adhan_calc_cache';
 import {alarmSettings} from '@/store/alarm';
 import {calcSettings} from '@/store/calculation';
@@ -68,22 +69,11 @@ const settingsScreenList: ScreenListItem[] = [
   },
 ];
 
-function renderItem({item}: {item: ScreenListItem}) {
-  return (
-    <Pressable onPress={() => push(item.name)}>
-      {({isPressed}) => {
-        return (
-          <HStack
-            backgroundColor={isPressed ? 'coolGray.300:alpha.20' : undefined}
-            py="3"
-            alignItems="center">
-            <item.icon size="4xl" mx="2"></item.icon>
-            <Text>{translateRoute(item.name)}</Text>
-          </HStack>
-        );
-      }}
-    </Pressable>
-  );
+if (settings.getState().DEV_MODE) {
+  settingsScreenList.push({
+    name: 'DevSettings',
+    icon: DevModeIcon,
+  });
 }
 
 function Settings() {
@@ -133,6 +123,11 @@ function Settings() {
   useNoInitialEffect(() => {
     setReminders({noToast: true, force: true});
   }, [calcSettingsHash]);
+
+  const renderItem = useCallback(
+    ({item}: {item: ScreenListItem}) => <SettingsListItem item={item} />,
+    [],
+  );
 
   return (
     <Box safeArea py="3">

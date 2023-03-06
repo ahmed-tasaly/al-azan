@@ -36,6 +36,8 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 * Homescreen and notification Widgets
 
+* Qibla finder
+
 * Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German
 
 ## Screenshots
@@ -111,10 +113,16 @@ Translation to other languages has been done by these awesome people:
 
 ## Thanks to
 
-react-native community members.
+[Adhan-js](https://github.com/batoulapps/adhan-js) for providing the prayer times library.
+
+React-native community members.
 
 [Translation.io](https://translation.io/) (Lingui.js) for providing free services for open source projects.
 
 [Geonames.org](https://www.geonames.org/) for providing search api for geocoding.
+
+[Openstreetmap.org](https://www.openstreetmap.org/copyright) and [Libremap](https://github.com/maplibre/maplibre-react-native) for providing the map.
+
+[Google Material Icons](https://fonts.google.com/icons) for the icons.
 
 and many other library maintainers that I can't list them all.

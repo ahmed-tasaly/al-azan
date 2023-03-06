@@ -8,13 +8,13 @@ import {
   Shafaq,
   PolarCircleResolution,
 } from 'adhan';
+import intersection from 'lodash/intersection';
 import {CalculationMethods} from './calculation_methods';
 import {PrayersInOrder, Prayer} from './prayer';
 import {
   CachedPrayerTimes,
   getCachedPrayerTimes,
 } from '@/store/adhan_calc_cache';
-
 import {
   alarmSettings,
   getAdhanSettingKey,
@@ -148,7 +148,10 @@ export function calculatePrayerTimes(date: Date) {
 }
 
 export type PrayerTime = {
+  /** when is this prayer time */
   date: Date;
+  /** The date this prayer time is calculated from */
+  calculatedFrom: Date;
   prayer: Prayer;
   playSound?: boolean;
 };
@@ -173,6 +176,14 @@ function shouldNotifyPrayer(prayer: Prayer, date: Date, useSettings?: boolean) {
 }
 
 type NextPrayerOptions = {
+  /** the date to get the next prayer for */
+  date?: Date;
+
+  /** an internal option for recursing */
+  _originalDate?: Date | boolean;
+  /** should we consider the user settings?
+   * setting this to true means that we only return a prayer if
+   *  user has enabled notification/sound for the prayer, otherwise `undefined` is returned */
   useSettings?: boolean;
   /** check only the next day for prayers */
   checkNextDay?: boolean;
@@ -182,105 +193,91 @@ type NextPrayerOptions = {
   prayers?: Array<Prayer>;
 };
 
-/** do not use this class directly. use getPrayerTimes instead */
-export class PrayerTimesHelper {
-  date: Date;
-
-  fajr: Date;
-  sunrise: Date;
-  dhuhr: Date;
-  asr: Date;
-  sunset: Date;
-  maghrib: Date;
-  isha: Date;
-  midnight: Date;
-  tahajjud: Date;
-
-  constructor(date: Date) {
-    const cachedTimes = getCachedPrayerTimes(date);
-    // we need the current date for calculating next prayer
-    // thus not using the cachedTimes date
-    this.date = date;
-    this.fajr = cachedTimes.fajr;
-    this.sunrise = cachedTimes.sunrise;
-    this.dhuhr = cachedTimes.dhuhr;
-    this.asr = cachedTimes.asr;
-    this.sunset = cachedTimes.sunset;
-    this.maghrib = cachedTimes.maghrib;
-    this.isha = cachedTimes.isha;
-    this.midnight = cachedTimes.midnight;
-    this.tahajjud = cachedTimes.tahajjud;
-  }
-
-  nextPrayer(
-    options: NextPrayerOptions = {
-      useSettings: false,
-      checkNextDay: false,
-      checkNextDays: false,
-    },
-  ): PrayerTime | undefined {
-    const {
-      useSettings,
-      checkNextDay,
-      checkNextDays,
-      prayers = PrayersInOrder,
-    } = options || {};
-    let prayerTime: PrayerTime | undefined;
-
-    for (let prayer of prayers) {
-      if (
-        this.date <= this[prayer] &&
-        shouldNotifyPrayer(prayer, this.date, useSettings)
-      ) {
-        prayerTime = {
-          date: this[prayer],
-          prayer,
-        };
-        break;
-      }
-    }
-
-    if (prayerTime && useSettings) {
-      const soundSetting = alarmSettings.getState()[
-        getAdhanSettingKey(prayerTime.prayer, 'sound')
-      ] as PrayerAlarmSettings;
-      if (typeof soundSetting === 'boolean') {
-        prayerTime.playSound = soundSetting;
-      } else if (
-        soundSetting &&
-        soundSetting[this.date.getDay() as WeekDayIndex]
-      ) {
-        prayerTime.playSound = true;
-      } else {
-        prayerTime.playSound = false;
-      }
-    }
-
-    if (!prayerTime && (checkNextDay || checkNextDays)) {
-      // n+1 for limit (n starts from 1)
-      let limit = 2;
-      if (checkNextDays) {
-        limit = 8;
-      }
-      for (let i = 1; i < limit; i++) {
-        prayerTime = new PrayerTimesHelper(
-          getDayBeginning(addDays(this.date, i)),
-        ).nextPrayer({
-          useSettings,
-        });
-        if (prayerTime) {
-          break;
-        }
-      }
-    }
-
-    return prayerTime;
-  }
-}
-
 export function getPrayerTimes(date: Date) {
   const options = getPrayerTimesOptionsFromSettings();
   if (!options) return;
 
-  return new PrayerTimesHelper(date);
+  return getCachedPrayerTimes(date);
+}
+
+export function getNextPrayer(
+  options?: NextPrayerOptions,
+): PrayerTime | undefined {
+  const {
+    date = new Date(),
+    _originalDate = undefined,
+    useSettings = false,
+    checkNextDay = false,
+    checkNextDays = false,
+    prayers = PrayersInOrder,
+  } = options || {};
+
+  if (!prayers.length) return;
+
+  const originalDate = _originalDate || date;
+
+  const prayerTimes = getPrayerTimes(date);
+
+  if (!prayerTimes) return;
+
+  let prayerTime: PrayerTime | undefined;
+
+  // we need this check only for the first 6 hours of the day
+  if (date.getHours() < 6 && typeof _originalDate === 'undefined') {
+    const prayerTimeFromPrevDay = getNextPrayer({
+      date: addDays(date, -1),
+      useSettings,
+      _originalDate: date,
+      prayers: intersection([Prayer.Midnight, Prayer.Tahajjud], prayers), // we only need to check prayers that can go after 00:00 AM
+    });
+    if (prayerTimeFromPrevDay) return prayerTimeFromPrevDay; // otherwise continue getting it normally
+  }
+
+  for (let prayer of prayers) {
+    if (
+      originalDate <= prayerTimes[prayer] &&
+      shouldNotifyPrayer(prayer, date, useSettings)
+    ) {
+      prayerTime = {
+        date: prayerTimes[prayer],
+        calculatedFrom: date,
+        prayer,
+      };
+      break;
+    }
+  }
+
+  if (prayerTime && useSettings) {
+    const soundSetting = alarmSettings.getState()[
+      getAdhanSettingKey(prayerTime.prayer, 'sound')
+    ] as PrayerAlarmSettings;
+    if (typeof soundSetting === 'boolean') {
+      prayerTime.playSound = soundSetting;
+    } else if (soundSetting && soundSetting[date.getDay() as WeekDayIndex]) {
+      prayerTime.playSound = true;
+    } else {
+      prayerTime.playSound = false;
+    }
+  }
+
+  if (!prayerTime && !_originalDate && (checkNextDay || checkNextDays)) {
+    // n+1 for limit (n starts from 1)
+    let limit = 2;
+    if (checkNextDays) {
+      limit = 8;
+    }
+    for (let i = 1; i < limit; i++) {
+      const dayToCheck = getDayBeginning(addDays(date, i));
+      prayerTime = getNextPrayer({
+        useSettings,
+        date: dayToCheck,
+        _originalDate: false, // this makes it a boolean, and thus not checking the day before it
+      });
+      if (prayerTime) {
+        break;
+      }
+    }
+  }
+
+  return prayerTime;
 }

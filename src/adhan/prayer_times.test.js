@@ -3,10 +3,11 @@ import {
   isMinimumSettingsAvailable,
   Prayer,
   PrayersInOrder,
+  getNextPrayer,
 } from '@/adhan';
 import {alarmSettings, getAdhanSettingKey} from '@/store/alarm';
 import {calcSettings} from '@/store/calculation';
-import {addDays} from '@/utils/date';
+import {addDays, getDayBeginning} from '@/utils/date';
 
 const timezone_mock = require('timezone-mock');
 
@@ -129,7 +130,7 @@ describe('prayer times minimum settings check works as expected', () => {
   });
 });
 
-describe('PrayerTimesHelper.nextPrayer()', () => {
+describe('getNextPrayer()', () => {
   beforeAll(() => {
     calcSettings.setState({
       LOCATION_LAT: 1,
@@ -164,8 +165,9 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
 
     it('returns undefined when notification/sound settings is empty', () => {
       expect(
-        getPrayerTimes(new Date('2022-12-27T00:00:00.000Z')).nextPrayer({
+        getNextPrayer({
           useSettings: true,
+          date: new Date('2022-12-27T00:00:00.000Z'),
         }),
       ).toBeUndefined();
     });
@@ -178,14 +180,16 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         resetNotificationSoundSettings();
       });
 
-      it("returns the correct prayer (don't check next days)", () => {
+      it('returns the correct prayer (without checkNextDay[s])', () => {
         alarmSettings.setState({FAJR_NOTIFY: true});
 
         expect(
-          getPrayerTimes(new Date('2022-12-27T00:00:00.000Z')).nextPrayer({
+          getNextPrayer({
             useSettings: true,
+            date: new Date('2022-12-27T00:00:00.000Z'),
           }),
         ).toEqual({
+          calculatedFrom: new Date('2022-12-27T00:00:00.000Z'),
           date: new Date('2022-12-27T04:40:00.000Z'),
           playSound: false,
           prayer: 'fajr',
@@ -193,10 +197,12 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
 
         alarmSettings.setState({FAJR_SOUND: true});
         expect(
-          getPrayerTimes(new Date('2022-12-27T00:00:00.000Z')).nextPrayer({
+          getNextPrayer({
+            date: new Date('2022-12-27T00:00:00.000Z'),
             useSettings: true,
           }),
         ).toEqual({
+          calculatedFrom: new Date('2022-12-27T00:00:00.000Z'),
           date: new Date('2022-12-27T04:40:00.000Z'),
           playSound: true,
           prayer: 'fajr',
@@ -205,9 +211,10 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         // test with advancing clock after the set prayer
         // this should yield undefined
         expect(
-          getPrayerTimes(
-            new Date(new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000),
-          ).nextPrayer({
+          getNextPrayer({
+            date: new Date(
+              new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000,
+            ),
             useSettings: true,
           }),
         ).toBe(undefined);
@@ -215,12 +222,16 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         // test with a gap and enabling dhuhr
         alarmSettings.setState({DHUHR_NOTIFY: true});
         expect(
-          getPrayerTimes(
-            new Date(new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000),
-          ).nextPrayer({
+          getNextPrayer({
+            date: new Date(
+              new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000,
+            ),
             useSettings: true,
           }),
         ).toEqual({
+          calculatedFrom: new Date(
+            new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000,
+          ),
           date: new Date('2022-12-27T12:02:00.000Z'),
           playSound: false,
           prayer: 'dhuhr',
@@ -229,26 +240,58 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         // test with last time (usually goes over to next day)
         alarmSettings.setState({TAHAJJUD_NOTIFY: true, TAHAJJUD_SOUND: true});
         expect(
-          getPrayerTimes(
-            new Date(new Date('2022-12-27T12:02:00.000Z').valueOf() + 1000),
-          ).nextPrayer({
+          getNextPrayer({
+            date: new Date(
+              new Date('2022-12-27T12:02:00.000Z').valueOf() + 1000,
+            ),
             useSettings: true,
           }),
         ).toEqual({
+          calculatedFrom: new Date(
+            new Date('2022-12-27T12:02:00.000Z').valueOf() + 1000,
+          ),
+          date: new Date('2022-12-28T01:08:00.000Z'),
+          playSound: true,
+          prayer: 'tahajjud',
+        });
+
+        // test by setting tahajjud, and getting next prayer when the time is
+        // behind the tahajjud, which is usually part of previous day's prayer times
+        // so for example, if we are at 00:01 (AM) and tahajjud is 01:08 (AM),
+        // it should return the tahajjud from the previous day's prayer times
+        // without proper implementation, it would return today's fajr prayer probably.
+        expect(
+          getNextPrayer({
+            date: new Date(
+              new Date('2022-12-28T00:01:00.000Z').valueOf() + 1000,
+            ),
+            useSettings: true,
+          }),
+        ).toEqual({
+          calculatedFrom: addDays(
+            new Date(
+              new Date('2022-12-28T00:01:00.000Z').valueOf() + 1000, // it should be from the previous day
+            ),
+            -1,
+          ),
           date: new Date('2022-12-28T01:08:00.000Z'),
           playSound: true,
           prayer: 'tahajjud',
         });
       });
 
-      it('returns the next available prayer (check next days)', () => {
+      it('returns the next available prayer (with checkNextDay[s])', () => {
         alarmSettings.setState({FAJR_NOTIFY: true});
 
+        expect(alarmSettings.getState()['FAJR_NOTIFY']).toBe(true);
+
         expect(
-          getPrayerTimes(new Date('2022-12-27T00:00:00.000Z')).nextPrayer({
+          getNextPrayer({
+            date: new Date('2022-12-27T00:00:00.000Z'),
             useSettings: true,
           }),
         ).toEqual({
+          calculatedFrom: new Date('2022-12-27T00:00:00.000Z'),
           date: new Date('2022-12-27T04:40:00.000Z'),
           playSound: false,
           prayer: 'fajr',
@@ -256,14 +299,18 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
 
         // test with advancing clock after the set prayer
         // this should yield tomorrow's fajr
+        let testDate = new Date(
+          new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000,
+        );
+        let nextDayOfTestDate = getDayBeginning(addDays(testDate, 1));
         expect(
-          getPrayerTimes(
-            new Date(new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000),
-          ).nextPrayer({
+          getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDay: true,
           }),
         ).toEqual({
+          calculatedFrom: nextDayOfTestDate,
           date: new Date('2022-12-28T04:41:00.000Z'),
           playSound: false,
           prayer: 'fajr',
@@ -271,13 +318,13 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
 
         // repeat with checkNextDays
         expect(
-          getPrayerTimes(
-            new Date(new Date('2022-12-27T04:40:00.000Z').valueOf() + 1000),
-          ).nextPrayer({
+          getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           }),
         ).toEqual({
+          calculatedFrom: nextDayOfTestDate,
           date: new Date('2022-12-28T04:41:00.000Z'),
           playSound: false,
           prayer: 'fajr',
@@ -290,19 +337,20 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         expect(testDate.getDay()).toBe(0);
 
         {
-          const nextPrayer = getPrayerTimes(testDate).nextPrayer({
+          const next = getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.playSound).toBeFalsy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Fajr);
+          expect(next).toBeTruthy();
+          expect(next.playSound).toBeFalsy();
+          expect(next.prayer).toEqual(Prayer.Fajr);
           // next prayer should be on the same day as settings
-          expect(nextPrayer.date.getDay()).toEqual(0);
+          expect(next.date.getDay()).toEqual(0);
           // it should be at least 6 days away
-          expect(
-            nextPrayer.date.valueOf() - testDate.valueOf(),
-          ).toBeGreaterThan(6 * 24 * 60 * 60 * 1000);
+          expect(next.date.valueOf() - testDate.valueOf()).toBeGreaterThan(
+            6 * 24 * 60 * 60 * 1000,
+          );
         }
 
         alarmSettings.setState({
@@ -310,15 +358,16 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
           DHUHR_NOTIFY: {0: true},
         });
         {
-          const nextPrayer = getPrayerTimes(testDate).nextPrayer({
+          const next = getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.playSound).toBeFalsy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Dhuhr);
-          expect(nextPrayer.date.getDay()).toEqual(0);
-          expect(nextPrayer.date.valueOf() - testDate.valueOf()).toBeLessThan(
+          expect(next).toBeTruthy();
+          expect(next.playSound).toBeFalsy();
+          expect(next.prayer).toEqual(Prayer.Dhuhr);
+          expect(next.date.getDay()).toEqual(0);
+          expect(next.date.valueOf() - testDate.valueOf()).toBeLessThan(
             10 * 60 * 60 * 1000, // within 10 hours of fajr
           );
         }
@@ -329,15 +378,16 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         });
 
         {
-          const nextPrayer = getPrayerTimes(testDate).nextPrayer({
+          const next = getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.playSound).toBeFalsy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Dhuhr);
-          expect(nextPrayer.date.getDay()).toEqual(1);
-          expect(nextPrayer.date.valueOf() - testDate.valueOf()).toBeLessThan(
+          expect(next).toBeTruthy();
+          expect(next.playSound).toBeFalsy();
+          expect(next.prayer).toEqual(Prayer.Dhuhr);
+          expect(next.date.getDay()).toEqual(1);
+          expect(next.date.valueOf() - testDate.valueOf()).toBeLessThan(
             2 * 24 * 60 * 60 * 1000, // within 48 hours
           );
         }
@@ -350,15 +400,16 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         });
 
         {
-          const nextPrayer = getPrayerTimes(testDate).nextPrayer({
+          const next = getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.playSound).toBeTruthy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Dhuhr);
-          expect(nextPrayer.date.getDay()).toEqual(1);
-          expect(nextPrayer.date.valueOf() - testDate.valueOf()).toBeLessThan(
+          expect(next).toBeTruthy();
+          expect(next.playSound).toBeTruthy();
+          expect(next.prayer).toEqual(Prayer.Dhuhr);
+          expect(next.date.getDay()).toEqual(1);
+          expect(next.date.valueOf() - testDate.valueOf()).toBeLessThan(
             2 * 24 * 60 * 60 * 1000, // within 48 hours
           );
         }
@@ -371,26 +422,28 @@ describe('PrayerTimesHelper.nextPrayer()', () => {
         });
 
         {
-          const nextPrayer = getPrayerTimes(testDate).nextPrayer({
+          const next = getNextPrayer({
+            date: testDate,
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.playSound).toBeTruthy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Dhuhr);
-          expect(nextPrayer.date.getDay()).toEqual(0);
+          expect(next).toBeTruthy();
+          expect(next.playSound).toBeTruthy();
+          expect(next.prayer).toEqual(Prayer.Dhuhr);
+          expect(next.date.getDay()).toEqual(0);
         }
 
         {
           // testing notify and no partial sound (monday)
-          const nextPrayer = getPrayerTimes(addDays(testDate, 1)).nextPrayer({
+          const next = getNextPrayer({
+            date: addDays(testDate, 1),
             useSettings: true,
             checkNextDays: true,
           });
-          expect(nextPrayer).toBeTruthy();
-          expect(nextPrayer.date.getDay()).toEqual(2);
-          expect(nextPrayer.playSound).toBeFalsy();
-          expect(nextPrayer.prayer).toEqual(Prayer.Dhuhr);
+          expect(next).toBeTruthy();
+          expect(next.date.getDay()).toEqual(2);
+          expect(next.playSound).toBeFalsy();
+          expect(next.prayer).toEqual(Prayer.Dhuhr);
         }
       });
     });

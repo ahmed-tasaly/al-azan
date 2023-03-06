@@ -2,10 +2,9 @@ import notifee, {
   EventType,
   EventDetail,
   AndroidImportance,
-  AndroidVisibility,
   Notification,
 } from '@notifee/react-native';
-import {finishAndRemoveTask, isDndActive} from './modules/activity';
+import {isDndActive} from './modules/activity';
 import {isIntrusive, isSilent} from './modules/media_player';
 import {Reminder, reminderSettings} from './store/reminder';
 import {settings} from './store/settings';
@@ -18,7 +17,6 @@ import {
   PRE_REMINDER_CHANNEL_ID,
   REMINDER_CHANNEL_ID,
   WIDGET_CHANNEL_ID,
-  WIDGET_CHANNEL_NAME,
   WIDGET_NOTIFICATION_ID,
   WIDGET_UPDATE_CHANNEL_ID,
 } from '@/constants/notification';
@@ -65,7 +63,7 @@ export async function cancelAlarmNotif({
     await notifee
       .displayNotification({
         ...notification,
-        id: undefined, // to assign a unique id to it
+        id: Date.now().toString(), // to assign a unique id to it
         android: {
           ...notification.android,
           actions: undefined,
@@ -154,15 +152,13 @@ async function handleNotification({
       type === EventType.FG_ALREADY_EXIST
     ) {
       if (
-        settings.getState().DELIVERED_ALARM_TIMESTAMPS[options.notifId] ===
+        (settings.getState().DELIVERED_ALARM_TIMESTAMPS[options.notifId] || 0) >
         options.date.getTime()
       ) {
         // we already have processed this notification
         return;
       }
-      settings
-        .getState()
-        .saveTimestamp(options.notifId, options.date.getTime());
+      settings.getState().saveTimestamp(options.notifId, Date.now());
 
       if (
         (type === EventType.FG_ALREADY_EXIST || type === EventType.UNKNOWN) &&
@@ -248,8 +244,8 @@ async function handleNotification({
       if (triggerDate) {
         settings.getState().saveTimestamp(notifId, triggerDate);
       }
-      await Promise.all([updateWidgets(), setUpdateWidgetsAlarms()]);
       await notifee.cancelNotification(notifId).catch(console.error);
+      await Promise.all([updateWidgets(), setUpdateWidgetsAlarms()]);
     }
   }
 }
@@ -280,15 +276,12 @@ export function setupNotifeeHandlers() {
         const isDnd = await isDndActive();
 
         if (!isDnd || canBypassDnd) {
-          await playAudio(options!.sound!)
-            .then(interrupted =>
-              cancelAlarmNotif({
-                notification,
-                options,
-                replaceWithNormal: !interrupted,
-              }),
-            )
-            .finally(() => finishAndRemoveTask());
+          const interrupted = await playAudio(options!.sound!);
+          await cancelAlarmNotif({
+            notification,
+            options,
+            replaceWithNormal: !interrupted,
+          });
         }
       }
     }
@@ -297,26 +290,19 @@ export function setupNotifeeHandlers() {
 
 export type updateWidgetOptions = Pick<
   UpdateWidgetOptions,
-  'dayAndMonth' | 'hijriDate' | 'prayers'
+  'secondaryDate' | 'hijriDate' | 'prayers'
 >;
 
 export async function updatePermanentNotifWidget({
-  dayAndMonth,
+  secondaryDate,
   hijriDate,
   prayers,
 }: updateWidgetOptions) {
-  const channelId = await notifee.createChannel({
-    id: WIDGET_CHANNEL_ID,
-    name: WIDGET_CHANNEL_NAME,
-    importance: AndroidImportance.LOW,
-    visibility: AndroidVisibility.PUBLIC,
-  });
-
   await updateNotification({
-    dayAndMonth,
+    secondaryDate,
     hijriDate,
     prayers,
-    channelId,
+    channelId: WIDGET_CHANNEL_ID,
     notificationId: WIDGET_NOTIFICATION_ID,
   });
 }

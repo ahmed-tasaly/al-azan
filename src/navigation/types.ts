@@ -14,6 +14,10 @@ export type RootStackParamList = {
   WidgetSettings: undefined;
   RemindersSettings: undefined;
   AboutSettings: undefined;
+  DevSettings: undefined;
+  QiblaFinder: undefined;
+  QiblaMap: undefined;
+  QiblaCompass: undefined;
 };
 
 declare global {
@@ -80,6 +84,23 @@ const routeTranslations = {
     id: 'about_settings',
     message: 'About',
     comment: 'screen title',
+  }),
+  DevSettings: defineMessage({
+    id: 'dev_settings',
+    message: 'Developer',
+    comment: 'screen title',
+  }),
+  QiblaFinder: defineMessage({
+    id: 'qibla_finder',
+    message: 'Qibla Finder',
+  }),
+  QiblaMap: defineMessage({
+    id: 'qibla_map',
+    message: 'Qibla Map',
+  }),
+  QiblaCompass: defineMessage({
+    id: 'qibla_compass',
+    message: 'Qibla Compass',
   }),
 } as Record<string, MessageDescriptor>;
 

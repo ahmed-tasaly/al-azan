@@ -2,8 +2,11 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
   android:initialKeyguardLayout="@layout/notif_widget_small"
   android:initialLayout="@layout/notif_widget_small"
+  android:description="@string/classic_widget_description"
   android:minHeight="20dp"
   android:minWidth="250dp"
+  android:previewImage="@drawable/screen_widget_preview"
+  android:previewLayout="@layout/screen_widget"
   android:resizeMode="horizontal"
   android:updatePeriodMillis="0"
   android:widgetCategory="home_screen|keyguard" />

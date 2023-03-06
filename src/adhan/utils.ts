@@ -1,5 +1,4 @@
-import {Prayer, getPrayerTimes, PrayerTime} from '@/adhan';
-import {addDays, getDayBeginning} from '@/utils/date';
+import {Prayer, PrayerTime, getNextPrayer} from '@/adhan';
 
 export function getActivePrayer(
   lookingAtDay: Date,
@@ -7,41 +6,25 @@ export function getActivePrayer(
 ): Prayer | undefined {
   if (!lookingAtDay || !prayersList.length) return;
   const now = new Date();
-  const tomorrow = addDays(now, 1);
-  const yesterday = addDays(now, -1);
 
-  const activePrayer: PrayerTime | undefined = getPrayerTimes(now)?.nextPrayer({
+  const activePrayer: PrayerTime | undefined = getNextPrayer({
+    date: now,
     prayers: prayersList,
     checkNextDay: true,
   });
 
   if (!activePrayer) return;
 
+  // handles the general case
   if (
-    lookingAtDay.toDateString() === now.toDateString() &&
-    activePrayer.date.toDateString() === now.toDateString()
+    activePrayer.calculatedFrom.toDateString() === lookingAtDay.toDateString()
   ) {
     return activePrayer.prayer;
   }
 
-  if (
-    lookingAtDay.toDateString() === tomorrow.toDateString() &&
-    activePrayer.date.toDateString() === tomorrow.toDateString()
-  ) {
+  // handles when highlighting the tahajjud of previous day, but we need to handle fajr as well
+  if (lookingAtDay.toDateString() === now.toDateString()) {
     return prayersList[0];
-  }
-
-  if (lookingAtDay.toDateString() === yesterday.toDateString()) {
-    const yesterdayPrayers = getPrayerTimes(
-      new Date(getDayBeginning(now).valueOf() - 1000),
-    );
-    if (
-      yesterdayPrayers &&
-      now.valueOf() <
-        yesterdayPrayers[prayersList[prayersList.length - 1]].valueOf()
-    ) {
-      return prayersList[prayersList.length - 1];
-    }
   }
 
   return;

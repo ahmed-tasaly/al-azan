@@ -17,7 +17,6 @@ export async function play(audioEntry: AudioEntry) {
   const playbackFinishedDefer = defer<boolean>();
 
   const onFinally = (errored: boolean) => {
-    volumeListener.remove();
     playbackFinishedDefer.resolve(errored);
   };
 
@@ -35,14 +34,26 @@ export async function play(audioEntry: AudioEntry) {
     onFinally(true);
   });
 
-  await MediaPlayer.setDataSource({
-    uri: audioEntry.filepath,
-    loop: !!audioEntry.loop,
-  });
+  const removeListeners = () => {
+    volumeListener.remove();
+    endSub.remove();
+    errorSub.remove();
+  };
 
-  await MediaPlayer.start();
-  const playbackResult = await playbackFinishedDefer;
-  return playbackResult;
+  try {
+    await MediaPlayer.setDataSource({
+      uri: audioEntry.filepath,
+      loop: !!audioEntry.loop,
+    });
+    await MediaPlayer.start();
+    const playbackResult = await playbackFinishedDefer;
+    return playbackResult;
+  } catch (e) {
+    onFinally(true); // to resolve the pending promise
+    return true; // interrupted or errored
+  } finally {
+    removeListeners();
+  }
 }
 
 export function stop() {

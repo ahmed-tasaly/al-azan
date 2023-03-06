@@ -3,10 +3,10 @@ import notifee, {
   TimestampTrigger,
   TriggerType,
   AndroidCategory,
-  AndroidVisibility,
 } from '@notifee/react-native';
 import {SetAlarmTaskOptions} from './set_alarm';
 import {isIntrusive} from '@/modules/media_player';
+import {alarmSettings} from '@/store/alarm';
 import {getTime} from '@/utils/date';
 
 export type SetPreAlarmTaskOptions = SetAlarmTaskOptions & {
@@ -14,20 +14,15 @@ export type SetPreAlarmTaskOptions = SetAlarmTaskOptions & {
 };
 
 export async function setPreAlarmTask(options: SetPreAlarmTaskOptions) {
-  const {date, title, sound, notifChannelId, notifChannelName, notifId} =
-    options;
+  const {date, title, sound, notifChannelId, notifId} = options;
 
   // to replace the notification settings
-  await notifee.cancelTriggerNotification(notifId).catch(console.error);
+  await notifee.cancelNotification(notifId).catch(console.error);
 
   // We don't need a pre alarm for alarms that do not play sound.
-  if (!isIntrusive(sound)) return;
-
-  const channelId = await notifee.createChannel({
-    id: notifChannelId,
-    name: notifChannelName,
-    visibility: AndroidVisibility.PUBLIC,
-  });
+  if (!isIntrusive(sound) || alarmSettings.getState().DONT_NOTIFY_UPCOMING) {
+    return;
+  }
 
   // fire the pre adhan 1 hour remaining to adhan
   let triggerTs = date.getTime() - 3600 * 1000;
@@ -52,7 +47,7 @@ export async function setPreAlarmTask(options: SetPreAlarmTaskOptions) {
       body: title + ', ' + getTime(date),
       android: {
         smallIcon: 'ic_stat_name',
-        channelId,
+        channelId: notifChannelId,
         category: AndroidCategory.ALARM,
         pressAction: {
           id: 'default',

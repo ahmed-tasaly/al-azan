@@ -6,18 +6,28 @@ import {
   Text,
   Divider,
 } from 'native-base';
+import {useCallback, useState} from 'react';
+import {ToastAndroid} from 'react-native';
 import pkg from '@/../package.json';
+import {settings} from '@/store/settings';
 
 export function AboutSettings(props: IScrollViewProps) {
+  const [tCount, setTCount] = useState(0);
+
+  const handleT = useCallback(() => {
+    setTCount(tCount + 1);
+    if (tCount === 5) {
+      settings.setState({DEV_MODE: true});
+      ToastAndroid.show('Dev Mode Enabled', ToastAndroid.SHORT);
+    }
+  }, [setTCount, tCount]);
+
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      p="4"
-      _contentContainerStyle={{paddingBottom: 40}}
-      {...props}>
+    <ScrollView p="4" _contentContainerStyle={{paddingBottom: 40}} {...props}>
       <FormControl mb="3">
-        <FormControl.Label m="0">{t`Version`}:</FormControl.Label>
+        <FormControl.Label m="0" onTouchStart={handleT}>
+          {t`Version`}:
+        </FormControl.Label>
         <Text fontSize="lg">{pkg.version}</Text>
       </FormControl>
       <FormControl mb="3">
@@ -38,6 +48,12 @@ export function AboutSettings(props: IScrollViewProps) {
             message: `All copyrights for adhan voices belong to their respective owners.
             Special thanks to translation.io (lingui.js) for their wonderful services.
             Thanks to all open source community members who made all these wonderful libraries that made making this app possible.`,
+          })}
+        </Text>
+        <Text>
+          {t({
+            id: 'about.credits.google',
+            message: `Most of icons used in this app are from google material icons.`,
           })}
         </Text>
       </FormControl>

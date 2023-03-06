@@ -100,8 +100,8 @@ android {
         applicationId "com.github.meypod.al_azan"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 37
-        versionName "1.9.0" 
+        versionCode 42
+        versionName "1.11.0" 
         if (!project.hasProperty("noSign")) { 
             signingConfig signingConfigs.debug
             println("debug signing the builds by default")
@@ -127,6 +127,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            //applicationIdSuffix ".preview"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -134,6 +135,7 @@ android {
 
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            //applicationIdSuffix ".preview"
         }
     }
 

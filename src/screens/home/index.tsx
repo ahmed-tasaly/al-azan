@@ -3,16 +3,18 @@ import {Box, Button, Flex, HStack, ScrollView, Text} from 'native-base';
 import {useEffect, useState} from 'react';
 import {useStore} from 'zustand';
 import {shallow} from 'zustand/shallow';
-import {getPrayerTimes, PrayerTimesHelper} from '@/adhan';
-import {RestoreIcon} from '@/assets/icons/restore';
-import {SettingsSharpIcon} from '@/assets/icons/settings_sharp';
-import {UpdateIcon} from '@/assets/icons/update';
+import {getPrayerTimes} from '@/adhan';
+import {ExploreIcon} from '@/assets/icons/material_icons/explore';
+import {RestoreIcon} from '@/assets/icons/material_icons/restore';
+import {SettingsSharpIcon} from '@/assets/icons/material_icons/settings_sharp';
+import {UpdateIcon} from '@/assets/icons/material_icons/update';
 import Divider from '@/components/Divider';
 import PrayerTimesBox from '@/components/PrayerTimesBox';
 import {isRTL} from '@/i18n';
 
 import {navigate} from '@/navigation/root_navigation';
 
+import {CachedPrayerTimes} from '@/store/adhan_calc_cache';
 import {homeStore} from '@/store/home';
 import {settings} from '@/store/settings';
 
@@ -47,7 +49,7 @@ export function Home() {
     shallow,
   );
 
-  const [prayerTimes, setPrayerTimes] = useState<PrayerTimesHelper | undefined>(
+  const [prayerTimes, setPrayerTimes] = useState<CachedPrayerTimes | undefined>(
     undefined,
   );
 
@@ -89,14 +91,24 @@ export function Home() {
             <Text>{day.dateString}</Text>
           </HStack>
 
-          <Button
-            marginRight="-3"
-            variant="ghost"
-            onPress={() => {
-              navigate('Settings');
-            }}>
-            <SettingsSharpIcon size="2xl" />
-          </Button>
+          <HStack alignItems="center">
+            <Button
+              marginLeft="3"
+              variant="ghost"
+              onPress={() => {
+                navigate('QiblaFinder');
+              }}>
+              <ExploreIcon size="2xl" />
+            </Button>
+            <Button
+              marginRight="-3"
+              variant="ghost"
+              onPress={() => {
+                navigate('Settings');
+              }}>
+              <SettingsSharpIcon size="2xl" />
+            </Button>
+          </HStack>
         </HStack>
         <Divider
           borderColor="coolGray.300"
