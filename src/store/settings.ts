@@ -1,8 +1,7 @@
 import {produce} from 'immer';
 import {ColorMode} from 'native-base';
 import {useCallback} from 'react';
-// eslint-disable-next-line import/no-named-as-default
-import ReactNativeBlobUtil from 'react-native-blob-util';
+import {FileSystem} from 'react-native-file-access';
 import {useStore} from 'zustand';
 import {persist, createJSONStorage} from 'zustand/middleware';
 import {shallow} from 'zustand/shallow';
@@ -20,7 +19,7 @@ import type {AudioEntry} from '@/modules/media_player';
 import {CountryInfo, SearchResult} from '@/utils/geonames';
 import {PREFERRED_LOCALE} from '@/utils/locale';
 
-const SETTINGS_STORAGE_KEY = 'SETTINGS_STORAGE';
+export const SETTINGS_STORAGE_KEY = 'SETTINGS_STORAGE';
 
 export type SettingsStore = {
   /** an object that keeps track of dismissed alarms timestamp by their notification id */
@@ -45,8 +44,13 @@ export type SettingsStore = {
   LAST_APP_FOCUS_TIMESTAMP?: number;
   HIDDEN_PRAYERS: Array<Prayer>;
   HIDDEN_WIDGET_PRAYERS: Array<Prayer>;
-  SHOW_WIDGET: boolean;
   ADHAN_VOLUME: number;
+  // behavior related
+  VOLUME_BUTTON_STOPS_ADHAN: boolean;
+  // widget
+  SHOW_WIDGET: boolean;
+  SHOW_WIDGET_COUNTDOWN: boolean;
+  ADAPTIVE_WIDGETS: boolean;
   // to detect settings change
   CALC_SETTINGS_HASH: string;
   ALARM_SETTINGS_HASH: string;
@@ -106,8 +110,10 @@ export const settings = createStore<SettingsStore>()(
       LOCATION_CITY: undefined,
       HIDDEN_PRAYERS: [Prayer.Tahajjud],
       HIDDEN_WIDGET_PRAYERS: [Prayer.Sunset, Prayer.Midnight, Prayer.Tahajjud],
-      SHOW_WIDGET: false,
       ADHAN_VOLUME: 70,
+      SHOW_WIDGET: false,
+      SHOW_WIDGET_COUNTDOWN: false,
+      ADAPTIVE_WIDGETS: false,
       IS_24_HOUR_FORMAT: true,
       NUMBERING_SYSTEM: '',
       CALC_SETTINGS_HASH: '',
@@ -121,6 +127,7 @@ export const settings = createStore<SettingsStore>()(
       DEV_MODE: false,
       QIBLA_FINDER_UNDERSTOOD: false,
       QIBLA_FINDER_ORIENTATION_LOCKED: true,
+      VOLUME_BUTTON_STOPS_ADHAN: false,
 
       // adhan entry helper
       saveAdhanEntry: entry =>
@@ -146,7 +153,7 @@ export const settings = createStore<SettingsStore>()(
             if (fIndex !== -1) {
               draft.SAVED_ADHAN_AUDIO_ENTRIES.splice(fIndex, 1);
               if (typeof entry.filepath === 'string') {
-                ReactNativeBlobUtil.fs.unlink(entry.filepath).catch(err => {
+                FileSystem.unlink(entry.filepath).catch(err => {
                   console.error(err);
                 });
               }
@@ -190,7 +197,7 @@ export const settings = createStore<SettingsStore>()(
             if (fIndex !== -1) {
               draft.SAVED_USER_AUDIO_ENTRIES.splice(fIndex, 1);
               if (typeof entry.filepath === 'string') {
-                ReactNativeBlobUtil.fs.unlink(entry.filepath).catch(err => {
+                FileSystem.unlink(entry.filepath).catch(err => {
                   console.error(err);
                 });
               }

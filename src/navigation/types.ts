@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Home: undefined;
   Settings: undefined;
   FullscreenAlarm: {options: string};
+  GeneralSettings: undefined;
   DisplaySettings: undefined;
   LocationSettings: undefined;
   NotificationSettings: undefined;
@@ -18,6 +19,7 @@ export type RootStackParamList = {
   QiblaFinder: undefined;
   QiblaMap: undefined;
   QiblaCompass: undefined;
+  QadaCounter: undefined;
 };
 
 declare global {
@@ -38,6 +40,11 @@ const routeTranslations = {
   FullscreenAlarm: defineMessage({
     id: 'fullscreen_alarm',
     message: 'Playing Adhan',
+    comment: 'screen title',
+  }),
+  GeneralSettings: defineMessage({
+    id: 'general_settings',
+    message: 'General',
     comment: 'screen title',
   }),
   DisplaySettings: defineMessage({
@@ -101,6 +108,11 @@ const routeTranslations = {
   QiblaCompass: defineMessage({
     id: 'qibla_compass',
     message: 'Qibla Compass',
+  }),
+  QadaCounter: defineMessage({
+    id: 'qada_counter',
+    message: 'Qada Counter',
+    comment: 'Title of the page where you can count your Qada prayers and fast',
   }),
 } as Record<string, MessageDescriptor>;
 

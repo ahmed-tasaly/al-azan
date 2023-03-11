@@ -38,6 +38,8 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 * Qibla finder
 
+* Qada counter
+
 * Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German
 
 ## Screenshots
@@ -117,7 +119,7 @@ Translation to other languages has been done by these awesome people:
 
 React-native community members.
 
-[Translation.io](https://translation.io/) (Lingui.js) for providing free services for open source projects.
+[Translation.io](https://translation.io/) (Lingui.js) for providing free translation services for open source projects.
 
 [Geonames.org](https://www.geonames.org/) for providing search api for geocoding.
 
