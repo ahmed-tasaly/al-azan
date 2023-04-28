@@ -1,6 +1,7 @@
 import {Box, FlatList} from 'native-base';
 import {memo, useCallback, useEffect} from 'react';
 import {useStore} from 'zustand';
+import {shallow} from 'zustand/shallow';
 import SettingsListItem from './settings_list_item';
 import {AlarmIcon} from '@/assets/icons/material_icons/alarm';
 import {BatteryChargingIcon} from '@/assets/icons/material_icons/battery_charging';
@@ -10,7 +11,7 @@ import {DevModeIcon} from '@/assets/icons/material_icons/dev_mode';
 import {ExploreIcon} from '@/assets/icons/material_icons/explore';
 import {InfoIcon} from '@/assets/icons/material_icons/info';
 import {NotificationsActiveIcon} from '@/assets/icons/material_icons/notifications_active';
-import {TuneIcon} from '@/assets/icons/material_icons/tune';
+import {SaveIcon} from '@/assets/icons/material_icons/save';
 import {VolumeUpIcon} from '@/assets/icons/material_icons/volume_up';
 import {WidgetIcon} from '@/assets/icons/material_icons/widget';
 import {RootStackParamList} from '@/navigation/types';
@@ -33,8 +34,8 @@ type ScreenListItem = {
 
 const settingsScreenList: ScreenListItem[] = [
   {
-    name: 'GeneralSettings',
-    icon: TuneIcon,
+    name: 'BackupSettings',
+    icon: SaveIcon,
   },
   {
     name: 'DisplaySettings',
@@ -82,6 +83,14 @@ if (settings.getState().DEV_MODE) {
 }
 
 function Settings() {
+  const {calendarType, selectedAdhans} = useStore(
+    settings,
+    s => ({
+      calendarType: s.SELECTED_ARABIC_CALENDAR,
+      selectedAdhans: s.SELECTED_ADHAN_ENTRIES,
+    }),
+    shallow,
+  );
   const calcSettingsState = useStore(calcSettings, state => state);
   const alarmSettingsState = useStore(alarmSettings, state => state);
   const reminderSettingsState = useStore(reminderSettings, state => state);
@@ -95,20 +104,27 @@ function Settings() {
   );
 
   useEffect(() => {
-    const stateHash = sha256(JSON.stringify(calcSettingsState));
+    const stateHash = sha256(
+      JSON.stringify(calcSettingsState) +
+        calendarType +
+        JSON.stringify(selectedAdhans),
+    );
     if (calcSettingsHash !== stateHash) {
       setCalcSettingsHash(stateHash);
-      settings.setState({DELIVERED_ALARM_TIMESTAMPS: {}});
-      clearCache();
     }
-  }, [calcSettingsState, calcSettingsHash, setCalcSettingsHash]);
+  }, [
+    calcSettingsState,
+    calcSettingsHash,
+    setCalcSettingsHash,
+    calendarType,
+    selectedAdhans,
+  ]);
 
   useEffect(() => {
     const stateHash = sha256(JSON.stringify(alarmSettingsState));
     if (alarmSettingsHash !== stateHash) {
       askPermissions().then(() => {
         setAlarmSettingsHash(stateHash);
-        settings.setState({DELIVERED_ALARM_TIMESTAMPS: {}});
       });
     }
   }, [alarmSettingsState, alarmSettingsHash, setAlarmSettingsHash]);
@@ -120,14 +136,13 @@ function Settings() {
     }
   }, [reminderSettingsHash, reminderSettingsState, setReminderSettingsHash]);
 
-  useEffect(() => {
-    updateWidgets();
-    setNextAdhan();
-  }, [calcSettingsHash, alarmSettingsHash]);
-
   useNoInitialEffect(() => {
+    settings.setState({DELIVERED_ALARM_TIMESTAMPS: {}});
+    clearCache();
+    setNextAdhan();
     setReminders({noToast: true, force: true});
-  }, [calcSettingsHash]);
+    updateWidgets();
+  }, [calcSettingsHash, alarmSettingsHash]);
 
   const renderItem = useCallback(
     ({item}: {item: ScreenListItem}) => <SettingsListItem item={item} />,

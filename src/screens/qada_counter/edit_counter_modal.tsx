@@ -71,12 +71,15 @@ export function EditCounterModal({
   }, [counterState, onDelete]);
 
   const onCountChanged = useCallback(
-    (num: number) =>
+    (num: number) => {
       setDraftCounterState({
         ...draftCounterState,
+        lastCount: counterState?.count !== undefined ? counterState.count : num,
         count: num,
-      }),
-    [draftCounterState],
+        lastModified: Date.now(),
+      });
+    },
+    [draftCounterState, counterState],
   );
 
   return (

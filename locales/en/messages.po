@@ -25,6 +25,10 @@ msgstr "15 min"
 msgid "30 min"
 msgstr "30 min"
 
+#: src/screens/settings_calculation/index.tsx:86
+msgid "30 minutes is added to Isha time during Ramadan in this method"
+msgstr "30 minutes is added to Isha time during Ramadan in this method"
+
 #: src/screens/settings_reminders/edit_reminder_modal.tsx:130
 msgid "5 min"
 msgstr "5 min"
@@ -37,11 +41,11 @@ msgstr "60 min"
 msgid "90 min"
 msgstr "90 min"
 
-#: src/constants/notification.ts:20
+#: src/constants/notification.ts:23
 msgid "ADHAN_CHANNEL_NAME"
 msgstr "Adhan"
 
-#: src/screens/settings_calculation/index.tsx:182
+#: src/screens/settings_calculation/index.tsx:187
 msgid "Abyad"
 msgstr "Abyad"
 
@@ -49,15 +53,29 @@ msgstr "Abyad"
 msgid "Accuracy"
 msgstr "Accuracy"
 
-#: src/components/audio_picker.tsx:367
-#: src/screens/settings_adhan/index.tsx:186
+#: fastlane/update/update.ts:41
+#: website/src/_includes/home.tsx:79
+msgid "Ad-Free"
+msgstr "Ad-Free"
+
+#: src/screens/settings_battery_optimizations/adaptive_charging_toggle.tsx:15
+msgid "Adaptive Charging"
+msgstr "Adaptive Charging"
+
+#: src/components/audio_picker.tsx:399
+#: src/components/new_audio_dialog.tsx:60
+#: src/screens/settings_adhan/index.tsx:236
 msgid "Add"
 msgstr "Add"
 
-#: src/screens/settings_adhan/index.tsx:159
-#: src/screens/settings_adhan/index.tsx:164
+#: src/screens/settings_adhan/index.tsx:209
+#: src/screens/settings_adhan/index.tsx:214
 msgid "Add Custom Adhan"
 msgstr "Add Custom Adhan"
+
+#: src/components/new_audio_dialog.tsx:40
+msgid "Add Custom Audio"
+msgstr "Add Custom Audio"
 
 #: src/screens/settings_reminders/index.tsx:66
 msgid "Add Reminder"
@@ -67,51 +85,76 @@ msgstr "Add Reminder"
 msgid "Adhan"
 msgstr "Adhan"
 
-#: src/screens/settings_adhan/index.tsx:97
+#: src/screens/settings_adhan/index.tsx:137
 msgid "Adhan audio file is not downloaded yet"
 msgstr "Adhan audio file is not downloaded yet"
 
-#: src/screens/settings_calculation/index.tsx:88
+#: src/screens/settings_calculation/index.tsx:93
 msgid "Adjustments"
 msgstr "Adjustments"
 
-#: src/screens/settings_calculation/index.tsx:99
+#: src/components/advanced_custom_adhan_toggle.tsx:31
+#: src/screens/settings_battery_optimizations/index.tsx:108
+msgid "Advanced"
+msgstr "Advanced"
+
+#: src/screens/settings_calculation/index.tsx:104
 msgid "Advanced Calculation Settings"
 msgstr "Advanced Calculation Settings"
 
-#: src/screens/settings_calculation/index.tsx:181
+#: src/screens/settings_calculation/index.tsx:186
 msgid "Ahmer"
 msgstr "Ahmer"
 
-#: src/utils/permission.ts:124
+#. Don't translate Al-Azan name
+#: website/src/_includes/home.tsx:36
+#: website/src/_includes/privacy-policy.tsx:13
+msgid "Al-Azan"
+msgstr "Al-Azan"
+
+#. Max. 30 characters
+#: fastlane/update/update.ts:27
+msgid "Al-Azan - Prayer Times"
+msgstr "Al-Azan - Prayer Times"
+
+#: website/src/_includes/privacy-policy.tsx:61
+msgid "Al-Azan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details."
+msgstr "Al-Azan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details."
+
+#: website/src/_includes/privacy-policy.tsx:56
+msgid "Al-Azan is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (v3.0) as published by the Free Software Foundation."
+msgstr "Al-Azan is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License (v3.0) as published by the Free Software Foundation."
+
+#: src/utils/permission.ts:136
 msgid "Alarms Permission"
 msgstr "Alarms Permission"
 
-#: src/screens/settings_adhan/index.tsx:56
+#: website/src/_includes/privacy-policy.tsx:39
+msgid "All data provided to Al-Azan is only stored locally in your device. Your data is not uploaded anywhere. The developers of Al-Azan do not have access to it. Your data is not shared with any third parties. Al-Azan does not include any advertisement libraries or any 3rd party tracking (analytics) code, such as Google Analytics or Facebook SDK."
+msgstr "All data provided to Al-Azan is only stored locally in your device. Your data is not uploaded anywhere. The developers of Al-Azan do not have access to it. Your data is not shared with any third parties. Al-Azan does not include any advertisement libraries or any 3rd party tracking (analytics) code, such as Google Analytics or Facebook SDK."
+
+#: src/screens/settings_adhan/index.tsx:76
 msgid "An error occured while playing the current track"
 msgstr "An error occured while playing the current track"
 
-#: src/screens/settings_display/number_format_settings.tsx:30
-msgid "Arabic"
-msgstr "Arabic"
-
-#: src/screens/settings_display/number_format_settings.tsx:31
-msgid "Arabic/Persian"
-msgstr "Arabic/Persian"
+#: fastlane/update/update.ts:39
+#: website/src/_includes/home.tsx:77
+msgid "App features"
+msgstr "App features"
 
 #: src/screens/settings_adhan/adhan_list_item.tsx:103
 msgid "Are you sure you want to delete \"{0}\" ?"
 msgstr "Are you sure you want to delete \"{0}\" ?"
 
-#: src/utils/dialogs.ts:9
+#: src/utils/dialogs.ts:10
 msgid "Are you sure you want to delete \"{itemName}\" ?"
 msgstr "Are you sure you want to delete \"{itemName}\" ?"
 
-#: src/utils/dialogs.ts:10
+#: src/utils/dialogs.ts:11
 msgid "Are you sure you want to delete this?"
 msgstr "Are you sure you want to delete this?"
 
-#: src/screens/settings_calculation/index.tsx:126
+#: src/screens/settings_calculation/index.tsx:131
 msgid "Asr Calculation"
 msgstr "Asr Calculation"
 
@@ -120,15 +163,18 @@ msgid "At least one prayer time must be shown"
 msgstr "At least one prayer time must be shown"
 
 #: src/intro/intro.tsx:116
+#: src/screens/settings_calculation/calendar_settings.tsx:44
+#: src/utils/ramadan.ts:74
+#: src/utils/ramadan.ts:95
+#: website/src/_includes/privacy-policy.tsx:48
 msgid "Attention"
 msgstr "Attention"
 
 #: src/intro/intro.tsx:39
-#: src/screens/settings_battery_optimizations/index.tsx:41
 msgid "Battery Optimization"
 msgstr "Battery Optimization"
 
-#: src/screens/settings_calculation/index.tsx:69
+#: src/screens/settings_calculation/index.tsx:70
 msgid "Calculating Adhan has many different methods. Each method provides different results. It is your responsibility to search and use the right method."
 msgstr "Calculating Adhan has many different methods. Each method provides different results. It is your responsibility to search and use the right method."
 
@@ -136,47 +182,48 @@ msgstr "Calculating Adhan has many different methods. Each method provides diffe
 msgid "Calculation"
 msgstr "Calculation"
 
-#: src/screens/settings_calculation/index.tsx:71
+#: src/screens/settings_calculation/index.tsx:72
 msgid "Calculation Method"
 msgstr "Calculation Method"
 
-#: src/screens/settings_display/calendar_settings.tsx:21
+#: src/screens/settings_calculation/calendar_settings.tsx:21
 msgid "Calendar"
 msgstr "Calendar"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:164
-#: src/screens/settings_adhan/index.tsx:183
+#: src/components/new_audio_dialog.tsx:57
+#: src/screens/qada_counter/edit_counter_modal.tsx:167
+#: src/screens/settings_adhan/index.tsx:233
 #: src/screens/settings_reminders/edit_reminder_modal.tsx:245
 #: src/tasks/set_pre_alarm.ts:57
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/screens/settings_calculation/index.tsx:128
+#: src/screens/settings_calculation/index.tsx:133
 msgid "Choose Asr Calculation Madhab"
 msgstr "Choose Asr Calculation Madhab"
 
-#: src/screens/settings_calculation/index.tsx:74
+#: src/screens/settings_calculation/index.tsx:75
 msgid "Choose Calculation Method"
 msgstr "Choose Calculation Method"
 
-#: src/screens/settings_calculation/index.tsx:106
+#: src/screens/settings_calculation/index.tsx:111
 msgid "Choose High Latitude Setting"
 msgstr "Choose High Latitude Setting"
 
-#: src/screens/settings_display/language_settings.tsx:82
+#: src/screens/settings_display/language_settings.tsx:104
 msgid "Choose Language"
 msgstr "Choose Language"
 
-#: src/screens/settings_calculation/index.tsx:144
+#: src/screens/settings_calculation/index.tsx:149
 msgid "Choose Polar Resolution"
 msgstr "Choose Polar Resolution"
 
-#: src/screens/settings_calculation/index.tsx:173
+#: src/screens/settings_calculation/index.tsx:178
 msgid "Choose Shafaq method"
 msgstr "Choose Shafaq method"
 
+#: src/screens/settings_calculation/calendar_settings.tsx:26
 #: src/screens/settings_display/calendar_secondary_settings.tsx:26
-#: src/screens/settings_display/calendar_settings.tsx:26
 msgid "Choose calendar type"
 msgstr "Choose calendar type"
 
@@ -184,20 +231,20 @@ msgstr "Choose calendar type"
 msgid "Choose numbering system"
 msgstr "Choose numbering system"
 
-#: src/screens/settings_location/index.tsx:231
-#: src/screens/settings_location/index.tsx:233
+#: src/screens/settings_location/index.tsx:235
+#: src/screens/settings_location/index.tsx:237
 msgid "City/Area"
 msgstr "City/Area"
 
-#: src/screens/settings_location/index.tsx:122
+#: src/screens/settings_location/index.tsx:123
 msgid "Clipboard data does not contain coordinates"
 msgstr "Clipboard data does not contain coordinates"
 
-#: src/screens/settings_calculation/index.tsx:155
+#: src/screens/settings_calculation/index.tsx:160
 msgid "Closest City"
 msgstr "Closest City"
 
-#: src/screens/settings_calculation/index.tsx:159
+#: src/screens/settings_calculation/index.tsx:164
 msgid "Closest Date"
 msgstr "Closest Date"
 
@@ -209,25 +256,25 @@ msgstr "Compass Lock"
 msgid "Compass sensor unavailable"
 msgstr "Compass sensor unavailable"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:163
+#: src/screens/qada_counter/edit_counter_modal.tsx:166
 #: src/screens/settings_reminders/edit_reminder_modal.tsx:244
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/screens/settings_location/index.tsx:142
+#: src/screens/settings_location/index.tsx:146
 msgid "Coordinates updated"
 msgstr "Coordinates updated"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:141
+#: src/screens/qada_counter/edit_counter_modal.tsx:144
 msgid "Count"
 msgstr "Count"
 
-#: src/screens/settings_location/index.tsx:208
-#: src/screens/settings_location/index.tsx:210
+#: src/screens/settings_location/index.tsx:212
+#: src/screens/settings_location/index.tsx:214
 msgid "Country"
 msgstr "Country"
 
-#: src/screens/general/export_settings.tsx:27
+#: src/screens/settings_backup/export_settings.tsx:27
 msgid "Custom sounds and muezzins will not be exported"
 msgstr "Custom sounds and muezzins will not be exported"
 
@@ -235,10 +282,10 @@ msgstr "Custom sounds and muezzins will not be exported"
 msgid "Dark"
 msgstr "Dark"
 
-#: src/components/audio_picker.tsx:58
-#: src/components/audio_picker.tsx:87
-#: src/screens/general/import_settings.tsx:54
-#: src/screens/settings_display/calendar_settings.tsx:30
+#: src/components/audio_picker.tsx:73
+#: src/components/audio_picker.tsx:108
+#: src/screens/settings_backup/import_settings.tsx:55
+#: src/screens/settings_calculation/calendar_settings.tsx:30
 #: src/screens/settings_display/number_format_settings.tsx:28
 msgid "Default"
 msgstr "Default"
@@ -246,11 +293,11 @@ msgstr "Default"
 #: src/components/audio_picker_item.tsx:63
 #: src/screens/settings_adhan/adhan_list_item.tsx:102
 #: src/screens/settings_adhan/adhan_list_item.tsx:200
-#: src/utils/dialogs.ts:7
+#: src/utils/dialogs.ts:8
 msgid "Delete"
 msgstr "Delete"
 
-#: src/screens/settings_battery_optimizations/index.tsx:44
+#: src/screens/settings_battery_optimizations/index.tsx:46
 msgid "Depending on your device and android version, Sometimes your device may kill the app in the background to save battery. This can prevent alarms/notifications from being delivered."
 msgstr "Depending on your device and android version, Sometimes your device may kill the app in the background to save battery. This can prevent alarms/notifications from being delivered."
 
@@ -258,20 +305,20 @@ msgstr "Depending on your device and android version, Sometimes your device may 
 msgid "Deselect as Fajr Adhan"
 msgstr "Deselect as Fajr Adhan"
 
-#: src/components/audio_picker.tsx:133
+#: src/components/audio_picker.tsx:98
 msgid "Device sounds"
 msgstr "Device sounds"
 
-#: src/screens/settings_battery_optimizations/index.tsx:52
+#: src/screens/settings_battery_optimizations/index.tsx:54
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/screens/qibla_finder/index.tsx:108
+#: src/screens/qibla_finder/index.tsx:87
 msgid "Disclaimer"
 msgstr "Disclaimer"
 
 #: src/screens/fullscreen_alarm/index.tsx:137
-#: src/tasks/set_alarm.ts:83
+#: src/tasks/set_alarm.ts:95
 msgid "Dismiss"
 msgstr "Dismiss"
 
@@ -279,17 +326,31 @@ msgstr "Dismiss"
 msgid "Diyanet İşleri Başkanlığı, Turkey"
 msgstr "Diyanet İşleri Başkanlığı, Turkey"
 
-#: src/utils/permission.ts:41
-#: src/utils/permission.ts:128
-#: src/utils/permission.ts:160
+#: fastlane/update/update.ts:43
+#: website/src/_includes/home.tsx:80
+msgid "Doesn't use any kind of trackers"
+msgstr "Doesn't use any kind of trackers"
+
+#: src/utils/permission.ts:42
+#: src/utils/permission.ts:140
+#: src/utils/permission.ts:172
 msgid "Don't ask again"
 msgstr "Don't ask again"
+
+#: src/utils/ramadan.ts:83
+#: src/utils/ramadan.ts:110
+msgid "Don't show again"
+msgstr "Don't show again"
 
 #: src/intro/intro.tsx:99
 msgid "Done"
 msgstr "Done"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:107
+#: src/screens/settings_display/number_format_settings.tsx:30
+msgid "Eastern Arabic"
+msgstr "Eastern Arabic"
+
+#: src/screens/qada_counter/edit_counter_modal.tsx:110
 msgid "Edit Counter"
 msgstr "Edit Counter"
 
@@ -301,19 +362,19 @@ msgstr "Edit Reminder"
 msgid "Egyptian General Survey Authority"
 msgstr "Egyptian General Survey Authority"
 
-#: src/screens/settings_battery_optimizations/index.tsx:52
+#: src/screens/settings_battery_optimizations/index.tsx:54
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/screens/settings_location/index.tsx:128
+#: src/screens/settings_location/index.tsx:129
 msgid "Error getting clipboard data"
 msgstr "Error getting clipboard data"
 
-#: src/screens/settings_location/index.tsx:221
+#: src/screens/settings_location/index.tsx:225
 msgid "Error in loading countries"
 msgstr "Error in loading countries"
 
-#: src/screens/settings_location/index.tsx:247
+#: src/screens/settings_location/index.tsx:251
 msgid "Error in loading search results"
 msgstr "Error in loading search results"
 
@@ -321,12 +382,12 @@ msgstr "Error in loading search results"
 msgid "Error while downloading audio"
 msgstr "Error while downloading audio"
 
-#: src/screens/qibla_finder_compass/index.tsx:78
-#: src/screens/settings_location/index.tsx:146
+#: src/screens/qibla_finder_compass/index.tsx:82
+#: src/screens/settings_location/index.tsx:150
 msgid "Error while getting coordinates"
 msgstr "Error while getting coordinates"
 
-#: src/screens/general/import_settings.tsx:71
+#: src/screens/settings_backup/import_settings.tsx:72
 msgid "Error: failed to open file"
 msgstr "Error: failed to open file"
 
@@ -334,15 +395,15 @@ msgstr "Error: failed to open file"
 msgid "Ethiopic"
 msgstr "Ethiopic"
 
-#: src/screens/general/export_settings.tsx:25
+#: src/screens/settings_backup/export_settings.tsx:25
 msgid "Export app data"
 msgstr "Export app data"
 
-#: src/screens/general/export_settings.tsx:26
+#: src/screens/settings_backup/export_settings.tsx:26
 msgid "Export data"
 msgstr "Export data"
 
-#: src/screens/settings_location/index.tsx:193
+#: src/screens/settings_location/index.tsx:197
 msgid "Find My Location"
 msgstr "Find My Location"
 
@@ -350,13 +411,13 @@ msgstr "Find My Location"
 msgid "Friday"
 msgstr "Friday"
 
-#: src/screens/settings_calculation/index.tsx:178
+#: src/screens/settings_calculation/index.tsx:183
 msgid "General (default)"
 msgstr "General (default)"
 
-#: src/screens/qibla_finder_compass/index.tsx:97
-#: src/screens/qibla_finder_compass/index.tsx:163
-#: src/screens/settings_location/index.tsx:197
+#: src/screens/qibla_finder_compass/index.tsx:107
+#: src/screens/qibla_finder_compass/index.tsx:168
+#: src/screens/settings_location/index.tsx:201
 msgid "Getting coordinates"
 msgstr "Getting coordinates"
 
@@ -372,7 +433,7 @@ msgstr "Gregorian"
 msgid "Gulf region"
 msgstr "Gulf region"
 
-#: src/screens/settings_calculation/index.tsx:136
+#: src/screens/settings_calculation/index.tsx:141
 msgid "Hanafi"
 msgstr "Hanafi"
 
@@ -386,77 +447,118 @@ msgstr "Hidden?"
 msgid "Hide Prayer Times"
 msgstr "Hide Prayer Times"
 
+#: fastlane/update/update.ts:59
+#: website/src/_includes/home.tsx:96
+msgid "Hide times you don't need"
+msgstr "Hide times you don't need"
+
 #: src/screens/qibla_finder_compass/accuracy_indicator.tsx:26
 msgid "High"
 msgstr "High"
 
-#: src/screens/settings_calculation/index.tsx:104
+#: src/screens/settings_calculation/index.tsx:109
 msgid "High Latitude"
 msgstr "High Latitude"
 
 #: src/screens/settings_about/index.tsx:34
+#: website/src/_data/navigation.ts:2
 msgid "Home"
 msgstr "Home"
 
-#: src/screens/qibla_finder/index.tsx:119
+#: fastlane/update/update.ts:63
+#: website/src/_includes/home.tsx:98
+msgid "Homescreen and notification Widgets"
+msgstr "Homescreen and notification Widgets"
+
+#: website/src/_includes/privacy-policy.tsx:43
+msgid "However, When using online services, such as searching for location coordinates by name or Qibla map, app may transmit minimum necessary data that may or may not uniquely identify you. Please keep this in mind while using the app."
+msgstr "However, When using online services, such as searching for location coordinates by name or Qibla map, app may transmit minimum necessary data that may or may not uniquely identify you. Please keep this in mind while using the app."
+
+#: src/screens/qibla_finder/index.tsx:98
 msgid "I Understand"
 msgstr "I Understand"
+
+#: src/constants/notification.ts:47
+msgid "IMPORTANT_CHANNEL_ID"
+msgstr "Important"
 
 #: src/screens/settings_notifications/notify_next_adhan_setting.tsx:22
 msgid "If enabled, when a notification is shown, it will contain info for the next prayer time"
 msgstr "If enabled, when a notification is shown, it will contain info for the next prayer time"
 
-#: src/screens/settings_battery_optimizations/index.tsx:100
+#: website/src/_includes/privacy-policy.tsx:49
+msgid "If you have activated “Backup & Reset” in your phone settings (Settings / Backup & Reset / Back up my data), you should be aware that Android itself (not Al-Azan) will periodically save a copy of your phone’s data in Google’s servers. This allows Android to recover your data in case your device gets damaged, or you purchase a new device. The developers of Al-Azan do not have access to this data."
+msgstr "If you have activated “Backup & Reset” in your phone settings (Settings / Backup & Reset / Back up my data), you should be aware that Android itself (not Al-Azan) will periodically save a copy of your phone’s data in Google’s servers. This allows Android to recover your data in case your device gets damaged, or you purchase a new device. The developers of Al-Azan do not have access to this data."
+
+#: src/screens/settings_battery_optimizations/index.tsx:103
 msgid "If you still had problem with app stopping after some time, please visit dontkillmyapp.com for more solutions."
 msgstr "If you still had problem with app stopping after some time, please visit dontkillmyapp.com for more solutions."
 
-#: src/screens/settings_battery_optimizations/index.tsx:47
+#: src/screens/settings_battery_optimizations/index.tsx:49
 msgid "If you want to make sure the app can work reliably, You have to disable power optimization for this app. You can open related settings using the button below."
 msgstr "If you want to make sure the app can work reliably, You have to disable power optimization for this app. You can open related settings using the button below."
 
-#: src/screens/general/import_settings.tsx:82
+#: src/screens/settings_battery_optimizations/adaptive_charging_toggle.tsx:19
+msgid "If your device has adaptive charging, like Google Pixel, and you don't want adhan or reminders to be recognized as an alarm, you can enable this option."
+msgstr "If your device has adaptive charging, like Google Pixel, and you don't want adhan or reminders to be recognized as an alarm, you can enable this option."
+
+#: src/screens/settings_backup/import_settings.tsx:83
 msgid "Import"
 msgstr "Import"
 
-#: src/screens/general/import_settings.tsx:80
+#: src/screens/settings_backup/import_settings.tsx:81
 msgid "Import app data"
 msgstr "Import app data"
 
-#: src/screens/general/import_settings.tsx:66
+#: src/screens/settings_backup/import_settings.tsx:67
 msgid "Import successful"
 msgstr "Import successful"
 
-#: src/screens/qibla_finder/index.tsx:52
+#: fastlane/update/update.ts:53
+#: website/src/_includes/home.tsx:90
+msgid "In addition to five daily prayers, it has settings for Sunrise, Sunset, Midnight and Night Prayer (Tahajjud)"
+msgstr "In addition to five daily prayers, it has settings for Sunrise, Sunset, Midnight and Night Prayer (Tahajjud)"
+
+#: src/screens/qibla_finder/index.tsx:31
 msgid "Info"
 msgstr "Info"
 
-#: src/screens/qibla_finder/index.tsx:69
+#: src/screens/qibla_finder/index.tsx:48
 msgid "Internet connection"
 msgstr "Internet connection"
 
-#: src/screens/qibla_finder/index.tsx:70
+#: src/screens/qibla_finder/index.tsx:49
 msgid "Internet connection is necessary for qibla map to work. Please enable your wifi or mobile data and try again."
 msgstr "Internet connection is necessary for qibla map to work. Please enable your wifi or mobile data and try again."
 
-#: src/screens/settings_display/calendar_settings.tsx:31
+#: fastlane/update/update.ts:69
+#: website/src/_includes/home.tsx:102
+msgid "Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German, Bosnian, Vietnamese"
+msgstr "Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German, Bosnian, Vietnamese"
+
+#: src/screens/settings_calculation/calendar_settings.tsx:31
 msgid "Islamic"
 msgstr "Islamic"
 
-#: src/screens/settings_display/calendar_settings.tsx:39
+#: src/screens/settings_calculation/calendar_settings.tsx:39
 msgid "Islamic (Saudi Arabia sighting)"
 msgstr "Islamic (Saudi Arabia sighting)"
 
-#: src/screens/settings_display/calendar_settings.tsx:33
+#: src/screens/settings_calculation/calendar_settings.tsx:33
 msgid "Islamic (Umm al-Qura)"
 msgstr "Islamic (Umm al-Qura)"
 
-#: src/screens/settings_display/calendar_settings.tsx:37
+#: src/screens/settings_calculation/calendar_settings.tsx:37
 msgid "Islamic (civil)"
 msgstr "Islamic (civil)"
 
-#: src/screens/settings_display/calendar_settings.tsx:36
+#: src/screens/settings_calculation/calendar_settings.tsx:36
 msgid "Islamic (tabular)"
 msgstr "Islamic (tabular)"
+
+#: src/utils/date.ts:319
+msgid "Just now"
+msgstr "Just now"
 
 #: src/adhan/calculation_methods.ts:118
 msgid "Kementrian Agama Republik Indonesia (KEMENAG)"
@@ -466,25 +568,21 @@ msgstr "Kementrian Agama Republik Indonesia (KEMENAG)"
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:123
+#: src/screens/qada_counter/edit_counter_modal.tsx:126
 #: src/screens/settings_reminders/edit_reminder_modal.tsx:105
 msgid "Label"
 msgstr "Label"
 
-#: src/screens/settings_display/language_settings.tsx:79
+#: src/screens/settings_display/language_settings.tsx:101
 msgid "Language"
 msgstr "Language"
 
-#: src/screens/settings_display/number_format_settings.tsx:29
-msgid "Latin"
-msgstr "Latin"
-
-#: src/screens/settings_location/index.tsx:272
-#: src/screens/settings_location/index.tsx:277
+#: src/screens/settings_location/index.tsx:276
+#: src/screens/settings_location/index.tsx:281
 msgid "Latitude"
 msgstr "Latitude"
 
-#: src/screens/settings_location/index.tsx:284
+#: src/screens/settings_location/index.tsx:288
 msgid "Latitude is invalid"
 msgstr "Latitude is invalid"
 
@@ -496,22 +594,30 @@ msgstr "License"
 msgid "Light"
 msgstr "Light"
 
+#: fastlane/update/update.ts:57
+msgid "Light and Dark theme"
+msgstr "Light and Dark theme"
+
+#: website/src/_includes/home.tsx:95
+msgid "Light/Dark theme"
+msgstr "Light/Dark theme"
+
 #: src/intro/intro.tsx:27
-#: src/screens/qibla_finder/index.tsx:28
-#: src/screens/qibla_finder_compass/index.tsx:148
+#: src/screens/qibla_finder_compass/index.tsx:153
+#: src/utils/dialogs.ts:35
 msgid "Location"
 msgstr "Location"
 
-#: src/screens/qibla_finder/index.tsx:37
+#: src/utils/dialogs.ts:44
 msgid "Location settings"
 msgstr "Location settings"
 
-#: src/screens/settings_location/index.tsx:288
-#: src/screens/settings_location/index.tsx:293
+#: src/screens/settings_location/index.tsx:292
+#: src/screens/settings_location/index.tsx:297
 msgid "Longitude"
 msgstr "Longitude"
 
-#: src/screens/settings_location/index.tsx:300
+#: src/screens/settings_location/index.tsx:304
 msgid "Longitude is invalid"
 msgstr "Longitude is invalid"
 
@@ -519,15 +625,20 @@ msgstr "Longitude is invalid"
 msgid "Low"
 msgstr "Low"
 
+#: fastlane/update/update.ts:55
+#: website/src/_includes/home.tsx:94
+msgid "Many options for Adhan (اذان) calculation"
+msgstr "Many options for Adhan (اذان) calculation"
+
 #: src/screens/qibla_finder_compass/accuracy_indicator.tsx:22
 msgid "Medium"
 msgstr "Medium"
 
-#: src/screens/settings_calculation/index.tsx:112
+#: src/screens/settings_calculation/index.tsx:117
 msgid "Middle of the Night"
 msgstr "Middle of the Night"
 
-#: src/screens/qibla_finder/index.tsx:78
+#: src/screens/qibla_finder/index.tsx:57
 msgid "Mobile Data"
 msgstr "Mobile Data"
 
@@ -543,12 +654,14 @@ msgstr "Moonsighting Committee"
 msgid "Muslim World League"
 msgstr "Muslim World League"
 
-#: src/screens/settings_adhan/index.tsx:167
-#: src/screens/settings_adhan/index.tsx:170
+#: src/components/new_audio_dialog.tsx:43
+#: src/components/new_audio_dialog.tsx:46
+#: src/screens/settings_adhan/index.tsx:217
+#: src/screens/settings_adhan/index.tsx:220
 msgid "Name"
 msgstr "Name"
 
-#: src/screens/qada_counter/edit_counter_modal.tsx:107
+#: src/screens/qada_counter/edit_counter_modal.tsx:110
 msgid "New Counter"
 msgstr "New Counter"
 
@@ -557,9 +670,9 @@ msgid "New Reminder"
 msgstr "New Reminder"
 
 #: src/intro/intro.tsx:98
-#: src/screens/settings_dev/index.tsx:33
-#: src/tasks/set_next_adhan.ts:81
-#: src/tasks/set_next_adhan.ts:121
+#: src/screens/settings_dev/index.tsx:35
+#: src/tasks/set_next_adhan.ts:82
+#: src/tasks/set_next_adhan.ts:122
 msgid "Next"
 msgstr "Next"
 
@@ -568,7 +681,7 @@ msgid "Next Day"
 msgstr "Next Day"
 
 #: src/screens/settings_adhan/adhan_list_item.tsx:108
-#: src/utils/dialogs.ts:13
+#: src/utils/dialogs.ts:14
 msgid "No"
 msgstr "No"
 
@@ -576,26 +689,26 @@ msgstr "No"
 msgid "No Data"
 msgstr "No Data"
 
-#: src/components/audio_picker.tsx:383
+#: src/components/audio_picker.tsx:415
 #: src/components/AutocompleteInput.tsx:140
 msgid "No Results"
 msgstr "No Results"
 
-#: src/screens/settings_calculation/index.tsx:110
+#: src/screens/settings_calculation/index.tsx:115
 msgid "None (Automatic)"
 msgstr "None (Automatic)"
 
-#: src/utils/permission.ts:133
+#: src/utils/permission.ts:145
 msgid "Not now"
 msgstr "Not now"
 
-#: src/screens/qibla_finder/index.tsx:111
+#: src/screens/qibla_finder/index.tsx:90
 msgid "Note that due to software and hardware errors, Qibla direction shown by this app, particularly in compass mode, can be wrong."
 msgstr "Note that due to software and hardware errors, Qibla direction shown by this app, particularly in compass mode, can be wrong."
 
-#: src/components/audio_picker.tsx:58
-#: src/components/audio_picker.tsx:87
-#: src/screens/general/import_settings.tsx:54
+#: src/components/audio_picker.tsx:73
+#: src/components/audio_picker.tsx:108
+#: src/screens/settings_backup/import_settings.tsx:55
 #: src/screens/settings_notifications/notification_setting.tsx:239
 #: src/screens/settings_notifications/notification_setting.tsx:322
 msgid "Notification"
@@ -605,7 +718,7 @@ msgstr "Notification"
 msgid "Notification & Sound"
 msgstr "Notification & Sound"
 
-#: src/utils/permission.ts:37
+#: src/utils/permission.ts:38
 msgid "Notifications Permission"
 msgstr "Notifications Permission"
 
@@ -613,15 +726,15 @@ msgstr "Notifications Permission"
 msgid "Numbering system"
 msgstr "Numbering system"
 
-#: src/screens/qibla_finder/index.tsx:32
-#: src/screens/qibla_finder/index.tsx:56
-#: src/screens/qibla_finder/index.tsx:73
-#: src/utils/permission.ts:47
-#: src/utils/permission.ts:166
+#: src/screens/qibla_finder/index.tsx:35
+#: src/screens/qibla_finder/index.tsx:52
+#: src/utils/dialogs.ts:39
+#: src/utils/permission.ts:48
+#: src/utils/permission.ts:178
 msgid "Okay"
 msgstr "Okay"
 
-#: src/utils/permission.ts:125
+#: src/utils/permission.ts:137
 msgid "On Android 12 and newer, the app also needs alarms permission to work properly, so you must allow this as well."
 msgstr "On Android 12 and newer, the app also needs alarms permission to work properly, so you must allow this as well."
 
@@ -629,7 +742,7 @@ msgstr "On Android 12 and newer, the app also needs alarms permission to work pr
 msgid "Once"
 msgstr "Once"
 
-#: src/screens/settings_calculation/index.tsx:116
+#: src/screens/settings_calculation/index.tsx:121
 msgid "One-Seventh of the Night"
 msgstr "One-Seventh of the Night"
 
@@ -642,65 +755,123 @@ msgstr "Only once?"
 msgid "Only six items can be shown at the same time"
 msgstr "Only six items can be shown at the same time"
 
-#: src/screens/settings_battery_optimizations/index.tsx:60
+#: src/screens/settings_battery_optimizations/index.tsx:62
 msgid "Open Battery Optimization Settings"
 msgstr "Open Battery Optimization Settings"
 
-#: src/screens/settings_battery_optimizations/index.tsx:91
+#: src/screens/settings_battery_optimizations/index.tsx:93
 msgid "Open Power Manager Settings"
 msgstr "Open Power Manager Settings"
+
+#: fastlane/update/update.ts:71
+#: website/src/_includes/home.tsx:107
+msgid "Open source repository"
+msgstr "Open source repository"
+
+#: fastlane/update/update.ts:45
+#: website/src/_includes/home.tsx:81
+msgid "Open-source"
+msgstr "Open-source"
 
 #: src/screens/settings_reminders/edit_reminder_modal.tsx:210
 msgid "Options"
 msgstr "Options"
 
-#: src/constants/notification.ts:24
+#: src/constants/notification.ts:27
 msgid "PRE_ADHAN_CHANNEL_NAME"
 msgstr "Upcoming adhan"
 
-#: src/constants/notification.ts:40
+#: src/constants/notification.ts:43
 msgid "PRE_REMINDER_CHANNEL_NAME"
 msgstr "Upcoming reminder"
 
-#: src/screens/settings_location/index.tsx:328
+#: src/screens/settings_location/index.tsx:332
 msgid "Paste"
 msgstr "Paste"
 
-#: src/utils/permission.ts:156
+#: src/screens/settings_display/number_format_settings.tsx:31
+msgid "Persian"
+msgstr "Persian"
+
+#: src/utils/permission.ts:168
 msgid "Phone State Permission"
 msgstr "Phone State Permission"
 
-#: src/screens/settings_calculation/index.tsx:141
+#: src/utils/dialogs.ts:36
+msgid "Please enable location service"
+msgstr "Please enable location service"
+
+#: src/screens/settings_battery_optimizations/adaptive_charging_toggle.tsx:22
+msgid "Please note that enabling this option may cause adhan and reminders to fire with a delay or not at all in some cases. Enable this with caution."
+msgstr "Please note that enabling this option may cause adhan and reminders to fire with a delay or not at all in some cases. Enable this with caution."
+
+#: src/screens/settings_calculation/index.tsx:146
 msgid "Polar Resolution"
 msgstr "Polar Resolution"
 
-#: src/screens/settings_battery_optimizations/index.tsx:65
+#: src/screens/settings_battery_optimizations/index.tsx:67
 msgid "Power Manager"
 msgstr "Power Manager"
+
+#: website/src/_includes/home.tsx:38
+msgid "Prayer Times"
+msgstr "Prayer Times"
 
 #: src/screens/home/index.tsx:138
 msgid "Prev Day"
 msgstr "Prev Day"
 
+#: website/src/_data/navigation.ts:5
+#: website/src/_includes/privacy-policy.tsx:19
+#: website/src/_includes/privacy-policy.tsx:37
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#. Max. 80 characters
+#: fastlane/update/update.ts:16
+#: website/src/_includes/home.tsx:17
+#: website/src/_includes/privacy-policy.tsx:24
+msgid "Privacy-first open-source muslim Adhan (islamic prayer times) and qibla app"
+msgstr "Privacy-first open-source muslim Adhan (islamic prayer times) and qibla app"
+
+#: fastlane/update/update.ts:67
+#: website/src/_includes/home.tsx:100
+msgid "Qada counter"
+msgstr "Qada counter"
+
 #: src/adhan/calculation_methods.ts:76
 msgid "Qatar"
 msgstr "Qatar"
 
-#: src/screens/qibla_finder_compass/index.tsx:139
+#: src/screens/qibla_finder_compass/index.tsx:144
+#: website/src/_includes/home.tsx:38
 msgid "Qibla"
 msgstr "Qibla"
 
-#: src/screens/qibla_finder/index.tsx:29
+#: fastlane/update/update.ts:65
+#: website/src/_includes/home.tsx:99
+msgid "Qibla finder"
+msgstr "Qibla finder"
+
+#: src/screens/qibla_finder/index.tsx:24
 msgid "Qibla finder needs location service. If not enabled, location from app settings will be used."
 msgstr "Qibla finder needs location service. If not enabled, location from app settings will be used."
 
-#: src/screens/qibla_finder/index.tsx:53
+#: src/screens/qibla_finder/index.tsx:32
 msgid "Qibla map is currently unavailable in F-Droid builds. It may become available in future updates."
 msgstr "Qibla map is currently unavailable in F-Droid builds. It may become available in future updates."
 
-#: src/constants/notification.ts:36
+#: src/constants/notification.ts:39
 msgid "REMINDER_CHANNEL_NAME"
 msgstr "Reminder"
+
+#: src/utils/ramadan.ts:61
+msgid "Ramadan is ending,"
+msgstr "Ramadan is ending,"
+
+#: src/utils/ramadan.ts:57
+msgid "Ramadan is near,"
+msgstr "Ramadan is near,"
 
 #: src/adhan/calculation_methods.ts:52
 msgid "Referred to as the ISNA method"
@@ -710,13 +881,18 @@ msgstr "Referred to as the ISNA method"
 msgid "Remaining till"
 msgstr "Remaining till"
 
+#: src/utils/ramadan.ts:78
+#: src/utils/ramadan.ts:104
+msgid "Remind me next year"
+msgstr "Remind me next year"
+
 #: src/screens/fullscreen_alarm/index.tsx:71
-#: src/tasks/set_reminder.ts:80
-#: src/tasks/set_reminder.ts:106
+#: src/tasks/set_reminder.ts:85
+#: src/tasks/set_reminder.ts:114
 msgid "Reminder"
 msgstr "Reminder"
 
-#: src/components/audio_picker.tsx:92
+#: src/components/audio_picker.tsx:113
 msgid "Repeat"
 msgstr "Repeat"
 
@@ -724,7 +900,7 @@ msgstr "Repeat"
 msgid "Required settings are incomplete. For app to show prayer times, You have to configure it from settings later."
 msgstr "Required settings are incomplete. For app to show prayer times, You have to configure it from settings later."
 
-#: src/screens/settings_battery_optimizations/index.tsx:81
+#: src/screens/settings_battery_optimizations/index.tsx:83
 msgid ""
 "Samsung devices have their own custom Power Manager called \"Device Care\".\n"
 "After pressing the button below, You will be navigated to the Battery menu of Device Care.\n"
@@ -740,7 +916,7 @@ msgstr ""
 msgid "Saturday"
 msgstr "Saturday"
 
-#: src/components/audio_picker.tsx:361
+#: src/components/audio_picker.tsx:393
 #: src/components/AutocompleteInput.tsx:110
 msgid "Search"
 msgstr "Search"
@@ -753,15 +929,31 @@ msgstr "Secondary Calendar"
 msgid "Select as Fajr Adhan"
 msgstr "Select as Fajr Adhan"
 
-#: src/screens/settings_adhan/index.tsx:176
+#: fastlane/update/update.ts:51
+#: website/src/_includes/home.tsx:88
+msgid "Select different Adhan audio for Fajr namaz"
+msgstr "Select different Adhan audio for Fajr namaz"
+
+#: src/components/new_audio_dialog.tsx:51
+#: src/screens/settings_adhan/index.tsx:226
 msgid "Selecting a name is required"
 msgstr "Selecting a name is required"
 
-#: src/screens/settings_calculation/index.tsx:165
+#: fastlane/update/update.ts:49
+#: website/src/_includes/home.tsx:87
+msgid "Set custom Adhan audio"
+msgstr "Set custom Adhan audio"
+
+#: fastlane/update/update.ts:61
+#: website/src/_includes/home.tsx:97
+msgid "Set reminders before or after a prayer time"
+msgstr "Set reminders before or after a prayer time"
+
+#: src/screens/settings_calculation/index.tsx:170
 msgid "Shafaq"
 msgstr "Shafaq"
 
-#: src/screens/settings_calculation/index.tsx:167
+#: src/screens/settings_calculation/index.tsx:172
 msgid ""
 "Shafaq is used by the MoonsightingCommittee method to \n"
 "determine what type of twilight to use in order to\n"
@@ -771,7 +963,7 @@ msgstr ""
 "determine what type of twilight to use in order to\n"
 "determine the time for Isha"
 
-#: src/screens/settings_calculation/index.tsx:133
+#: src/screens/settings_calculation/index.tsx:138
 msgid "Shafi, Maliki, Hanbali (Default)"
 msgstr "Shafi, Maliki, Hanbali (Default)"
 
@@ -783,7 +975,7 @@ msgstr "Shia Ithna Ashari, Leva Institute, Qum"
 msgid "Shia, Institute of Geophysics, University of Tehran"
 msgstr "Shia, Institute of Geophysics, University of Tehran"
 
-#: src/screens/general/volume_button_setting.tsx:30
+#: src/screens/settings_notifications/volume_button_setting.tsx:30
 msgid "Should app stop playing adhan when the volume button is pressed?"
 msgstr "Should app stop playing adhan when the volume button is pressed?"
 
@@ -808,7 +1000,7 @@ msgstr "Show next in notification?"
 msgid "Show notification widget?"
 msgstr "Show notification widget?"
 
-#: src/utils/permission.ts:137
+#: src/utils/permission.ts:149
 msgid "Show settings"
 msgstr "Show settings"
 
@@ -816,9 +1008,14 @@ msgstr "Show settings"
 msgid "Show upcoming alarm notification?"
 msgstr "Show upcoming alarm notification?"
 
-#: src/components/audio_picker.tsx:101
+#: src/components/audio_picker.tsx:119
 msgid "Silent"
 msgstr "Silent"
+
+#: fastlane/update/update.ts:74
+#: website/src/_includes/home.tsx:112
+msgid "Since we don't use any kind of tracker or crash analytics, please report any problem or suggestion you have on our github repo"
+msgstr "Since we don't use any kind of tracker or crash analytics, please report any problem or suggestion you have on our github repo"
 
 #: src/adhan/calculation_methods.ts:82
 msgid "Singapore"
@@ -828,11 +1025,15 @@ msgstr "Singapore"
 msgid "Skip"
 msgstr "Skip"
 
+#: website/src/_includes/privacy-policy.tsx:54
+msgid "Software License"
+msgstr "Software License"
+
 #: src/screens/settings_display/calendar_secondary_settings.tsx:31
 msgid "Solar Hijri"
 msgstr "Solar Hijri"
 
-#: src/screens/settings_battery_optimizations/index.tsx:69
+#: src/screens/settings_battery_optimizations/index.tsx:71
 msgid ""
 "Some devices need extra settings inside their Power Manager \n"
 "to prevent the app from getting killed in the background.\n"
@@ -853,7 +1054,7 @@ msgstr "Sound"
 msgid "Spiritual Administration of Muslims of Russia"
 msgstr "Spiritual Administration of Muslims of Russia"
 
-#: src/screens/settings_battery_optimizations/index.tsx:50
+#: src/screens/settings_battery_optimizations/index.tsx:52
 msgid "Status"
 msgstr "Status"
 
@@ -865,7 +1066,7 @@ msgstr "Sunday"
 msgid "System Default"
 msgstr "System Default"
 
-#: src/screens/settings_notifications/index.tsx:61
+#: src/screens/settings_notifications/index.tsx:63
 msgid "Tahajjud time mentioned in the app is the last third of the night"
 msgstr "Tahajjud time mentioned in the app is the last third of the night"
 
@@ -885,11 +1086,19 @@ msgstr ""
 msgid "The Gulf Region (Dubai)"
 msgstr "The Gulf Region (Dubai)"
 
+#: src/screens/settings_calculation/calendar_settings.tsx:45
+msgid "The app's lunar calendar is pre-calculated and may not be accurate because it isn't based on moon sightings. This is especially important to note for the start and end of Ramadan."
+msgstr "The app's lunar calendar is pre-calculated and may not be accurate because it isn't based on moon sightings. This is especially important to note for the start and end of Ramadan."
+
+#: website/src/_includes/privacy-policy.tsx:71
+msgid "The text found in this website and in the app may not be accurate in other languages, so in any case, only English version should be considered."
+msgstr "The text found in this website and in the app may not be accurate in other languages, so in any case, only English version should be considered."
+
 #: src/screens/settings_display/calendar_secondary_settings.tsx:23
 msgid "The type of calendar that is shown on top of home screen and beside lunar date in widgets"
 msgstr "The type of calendar that is shown on top of home screen and beside lunar date in widgets"
 
-#: src/screens/settings_display/calendar_settings.tsx:23
+#: src/screens/settings_calculation/calendar_settings.tsx:23
 msgid "The type of lunar calendar shown in main screen and widgets"
 msgstr "The type of lunar calendar shown in main screen and widgets"
 
@@ -912,15 +1121,15 @@ msgstr "Time"
 msgid "Time format"
 msgstr "Time format"
 
-#: src/screens/settings_location/index.tsx:183
+#: src/screens/settings_location/index.tsx:187
 msgid "To calculate Adhan, We need your location. You can use the \"Find My Location\" button, or use the country and city/area search, or enter your coordinates manually."
 msgstr "To calculate Adhan, We need your location. You can use the \"Find My Location\" button, or use the country and city/area search, or enter your coordinates manually."
 
-#: src/utils/permission.ts:38
+#: src/utils/permission.ts:39
 msgid "To see notifications about adhan, we need your permission."
 msgstr "To see notifications about adhan, we need your permission."
 
-#: src/utils/permission.ts:157
+#: src/utils/permission.ts:169
 msgid "To stop playing adhan when you receive a call, we need to read your phone state. not allowing this permission simply disables the feature."
 msgstr "To stop playing adhan when you receive a call, we need to read your phone state. not allowing this permission simply disables the feature."
 
@@ -932,7 +1141,7 @@ msgstr "Tomorrow"
 msgid "Tuesday"
 msgstr "Tuesday"
 
-#: src/screens/settings_calculation/index.tsx:120
+#: src/screens/settings_calculation/index.tsx:125
 msgid "Twilight Angle"
 msgstr "Twilight Angle"
 
@@ -956,11 +1165,11 @@ msgstr "Unknown Error"
 msgid "Unreliable"
 msgstr "Unreliable"
 
-#: src/screens/settings_calculation/index.tsx:151
+#: src/screens/settings_calculation/index.tsx:156
 msgid "Unresolved (default)"
 msgstr "Unresolved (default)"
 
-#: src/screens/settings_display/language_settings.tsx:58
+#: src/screens/settings_display/language_settings.tsx:80
 msgid "Unsupported"
 msgstr "Unsupported"
 
@@ -969,7 +1178,7 @@ msgstr "Unsupported"
 msgid "Upcoming alarm"
 msgstr "Upcoming alarm"
 
-#: src/tasks/set_update_widgets_alarms.ts:33
+#: src/tasks/set_update_widgets_alarms.ts:40
 msgid "Updating widgets"
 msgstr "Updating widgets"
 
@@ -977,28 +1186,36 @@ msgstr "Updating widgets"
 msgid "Use 24-Hour format"
 msgstr "Use 24-Hour format"
 
-#: src/screens/qibla_finder/index.tsx:116
+#: src/screens/qibla_finder/index.tsx:95
 msgid "Use Compass"
 msgstr "Use Compass"
 
-#: src/screens/qibla_finder/index.tsx:115
+#: src/screens/qibla_finder/index.tsx:94
 msgid "Use Map"
 msgstr "Use Map"
+
+#: src/screens/settings_battery_optimizations/adaptive_charging_toggle.tsx:26
+msgid "Use a different alarm type?"
+msgstr "Use a different alarm type?"
 
 #: src/screens/settings_widget/index.tsx:85
 #: src/screens/settings_widget/index.tsx:100
 msgid "Use adaptive theme?"
 msgstr "Use adaptive theme?"
 
-#: src/screens/settings_location/index.tsx:268
+#: src/screens/settings_notifications/prefer_headphone_setting.tsx:22
+msgid "Use headphones when available?"
+msgstr "Use headphones when available?"
+
+#: src/screens/settings_location/index.tsx:272
 msgid "Using Coordinates"
 msgstr "Using Coordinates"
 
-#: src/screens/settings_location/index.tsx:185
+#: src/screens/settings_location/index.tsx:189
 msgid "Using GPS"
 msgstr "Using GPS"
 
-#: src/screens/settings_location/index.tsx:204
+#: src/screens/settings_location/index.tsx:208
 msgid "Using Search"
 msgstr "Using Search"
 
@@ -1006,15 +1223,15 @@ msgstr "Using Search"
 msgid "Version"
 msgstr "Version"
 
-#: src/screens/general/volume_button_setting.tsx:22
+#: src/screens/settings_notifications/volume_button_setting.tsx:22
 msgid "Volume button stops adhan"
 msgstr "Volume button stops adhan"
 
-#: src/constants/notification.ts:28
+#: src/constants/notification.ts:31
 msgid "WIDGET_CHANNEL_NAME"
 msgstr "Widget"
 
-#: src/constants/notification.ts:32
+#: src/constants/notification.ts:35
 msgid "WIDGET_UPDATE_CHANNEL_NAME"
 msgstr "Widget Update"
 
@@ -1030,20 +1247,28 @@ msgstr "Wednesday"
 msgid "Welcome"
 msgstr "Welcome"
 
-#: src/screens/qibla_finder/index.tsx:85
+#: src/screens/settings_display/number_format_settings.tsx:29
+msgid "Western Arabic"
+msgstr "Western Arabic"
+
+#: src/screens/settings_notifications/prefer_headphone_setting.tsx:26
+msgid "When enabled, when using headphones, all audio will play only on headphones."
+msgstr "When enabled, when using headphones, all audio will play only on headphones."
+
+#: src/screens/qibla_finder/index.tsx:64
 msgid "Wifi"
 msgstr "Wifi"
 
 #: src/screens/settings_adhan/adhan_list_item.tsx:112
-#: src/utils/dialogs.ts:18
+#: src/utils/dialogs.ts:19
 msgid "Yes"
 msgstr "Yes"
 
-#: src/screens/settings_battery_optimizations/index.tsx:74
+#: src/screens/settings_battery_optimizations/index.tsx:76
 msgid "You can access your device Power Manager using the button below."
 msgstr "You can access your device Power Manager using the button below."
 
-#: src/screens/settings_location/index.tsx:322
+#: src/screens/settings_location/index.tsx:326
 msgid "You can also paste coords from clipboard"
 msgstr "You can also paste coords from clipboard"
 
@@ -1055,7 +1280,16 @@ msgstr "You can hide prayer times you don't want to see in the main screen here:
 msgid "You can hide prayer times you don't want to see in the widget here:"
 msgstr "You can hide prayer times you don't want to see in the widget here:"
 
-#: src/components/audio_picker.tsx:118
+#: fastlane/update/update.ts:47
+#: website/src/_includes/home.tsx:83
+msgid "You can search for your location online Or use GPS offline"
+msgstr "You can search for your location online Or use GPS offline"
+
+#: website/src/_includes/privacy-policy.tsx:66
+msgid "You should have received a copy of the GNU Affero General Public License along with this program. If not, see https://www.gnu.org/licenses/."
+msgstr "You should have received a copy of the GNU Affero General Public License along with this program. If not, see https://www.gnu.org/licenses/."
+
+#: src/components/audio_picker.tsx:84
 msgid "Your sounds"
 msgstr "Your sounds"
 
@@ -1080,7 +1314,7 @@ msgid "about_settings"
 msgstr "About"
 
 #. shown under adjustment accordion in calculation settings
-#: src/screens/settings_calculation/adjustment_settings.tsx:16
+#: src/screens/settings_calculation/adjustment_settings.tsx:17
 msgid "adjustment.hint"
 msgstr "Number of minutes that will be added to the calculated times"
 
@@ -1088,9 +1322,18 @@ msgstr "Number of minutes that will be added to the calculated times"
 msgid "after"
 msgstr "after"
 
+#: src/utils/date.ts:324
+msgid "ago"
+msgstr "ago"
+
 #: src/adhan/prayer.ts:52
 msgid "asr.prayer"
 msgstr "Asr"
+
+#. screen title
+#: src/navigation/types.ts:45
+msgid "backup_settings"
+msgstr "Backup"
 
 #. screen title
 #: src/navigation/types.ts:75
@@ -1107,9 +1350,25 @@ msgid "calculation_settings"
 msgstr "Calculation"
 
 #. in religious context
-#: src/screens/qada_counter/counter_view.tsx:13
+#: src/screens/qada_counter/counter_view.tsx:15
 msgid "counter.fast"
 msgstr "Fast"
+
+#: src/utils/date.ts:7
+msgid "date.day"
+msgstr "day"
+
+#: src/utils/date.ts:11
+msgid "date.hour"
+msgstr "hour"
+
+#: src/utils/date.ts:15
+msgid "date.minute"
+msgstr "minute"
+
+#: src/utils/date.ts:19
+msgid "date.second"
+msgstr "second"
 
 #. screen title
 #: src/navigation/types.ts:95
@@ -1133,11 +1392,11 @@ msgstr "Fajr"
 msgid "forces all numbers to be in the selected system"
 msgstr "forces all numbers to be in the selected system"
 
-#: src/screens/qibla_finder_compass/index.tsx:143
+#: src/screens/qibla_finder_compass/index.tsx:148
 msgid "from North"
 msgstr "from North"
 
-#: src/screens/qibla_finder_compass/index.tsx:154
+#: src/screens/qibla_finder_compass/index.tsx:159
 msgid "from settings"
 msgstr "from settings"
 
@@ -1145,11 +1404,6 @@ msgstr "from settings"
 #: src/navigation/types.ts:40
 msgid "fullscreen_alarm"
 msgstr "Playing Adhan"
-
-#. screen title
-#: src/navigation/types.ts:45
-msgid "general_settings"
-msgstr "General"
 
 #: src/navigation/types.ts:32
 msgid "home"
@@ -1167,6 +1421,10 @@ msgstr "is prayer time hidden?"
 #: src/adhan/prayer.ts:64
 msgid "isha.prayer"
 msgstr "Isha"
+
+#: src/utils/date.ts:324
+msgid "later"
+msgstr "later"
 
 #. screen title
 #: src/navigation/types.ts:55
@@ -1186,7 +1444,8 @@ msgid "moazen_zade"
 msgstr "Moazen Zade"
 
 #. screen title
-#: src/components/audio_picker.tsx:124
+#: src/components/audio_picker.tsx:90
+#: src/components/prayer_adhan.tsx:28
 #: src/navigation/types.ts:65
 msgid "muezzin_settings"
 msgstr "Muezzin"
@@ -1234,6 +1493,10 @@ msgstr "should notification widget be shown?"
 #: src/screens/settings_widget/hide_widget_prayer_settings.tsx:29
 msgid "should {prayerName} be hidden?"
 msgstr "should {prayerName} be hidden?"
+
+#: src/utils/ramadan.ts:53
+msgid "since the app's calendar is pre-calculated and not based on moon sightings, it may show incorrect date for the start and the end of Ramadan."
+msgstr "since the app's calendar is pre-calculated and not based on moon sightings, it may show incorrect date for the start and the end of Ramadan."
 
 #: src/adhan/prayer.ts:68
 msgid "sunnah.midnight"

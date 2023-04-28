@@ -1,6 +1,7 @@
 import {t} from '@lingui/macro';
+import {AlarmType} from '@notifee/react-native';
 import {cancelAdhanAlarms} from './cancel_alarms';
-import {Prayer, translatePrayer} from '@/adhan';
+import {translatePrayer} from '@/adhan';
 import {getNextPrayer} from '@/adhan/prayer_times';
 import {
   ADHAN_NOTIFICATION_ID,
@@ -37,9 +38,9 @@ export async function setNextAdhan(
 
   const {
     DELIVERED_ALARM_TIMESTAMPS,
-    SELECTED_FAJR_ADHAN_ENTRY,
-    SELECTED_ADHAN_ENTRY,
+    SELECTED_ADHAN_ENTRIES,
     SAVED_ADHAN_AUDIO_ENTRIES,
+    USE_DIFFERENT_ALARM_TYPE,
   } = settings.getState();
 
   const deliveredTS = DELIVERED_ALARM_TIMESTAMPS[ADHAN_NOTIFICATION_ID] || 0;
@@ -86,11 +87,8 @@ export async function setNextAdhan(
 
   let sound: AudioEntry | undefined = undefined;
   if (playSound) {
-    if (prayer === Prayer.Fajr) {
-      sound = (SELECTED_FAJR_ADHAN_ENTRY || SELECTED_ADHAN_ENTRY) as AudioEntry;
-    } else {
-      sound = SELECTED_ADHAN_ENTRY as AudioEntry;
-    }
+    sound = (SELECTED_ADHAN_ENTRIES[prayer] ||
+      SELECTED_ADHAN_ENTRIES['default']) as AudioEntry;
 
     if (!sound) {
       sound = SAVED_ADHAN_AUDIO_ENTRIES[0] as AudioEntry;
@@ -106,6 +104,9 @@ export async function setNextAdhan(
     subtitle,
     sound,
     prayer,
+    alarmType: USE_DIFFERENT_ALARM_TYPE
+      ? AlarmType.SET_EXACT_AND_ALLOW_WHILE_IDLE
+      : AlarmType.SET_ALARM_CLOCK,
   };
 
   await setAlarmTask(adhanOptions);

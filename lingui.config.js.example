@@ -1,20 +1,24 @@
-// language codes: https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/language_plural_rules.html
+// language codes: https://www.unicode.org/cldr/charts/43/supplemental/language_plural_rules.html
 
 module.exports = {
   catalogs: [
     {
       path: '<rootDir>/locales/{locale}/messages',
-      include: ['<rootDir>/src'],
+      include: [
+        '<rootDir>/src',
+        '<rootDir>/website/src',
+        '<rootDir>/fastlane/update/',
+      ],
       exclude: ['**/node_modules/**'],
     },
   ],
-  locales: ['en', 'fa', 'ar', 'tr', 'id', 'fr', 'ur', 'hi', 'de'],
+  locales: ['en', 'fa', 'ar', 'tr', 'id', 'fr', 'ur', 'hi', 'de', 'bs', 'vi'],
   sourceLocale: 'en',
   format: 'po',
   fallbackLocales: {
     default: 'en',
   },
-  compileNamespace: 'es',
+  compileNamespace: 'ts',
   service: {
     name: 'TranslationIO',
     apiKey: '<TRANSLATION_IO_APIKEY>',

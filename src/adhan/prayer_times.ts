@@ -22,10 +22,12 @@ import {
 } from '@/store/alarm';
 import {calcSettings, CalcSettingsStore} from '@/store/calculation';
 import {addDays, getDayBeginning, WeekDayIndex} from '@/utils/date';
+import {isRamadan} from '@/utils/ramadan';
 
 export type PrayerTimesOptions = {
   calculationParameters: CalculationParameters;
   coordinates: Coordinates;
+  calcMethodKey: string;
 };
 
 export function isMinimumSettingsAvailable(calcState?: CalcSettingsStore) {
@@ -59,15 +61,17 @@ function getPrayerTimesOptionsFromSettings() {
   const prayerTimeOptions: PrayerTimesOptions = {
     calculationParameters: CalculationMethods[calcMethodKey!].get(),
     coordinates: new Coordinates(lat, long),
+    calcMethodKey: calcMethodKey!,
   };
 
   prayerTimeOptions.calculationParameters.adjustments = {
-    asr: state.ASR_ADJUSTMENT,
-    dhuhr: state.DHUHR_ADJUSTMENT,
     fajr: state.FAJR_ADJUSTMENT,
-    isha: state.ISHA_ADJUSTMENT,
-    maghrib: state.MAGHRIB_ADJUSTMENT,
     sunrise: state.SUNRISE_ADJUSTMENT,
+    dhuhr: state.DHUHR_ADJUSTMENT,
+    asr: state.ASR_ADJUSTMENT,
+    sunset: state.SUNSET_ADJUSTMENT,
+    maghrib: state.MAGHRIB_ADJUSTMENT,
+    isha: state.ISHA_ADJUSTMENT,
   };
 
   switch (highLatRuleSetting) {
@@ -133,6 +137,10 @@ function getPrayerTimesOptionsFromSettings() {
 export function calculatePrayerTimes(date: Date) {
   const options = getPrayerTimesOptionsFromSettings();
   if (!options) return;
+
+  if (options.calcMethodKey === 'UmmAlQura' && isRamadan(date)) {
+    options.calculationParameters.ishaInterval = 120;
+  }
 
   const prayerTimes: Partial<CachedPrayerTimes> = new PrayerTimes(
     options.coordinates,

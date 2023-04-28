@@ -5,6 +5,9 @@ an open-source Adhan (أذان) - prayer times application built using react-nat
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.github.meypod.al_azan/)
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+     alt='Get it on Google Play'
+     height="80">](https://play.google.com/store/apps/details?id=com.github.meypod.al_azan)
 
 or get the APK from [the Releases section](https://github.com/meypod/al-azan/releases/latest).
 
@@ -28,7 +31,7 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 * Many options for Adhan (اذان) calculation
 
-* Light/Dark theme
+* Light and Dark theme
 
 * Hide times you don't need
 
@@ -40,7 +43,7 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 * Qada counter
 
-* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German
+* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German, Bosnian, Vietnamese
 
 ## Screenshots
 
@@ -48,8 +51,8 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
   <tr>
     <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1-main-light.png"/></th>
     <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2-main-dark.png"/></th>
-    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6-homescreen-widget-light.png"/></th>
-    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/7-notification-widget-light.png"/></th>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/9-homescreen-widget-light.png"/></th>
+    <td><img src="https://raw.githubusercontent.com/meypod/al-azan/main/fastlane/metadata/android/en-US/images/phoneScreenshots/8-notification-widget-light.png"/></th>
   </tr>
 </table>
 
@@ -83,7 +86,11 @@ adb shell cmd package uninstall -k com.github.meypod.al_azan
 
 ## Translations
 
-All translations are synced with [translation.io](https://translation.io/) with source code as single source of translation keys. it is synced during CI build for releases or when `lingui.config.js` file is configured and `yarn sync_and_purge` command is run.
+All translations are synced with [translation.io](https://translation.io/) with source code as single source of translation keys. It is only compiled during CI build for releases. Syncing is done manually when `lingui.config.js` file is configured and `yarn sync_and_purge` command is run.
+
+### Contributing your language
+
+Please follow instructions commented [here](https://github.com/meypod/al-azan/issues/9#issuecomment-1260365126).
 
 ### Translators
 
@@ -92,6 +99,7 @@ Translation to other languages has been done by these awesome people:
 #### Turkish
 
 * [@Serince](https://github.com/Serince)
+* [Muha Aliss](https://github.com/muhaaliss)
 
 #### Indonesian
 
@@ -113,7 +121,17 @@ Translation to other languages has been done by these awesome people:
 
 * [@b3r4t](https://github.com/b3r4t)
 
+#### Bosnian
+
+* [@SecularSteve](https://github.com/SecularSteve)
+
+#### Vietnamese
+
+* [Bach Nguyen](https://github.com/techyescountry)
+
 ## Thanks to
+
+All of people who have helped this project grow.
 
 [Adhan-js](https://github.com/batoulapps/adhan-js) for providing the prayer times library.
 
@@ -128,3 +146,25 @@ React-native community members.
 [Google Material Icons](https://fonts.google.com/icons) for the icons.
 
 and many other library maintainers that I can't list them all.
+
+## Donate
+
+Donations are appreciated. But I can only accept in crypto, here are my wallet addresses:
+
+Bitcoin:
+bc1q2y6fng33tzhc8qefsy2pht057q2rmfx09qyx6v
+
+Ethereum:
+0x1a1407f549cb52658a3ed6Eac9C5e850dED4DB2b
+
+Solana:
+CBK8ySxbVWrCkb1CQYoR1jYa4hEiMgpnVfJjGLCfBSJ1
+
+Litecoin:
+Lbgz2X6TG9ANLGamNpdmhyoMc4q4wBHaVQ
+
+Tron:
+THjtLAdihH57mbeaVmBfx3wAAXkpxAnqmJ
+
+Bitcoin cash:
+qqgjknfejs4zf4udsalsej2qkwt5es5ym5fwusgvx3

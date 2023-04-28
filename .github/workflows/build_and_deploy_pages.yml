@@ -1,0 +1,51 @@
+
+name: pages ci
+
+on:
+  push:
+    branches: [website]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          # update the Node version to meet your needs
+          node-version: 18
+
+      - name: Install yarn
+        run: npm install -g yarn
+      
+      - name: Load Cache
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+
+      - name: Install packages
+        run: |
+          cd website
+          yarn install --frozen-lockfile
+
+      - name: Compile lingui.js locales
+        run: |
+          sed -e "s/<TRANSLATION_IO_APIKEY>//" -e "s|<rootDir>/locales|<rootDir>/../locales|" lingui.config.js.example > ./website/lingui.config.js
+          cd website
+          yarn lingui compile
+          ls -la ../locales/en/
+
+      - name: Build
+        run: |
+          cp ./src/i18n_base.ts ./website/
+          cd website
+          yarn build --pathprefix="/al-azan/"
+          touch dist/.nojekyll
+
+      - name: Deploy
+        # https://github.com/JamesIves/github-pages-deploy-action
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: website/dist

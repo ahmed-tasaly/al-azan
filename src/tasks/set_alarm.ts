@@ -4,6 +4,7 @@ import notifee, {
   TriggerType,
   AndroidImportance,
   AndroidCategory,
+  AlarmType,
 } from '@notifee/react-native';
 import {Prayer} from '@/adhan';
 import {AudioEntry, isIntrusive, isSilent} from '@/modules/media_player';
@@ -26,6 +27,8 @@ export type SetAlarmTaskOptions = {
   isReminder?: Boolean;
   /** which prayer this is about */
   prayer: Prayer;
+  /** Alarm type to use with alarm manager */
+  alarmType: AlarmType;
 };
 
 export async function setAlarmTask(options: SetAlarmTaskOptions) {
@@ -34,13 +37,22 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
    *  otherwise all options should have neen checked.
    */
 
-  const {date, title, body, subtitle, sound, notifChannelId, notifId} = options;
+  const {
+    date,
+    title,
+    body,
+    subtitle,
+    sound,
+    notifChannelId,
+    notifId,
+    alarmType,
+  } = options;
 
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
     timestamp: date.getTime(),
     alarmManager: {
-      allowWhileIdle: true,
+      type: alarmType,
     },
   };
 

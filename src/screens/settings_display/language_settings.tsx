@@ -51,9 +51,31 @@ export function LanguageSettings(props: IStackProps) {
       label: `Deutsch`,
       value: 'de',
     },
+    {
+      label: `Bosanski`,
+      value: 'bs',
+    },
+    {
+      label: `Tiếng Việt`,
+      value: 'vi',
+    },
   ];
 
-  if (!['en', 'fa', 'ar', 'tr', 'id', 'fr', 'ur', 'hi', 'de'].includes(lang)) {
+  if (
+    ![
+      'en',
+      'fa',
+      'ar',
+      'tr',
+      'id',
+      'fr',
+      'ur',
+      'hi',
+      'de',
+      'bs',
+      'vi',
+    ].includes(lang)
+  ) {
     languageEntries.push({
       label: lang + ' (' + t`Unsupported` + ')',
       value: lang,

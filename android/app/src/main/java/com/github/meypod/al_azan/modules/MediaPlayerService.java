@@ -1,5 +1,6 @@
 package com.github.meypod.al_azan.modules;
 
+import static com.github.meypod.al_azan.ReactUtils.sendEvent;
 import static com.github.meypod.al_azan.modules.MediaPlayerModule.ctx;
 import static com.github.meypod.al_azan.utils.Utils.getIdFromRawResourceUri;
 
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.media.AudioAttributes;
+import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -29,9 +31,9 @@ import androidx.core.content.ContextCompat;
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.github.meypod.al_azan.ReactUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -72,8 +74,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
 
   @Override
   public void onAudioFocusChange(int focusChange) {
-    ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("audio_focus_change", focusChange);
+    sendEvent("audio_focus_change", focusChange);
     if (focusChange > 0) {
       if (wasPlaying) {
         start(true);
@@ -101,8 +102,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
         wasPlaying = true;
       }
       isPaused = true;
-      ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-          .emit("state", STATE_PAUSED);
+      sendEvent("state", STATE_PAUSED);
     }
   }
 
@@ -119,8 +119,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
     } catch (Exception ignored) {
     } finally {
       onCompletion(wasInterrupted);
-      ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-          .emit("state", STATE_STOPPED);
+      sendEvent("state", STATE_STOPPED);
     }
   }
 
@@ -142,8 +141,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
         isStarted = true;
         isPaused = false;
         wasPlaying = false;
-        ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit("state", STATE_STARTED);
+        sendEvent("state", STATE_STARTED);
         if (isLoopUri) {
           timer= new Timer();
           timer.schedule(new TimerTask() {
@@ -184,7 +182,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
 
 
   /** plays default notification sound if uri is null */
-  public void setDataSource(@Nullable Uri uri, boolean isLoopUri, Promise promise) {
+  public void setDataSource(@Nullable Uri uri, boolean isLoopUri, boolean preferExternalDevice, Promise promise) {
     if (setDataSourcePromise != null) {
       promise.reject("ERROR", "A setDataSource Call is already pending");
       return;
@@ -214,7 +212,10 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
       } else {
         player.setDataSource(ctx, uri);
       }
-
+      player.setAudioAttributes(new AudioAttributes.Builder()
+              .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+              .setUsage(preferExternalDevice && isExternalDeviceConnected(getApplicationContext()) ? AudioAttributes.USAGE_MEDIA : AudioAttributes.USAGE_ALARM)
+              .build());
       player.prepareAsync();
     } catch (Exception e) {
       promise.reject("ERROR", "setDataSource: " + e.getLocalizedMessage());
@@ -223,18 +224,37 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
     }
   }
 
+  private boolean isExternalDeviceConnected(Context context) {
+    AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+    if (am == null)
+      return false;
+
+    AudioDeviceInfo[] devices = am.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+
+    for (AudioDeviceInfo device : devices) {
+      switch(device.getType()) {
+        case AudioDeviceInfo.TYPE_WIRED_HEADSET:
+        case AudioDeviceInfo.TYPE_WIRED_HEADPHONES:
+        case AudioDeviceInfo.TYPE_BLUETOOTH_A2DP:
+        case AudioDeviceInfo.TYPE_BLUETOOTH_SCO:
+        case AudioDeviceInfo.TYPE_AUX_LINE:
+        case AudioDeviceInfo.TYPE_BLE_HEADSET:
+        case AudioDeviceInfo.TYPE_BLE_BROADCAST:
+        case AudioDeviceInfo.TYPE_BLE_SPEAKER:
+        case AudioDeviceInfo.TYPE_USB_HEADSET:
+          return true;
+      }
+    }
+    return false;
+  }
+
   public void setupPlayer() {
     releasePlayer();
     setupCallStateListener();
 
     player = new MediaPlayer();
     player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-    player.setAudioAttributes(
-        new AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .setUsage(AudioAttributes.USAGE_ALARM)
-            .build()
-    );
     player.setOnErrorListener(this);
     player.setOnPreparedListener(this);
     player.setOnCompletionListener(this);
@@ -270,8 +290,7 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
         error = "UNKNOWN";
         break;
     }
-    ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("error", error);
+    sendEvent("error", error);
     return true;
   }
 
@@ -294,10 +313,8 @@ public class MediaPlayerService extends HeadlessJsTaskService implements
     wasPlaying = false;
     AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     audioManager.abandonAudioFocus(this);
-    ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit("completed", wasInterrupted);
-    ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit("state", STATE_STOPPED);
+    sendEvent("completed", wasInterrupted);
+    sendEvent("state", STATE_STOPPED);
   }
 
   class MusicBinder extends Binder {

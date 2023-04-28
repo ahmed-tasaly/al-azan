@@ -7,7 +7,10 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HStack, useColorMode} from 'native-base';
 import {useEffect} from 'react';
+import {AdvancedCustomAdhanToggle} from './components/advanced_custom_adhan_toggle';
+import {shouldShowRamadanNotice, showRamadanAlert} from './utils/ramadan';
 import {OrientationLock} from '@/components/orientation_lock';
+import {QadaHistoryToggle} from '@/components/qada_history_toggle';
 import {Intro} from '@/intro';
 import {
   getCurrentRoute,
@@ -17,7 +20,6 @@ import {
 } from '@/navigation/root_navigation';
 import {RootStackParamList, translateRoute} from '@/navigation/types';
 import FullscreenAlarm from '@/screens/fullscreen_alarm';
-import {GeneralSettings} from '@/screens/general';
 import {Home} from '@/screens/home';
 import {QadaCounter} from '@/screens/qada_counter';
 import {QiblaFinder} from '@/screens/qibla_finder';
@@ -26,6 +28,7 @@ import {QiblaMap} from '@/screens/qibla_finder_map';
 import Settings from '@/screens/settings';
 import {AboutSettings} from '@/screens/settings_about';
 import {AdhanSettings} from '@/screens/settings_adhan';
+import {BackupSettings} from '@/screens/settings_backup';
 import {BatteryOptimizationSettings} from '@/screens/settings_battery_optimizations';
 import {CalculationSettings} from '@/screens/settings_calculation';
 import {DevSettings} from '@/screens/settings_dev';
@@ -52,16 +55,27 @@ const TranslatedHeaderTitle = function TranslatedHeaderTitle({...props}: any) {
 };
 
 const QiblaFinderHeaderRight = function QiblaFinderHeaderRight() {
-  const routeName = getCurrentRoute().name;
-  if (routeName === 'QiblaCompass' || routeName === 'QiblaMap') {
-    return (
-      <HStack>
-        <OrientationLock p="2" mr="-2" size="xl"></OrientationLock>
-      </HStack>
-    );
-  } else {
-    return <></>;
-  }
+  return (
+    <HStack>
+      <OrientationLock p="2" mr="-2" size="xl"></OrientationLock>
+    </HStack>
+  );
+};
+
+const QadaCounterHeaderRight = function QadaCounterHeaderRight() {
+  return (
+    <HStack>
+      <QadaHistoryToggle p="2" mr="-2" size="xl"></QadaHistoryToggle>
+    </HStack>
+  );
+};
+
+const SettingsAdhanHeaderRight = function SettingsAdhanHeaderRight() {
+  return (
+    <HStack>
+      <AdvancedCustomAdhanToggle fontSize="sm"></AdvancedCustomAdhanToggle>
+    </HStack>
+  );
 };
 
 export function App(): JSX.Element {
@@ -85,6 +99,12 @@ export function App(): JSX.Element {
     }
   }, [isPlayingAudio]);
 
+  useEffect(() => {
+    if (appIntroDone && shouldShowRamadanNotice()) {
+      showRamadanAlert();
+    }
+  }, [appIntroDone]);
+
   if (!appIntroDone) {
     return <Intro></Intro>;
   }
@@ -97,25 +117,40 @@ export function App(): JSX.Element {
       <Stack.Navigator
         screenOptions={{
           headerTitle: TranslatedHeaderTitle,
-          headerRight: QiblaFinderHeaderRight,
         }}>
         <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
         </Stack.Group>
         <Stack.Group>
-          <Stack.Screen name="QadaCounter" component={QadaCounter} />
+          <Stack.Screen
+            name="QadaCounter"
+            component={QadaCounter}
+            options={{headerRight: QadaCounterHeaderRight}}
+          />
           <Stack.Screen name="QiblaFinder" component={QiblaFinder} />
-          <Stack.Screen name="QiblaMap" component={QiblaMap} />
-          <Stack.Screen name="QiblaCompass" component={QiblaCompass} />
+          <Stack.Screen
+            name="QiblaMap"
+            component={QiblaMap}
+            options={{headerRight: QiblaFinderHeaderRight}}
+          />
+          <Stack.Screen
+            name="QiblaCompass"
+            component={QiblaCompass}
+            options={{headerRight: QiblaFinderHeaderRight}}
+          />
           <Stack.Screen name="Settings" component={Settings} />
-          <Stack.Screen name="GeneralSettings" component={GeneralSettings} />
+          <Stack.Screen name="BackupSettings" component={BackupSettings} />
           <Stack.Screen name="DisplaySettings" component={DisplaySettings} />
           <Stack.Screen name="LocationSettings" component={LocationSettings} />
           <Stack.Screen
             name="NotificationSettings"
             component={NotificationSettings}
           />
-          <Stack.Screen name="AdhanSettings" component={AdhanSettings} />
+          <Stack.Screen
+            name="AdhanSettings"
+            component={AdhanSettings}
+            options={{headerRight: SettingsAdhanHeaderRight}}
+          />
           <Stack.Screen
             name="CalculationSettings"
             component={CalculationSettings}

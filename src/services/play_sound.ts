@@ -6,9 +6,11 @@ import MediaPlayer, {AudioEntry} from '@/modules/media_player';
 export async function play({
   audioEntry,
   volumeBtnInterrupts,
+  preferExternalDevice,
 }: {
   audioEntry: AudioEntry;
   volumeBtnInterrupts?: boolean;
+  preferExternalDevice?: boolean;
 }) {
   try {
     await MediaPlayer.setupPlayer();
@@ -53,6 +55,7 @@ export async function play({
     await MediaPlayer.setDataSource({
       uri: audioEntry.filepath,
       loop: !!audioEntry.loop,
+      preferExternalDevice,
     });
     await MediaPlayer.start();
     const playbackResult = await playbackFinishedDefer;

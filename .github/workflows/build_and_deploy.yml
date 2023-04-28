@@ -25,6 +25,8 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v3
+      with: 
+        submodules: 'true'
 
     - name: Setup java
       uses: actions/setup-java@v3
@@ -53,11 +55,6 @@ jobs:
     - name: Install packages
       run: yarn install --frozen-lockfile  # install project deps with --frozen-lockfile to make sure we will have the same packages version ( very recommended  on running yarn install on ci)
 
-    - name: clone notifee_core
-      run: |
-        chmod +x ./dl_notifee_core.sh;
-        ./dl_notifee_core.sh;
-
     - name: patch notifee rn package
       run: |
         sed -E -i 's/^.*(fabric|com\.(crashlytics|google\.(firebase|android.gms))).*$//g' ./node_modules/@notifee/react-native/android/build.gradle
@@ -72,11 +69,12 @@ jobs:
 
     - name: build
       run: |
-        cd android && ./gradlew --no-daemon :app:assembleRelease -PnoSign;
+        cd android
+        ./gradlew --no-daemon :app:bundleRelease -PnoSign
+        ./gradlew --no-daemon :app:assembleRelease -PnoSign -PuseLegacyPackaging=true
 
-    - name: Sign App Bundle
+    - name: Sign App Apk
       if: ${{ github.event_name == 'release'}}
-      id: sign_app
       uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: android/app/build/outputs/apk/release
@@ -87,9 +85,21 @@ jobs:
       env: 
         # build tools version is found inside cimg/android related tag pulled layers details inside docker hub. after `...-c SDK_TOOLS_URL=...`
         BUILD_TOOLS_VERSION: "33.0.0" 
+
+    - name: Sign App Bundle
+      if: ${{ github.event_name == 'release' }}
+      uses: r0adkll/sign-android-release@v1
+      with:
+        releaseDirectory: android/app/build/outputs/bundle/release
+        signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+        alias: ${{ secrets.ANDROID_ALIAS }}
+        keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+        keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      env: 
+        # build tools version is found inside cimg/android related tag pulled layers details inside docker hub. after `...-c SDK_TOOLS_URL=...`
+        BUILD_TOOLS_VERSION: "33.0.0" 
        
-    - name: Release
-      if: ${{ github.event_name == 'release'}}
+    - name: Release on GitHub
       uses: ncipollo/release-action@v1
       with:
         prerelease: true
@@ -99,5 +109,15 @@ jobs:
         allowUpdates: true
         replacesArtifacts: true
         updateOnlyUnreleased: true
-        artifacts: android/app/build/outputs/apk/release/*signed.apk
+        artifacts: android/app/build/outputs/apk/release/*signed.apk,android/app/build/outputs/bundle/release/*.aab
 
+    - name: Push to Play Store
+      if: ${{ github.event_name == 'release' && !contains(github.ref, '-rc') }}
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+        packageName: com.github.meypod.al_azan
+        releaseFiles: android/app/build/outputs/bundle/release/*.aab
+        track: internal
+        status: draft
+        

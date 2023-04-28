@@ -5,6 +5,7 @@ import {useStore} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 import {shallow} from 'zustand/shallow';
 import {createStore} from 'zustand/vanilla';
+import {clearCache} from './adhan_calc_cache';
 import {alarmSettings, AlarmSettingsStore} from './alarm';
 import {zustandStorage} from './mmkv';
 import {Prayer} from '@/adhan';
@@ -39,7 +40,6 @@ export type CalcSettingsStore = {
   SUNSET_ADJUSTMENT: number;
   MAGHRIB_ADJUSTMENT: number;
   ISHA_ADJUSTMENT: number;
-  MIDNIGHT_ADJUSTMENT: number;
 
   setSetting: <T extends keyof CalcSettingsStore>(
     key: T,
@@ -71,7 +71,6 @@ export const calcSettings = createStore<CalcSettingsStore>()(
       SUNSET_ADJUSTMENT: 0,
       MAGHRIB_ADJUSTMENT: 0,
       ISHA_ADJUSTMENT: 0,
-      MIDNIGHT_ADJUSTMENT: 0,
 
       // general
       setSetting: <T extends keyof CalcSettingsStore>(
@@ -108,7 +107,7 @@ export const calcSettings = createStore<CalcSettingsStore>()(
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !invalidKeys.includes(key)),
         ),
-      version: 2,
+      version: 3,
       migrate: (persistedState, version) => {
         /* eslint-disable no-fallthrough */
         // fall through cases is exactly the use case for migration.
@@ -122,7 +121,6 @@ export const calcSettings = createStore<CalcSettingsStore>()(
             (persistedState as CalcSettingsStore).SUNSET_ADJUSTMENT = 0;
             (persistedState as CalcSettingsStore).MAGHRIB_ADJUSTMENT = 0;
             (persistedState as CalcSettingsStore).ISHA_ADJUSTMENT = 0;
-            (persistedState as CalcSettingsStore).MIDNIGHT_ADJUSTMENT = 0;
           case 1:
             // moved all notification related keys to alarm settings
             for (const key in persistedState as CalcSettingsStore) {
@@ -134,6 +132,14 @@ export const calcSettings = createStore<CalcSettingsStore>()(
                 });
                 delete (persistedState as any)[key];
               }
+            }
+          case 2:
+            // a cache reset force for Radaman fix for Umm al-Qura University method
+            if (
+              (persistedState as CalcSettingsStore).CALCULATION_METHOD_KEY ===
+              'UmmAlQura'
+            ) {
+              clearCache();
             }
             break;
         }

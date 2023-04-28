@@ -61,10 +61,13 @@ def enableSeparateBuildPerCPUArchitecture = true
 /** should we build a universal apk as well ? */
 def buildUniversalApk = project.getProperties().get("buildUniversalApk", false) == "true";
 
+// for package size on github
+def legacyPackaging = project.getProperties().get("useLegacyPackaging", false) == "true";
+
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -100,8 +103,8 @@ android {
         applicationId "com.github.meypod.al_azan"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 43
-        versionName "1.12.0" 
+        versionCode 60
+        versionName "1.14.2" 
         if (!project.hasProperty("noSign")) { 
             signingConfig signingConfigs.debug
             println("debug signing the builds by default")
@@ -127,7 +130,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            //applicationIdSuffix ".preview"
+            applicationIdSuffix ".preview"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -189,7 +192,8 @@ android {
 
     packagingOptions {
         jniLibs {
-            useLegacyPackaging = true
+            // Change this to false on releases other than github
+            useLegacyPackaging = legacyPackaging
         }
     }
 }
