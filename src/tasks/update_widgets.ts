@@ -8,6 +8,7 @@ import {
   translatePrayer,
 } from '@/adhan';
 import {getActivePrayer} from '@/adhan/utils';
+import {isRTL} from '@/i18n';
 import {updateScreenWidget} from '@/modules/screen_widget';
 import {
   cancelPermanentNotifWidget,
@@ -31,25 +32,25 @@ export async function updateWidgets() {
     HIDDEN_WIDGET_PRAYERS: hiddenPrayers,
     ADAPTIVE_WIDGETS: adaptiveTheme,
     SHOW_WIDGET_COUNTDOWN: showCountdown,
+    HIGHLIGHT_CURRENT_PRAYER,
   } = settings.getState();
 
   const visiblePrayerTimes = difference(PrayersInOrder, hiddenPrayers);
 
   let activePrayer: Prayer | undefined = undefined;
 
-  if (
-    prayerTimes &&
-    visiblePrayerTimes.length &&
-    now.valueOf() <
-      prayerTimes[visiblePrayerTimes[visiblePrayerTimes.length - 1]].valueOf()
-  ) {
-    activePrayer = getActivePrayer(now, visiblePrayerTimes);
+  if (prayerTimes && visiblePrayerTimes.length) {
+    activePrayer = getActivePrayer(
+      now,
+      visiblePrayerTimes,
+      HIGHLIGHT_CURRENT_PRAYER,
+    );
   }
 
   let countdownLabel: string | null = null;
   let countdownBase: string | null = null;
   if (prayerTimes && showCountdown) {
-    if (activePrayer) {
+    if (activePrayer && !HIGHLIGHT_CURRENT_PRAYER) {
       countdownLabel = getCountdownLabel(activePrayer);
       countdownBase = prayerTimes[activePrayer].valueOf().toString();
     } else {
@@ -74,6 +75,10 @@ export async function updateWidgets() {
         p === activePrayer,
       ] as [prayerName: string, prayerTime: string, isActive: Boolean],
   );
+
+  if (!isRTL) {
+    prayers.reverse();
+  }
 
   const secondaryDate = getFormattedDate(now);
   const hijriDate = getArabicDate(now);

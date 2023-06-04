@@ -1,11 +1,25 @@
-import {Prayer, PrayerTime, getNextPrayer} from '@/adhan';
+import {Prayer, PrayerTime, getNextPrayer, getCurrentPrayer} from '@/adhan';
+import {addDays} from '@/utils/date';
 
 export function getActivePrayer(
   lookingAtDay: Date,
   prayersList: Prayer[],
+  /** return current active prayer instead of next prayer */
+  current?: boolean,
 ): Prayer | undefined {
   if (!lookingAtDay || !prayersList.length) return;
   const now = new Date();
+
+  if (current) {
+    const activePrayer = getCurrentPrayer({date: now, prayers: prayersList});
+    if (
+      activePrayer?.calculatedFrom.toDateString() ===
+      lookingAtDay.toDateString()
+    ) {
+      return activePrayer.prayer;
+    }
+    return;
+  }
 
   const activePrayer: PrayerTime | undefined = getNextPrayer({
     date: now,
@@ -22,8 +36,13 @@ export function getActivePrayer(
     return activePrayer.prayer;
   }
 
-  // handles when highlighting the tahajjud of previous day, but we need to handle fajr as well
-  if (lookingAtDay.toDateString() === now.toDateString()) {
+  const tomorrow = addDays(now, 1);
+
+  // when looking at tomorrow, if next prayer is on tomorrow, assume it's the first visible prayer time
+  if (
+    lookingAtDay.toDateString() === tomorrow.toDateString() &&
+    activePrayer.calculatedFrom.toDateString() === tomorrow.toDateString()
+  ) {
     return prayersList[0];
   }
 

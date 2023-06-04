@@ -58,7 +58,6 @@ export async function setAlarmTask(options: SetAlarmTaskOptions) {
 
   const intrusive = isIntrusive(sound);
   const silent = isSilent(sound);
-
   await notifee.createTriggerNotification(
     {
       id: notifId,

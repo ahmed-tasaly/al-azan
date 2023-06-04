@@ -17,7 +17,7 @@ import {
 } from '@/assets/adhan_entries';
 import {ADHAN_NOTIFICATION_ID} from '@/constants/notification';
 import type {AudioEntry} from '@/modules/media_player';
-import {CountryInfo, SearchResult} from '@/utils/geonames';
+import {CountryInfo, CityInfo} from '@/utils/geonames';
 import {PREFERRED_LOCALE} from '@/utils/locale';
 
 export const SETTINGS_STORAGE_KEY = 'SETTINGS_STORAGE';
@@ -34,6 +34,7 @@ export type SettingsStore = {
   // display
   IS_24_HOUR_FORMAT: boolean;
   NUMBERING_SYSTEM: string;
+  HIGHLIGHT_CURRENT_PRAYER: boolean;
   // other
   SELECTED_LOCALE: string;
   SELECTED_ARABIC_CALENDAR: string;
@@ -44,7 +45,7 @@ export type SettingsStore = {
   SAVED_USER_AUDIO_ENTRIES: AudioEntry[];
   SELECTED_ADHAN_ENTRIES: SelectedAdhanEntries;
   LOCATION_COUNTRY: CountryInfo | undefined;
-  LOCATION_CITY: SearchResult | undefined;
+  LOCATION_CITY: CityInfo | undefined;
   LAST_APP_FOCUS_TIMESTAMP?: number;
   HIDDEN_PRAYERS: Array<Prayer>;
   HIDDEN_WIDGET_PRAYERS: Array<Prayer>;
@@ -52,6 +53,7 @@ export type SettingsStore = {
   // behavior related
   VOLUME_BUTTON_STOPS_ADHAN: boolean;
   PREFER_EXTERNAL_AUDIO_DEVICE: boolean;
+  BYPASS_DND: boolean;
   // widget
   SHOW_WIDGET: boolean;
   SHOW_WIDGET_COUNTDOWN: boolean;
@@ -135,8 +137,11 @@ export const settings = createStore<SettingsStore>()(
       SHOW_WIDGET: false,
       SHOW_WIDGET_COUNTDOWN: false,
       ADAPTIVE_WIDGETS: false,
+      // DISPLAY
       IS_24_HOUR_FORMAT: true,
       NUMBERING_SYSTEM: '',
+      HIGHLIGHT_CURRENT_PRAYER: false,
+
       CALC_SETTINGS_HASH: '',
       ALARM_SETTINGS_HASH: '',
       REMINDER_SETTINGS_HASH: '',
@@ -148,8 +153,11 @@ export const settings = createStore<SettingsStore>()(
       DEV_MODE: false,
       QIBLA_FINDER_UNDERSTOOD: false,
       QIBLA_FINDER_ORIENTATION_LOCKED: true,
+      // behavior
       VOLUME_BUTTON_STOPS_ADHAN: false,
       PREFER_EXTERNAL_AUDIO_DEVICE: false,
+      BYPASS_DND: false,
+      //
       COUNTER_HISTORY_VISIBLE: false,
       RAMADAN_REMINDED_YEAR: '',
       RAMADAN_REMINDER_DONT_SHOW: false,

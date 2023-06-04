@@ -19,11 +19,13 @@ import {
 import {bootstrap} from '@/bootstrap';
 import {
   ADHAN_CHANNEL_ID,
+  ADHAN_DND_CHANNEL_ID,
   IMPORTANT_CHANNEL_ID,
   PRE_ADHAN_CHANNEL_ID,
   PRE_REMINDER_CHANNEL_ID,
   RAMADAN_NOTICE_NOTIFICATION_ID,
   REMINDER_CHANNEL_ID,
+  REMINDER_DND_CHANNEL_ID,
   WIDGET_CHANNEL_ID,
   WIDGET_NOTIFICATION_ID,
   WIDGET_UPDATE_CHANNEL_ID,
@@ -82,6 +84,7 @@ export async function cancelAlarmNotif({
           },
           importance: AndroidImportance.DEFAULT,
         },
+        data: undefined,
       })
       .catch(console.error);
   }
@@ -147,12 +150,15 @@ async function handleNotification({
   if (
     [
       ADHAN_CHANNEL_ID,
+      ADHAN_DND_CHANNEL_ID,
       REMINDER_CHANNEL_ID,
+      REMINDER_DND_CHANNEL_ID,
       PRE_ADHAN_CHANNEL_ID,
       PRE_REMINDER_CHANNEL_ID,
     ].includes(channelId)
   ) {
     const options = getAlarmOptions(notification)!;
+    if (!options) return;
 
     if (
       type === EventType.DELIVERED ||
@@ -196,13 +202,15 @@ async function handleNotification({
           .catch(console.error);
       }
 
-      if (channelId === ADHAN_CHANNEL_ID) {
+      if ([ADHAN_CHANNEL_ID, ADHAN_DND_CHANNEL_ID].includes(channelId)) {
         await Promise.all([
           setNextAdhan(),
           updateWidgets(),
           setUpdateWidgetsAlarms(),
         ]);
-      } else if (channelId === REMINDER_CHANNEL_ID) {
+      } else if (
+        [REMINDER_CHANNEL_ID, REMINDER_DND_CHANNEL_ID].includes(channelId)
+      ) {
         if ((options as Pick<Reminder, 'once'>).once) {
           reminderSettings.getState().disableReminder({id: options.notifId});
         }
@@ -230,10 +238,16 @@ async function handleNotification({
               scheduledAlarmOptions.date.getTime(),
             );
 
-          if (scheduledAlarmOptions.notifChannelId === ADHAN_CHANNEL_ID) {
+          if (
+            [ADHAN_CHANNEL_ID, ADHAN_DND_CHANNEL_ID].includes(
+              scheduledAlarmOptions.notifChannelId,
+            )
+          ) {
             await setNextAdhan();
           } else if (
-            scheduledAlarmOptions.notifChannelId === REMINDER_CHANNEL_ID
+            [REMINDER_CHANNEL_ID, REMINDER_DND_CHANNEL_ID].includes(
+              scheduledAlarmOptions.notifChannelId,
+            )
           ) {
             if ((scheduledAlarmOptions as Pick<Reminder, 'once'>).once) {
               reminderSettings.getState().disableReminder({
@@ -304,24 +318,28 @@ export function setupNotifeeHandlers() {
     bootstrap();
 
     const channelId = notification?.android?.channelId;
-    if (channelId === ADHAN_CHANNEL_ID || channelId === REMINDER_CHANNEL_ID) {
+    if (
+      [
+        ADHAN_CHANNEL_ID,
+        ADHAN_DND_CHANNEL_ID,
+        REMINDER_CHANNEL_ID,
+        REMINDER_DND_CHANNEL_ID,
+      ].includes(channelId as string)
+    ) {
       const options = getAlarmOptions(notification);
 
       if (!isSilent(options?.sound)) {
-        const canBypassDnd = (
-          await notifee.getChannel(channelId).catch(console.error)
-        )?.bypassDnd;
-
         const isDnd = await isDndActive();
 
-        if (!isDnd || canBypassDnd) {
-          const interrupted = await playAudio(options!.sound!);
-          await cancelAlarmNotif({
-            notification,
-            options,
-            replaceWithNormal: !interrupted,
-          });
+        let interrupted = false;
+        if (!isDnd || settings.getState().BYPASS_DND) {
+          interrupted = await playAudio(options!.sound!);
         }
+        await cancelAlarmNotif({
+          notification,
+          options,
+          replaceWithNormal: !interrupted,
+        });
       }
     }
   });

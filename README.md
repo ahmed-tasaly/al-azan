@@ -43,7 +43,7 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 * Qada counter
 
-* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German, Bosnian, Vietnamese
+* Is localized in English, Persian, Arabic, Turkish, Indonesian, French, Urdu, Hindi, German, Bosnian, Vietnamese, Bangla
 
 ## Screenshots
 
@@ -58,23 +58,40 @@ Apks released on GitHub are per CPU architecture, if you don't know which one to
 
 ## How to run this project
 
+Requirements:
+
+* Node >= 16
+* Android SDK
+* Yarn
+
+Clone the project:
+
+```bash
+# clone with submodules
+git clone --recurse-submodules git@github.com:meypod/al-azan.git
+
+# OR if you have already cloned the repo without `--recurse-submodules`, update git submodule:
+cd al-azan && git submodule update --init --recursive
+```
+
 for development:
 
 ```bash
 # 1. install packages
 yarn install
 
-# 2. build the debug version and launch emulator
-yarn android
-
-# 3. run the packager
+# 2. run the packager
 yarn start
 
+# 3. build the debug version and launch emulator
+yarn android
 ```
 
 for creating a release build locally to debug:
 
 ```bash
+yarn android --variant=release
+# OR run:
 cd android && ./gradlew :app:assembleRelease
 ```
 
@@ -128,6 +145,14 @@ Translation to other languages has been done by these awesome people:
 #### Vietnamese
 
 * [Bach Nguyen](https://github.com/techyescountry)
+
+#### Arabic
+
+* [@M86xKC](https://github.com/M86xKC)
+
+#### Bangla
+
+* [Samin Yaser](https://github.com/SaminYaser-work)
 
 ## Thanks to
 

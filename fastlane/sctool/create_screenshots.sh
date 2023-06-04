@@ -69,12 +69,7 @@ function dark_mode_disable {
 }
 
 function save_screenshot {
-    #Capture a screenshot and save to /sdcard/screen.png on your Android device.
-    adb shell screencap -p /sdcard/screen.png
-    #Grab the screenshot from /sdcard/screen.png to /tmp/screen.png on your PC.
-    adb pull /sdcard/screen.png ./screen-tmp.png
-    #Delete /sdcard/screen.png
-    adb shell rm /sdcard/screen.png
+    adb exec-out screencap -p > ./screen-tmp.png
 
     pngquant --strip --skip-if-larger --force --quality 85-99 ./screen-tmp.png -o ./screen-tmp.png
     oxipng --strip safe ./screen-tmp.png --out ./screen-tmp.png
@@ -86,7 +81,7 @@ function save_screenshot {
 
  rm -f ./screen-tmp.png
 
-locales=('en-US' 'ar' 'bs' 'de' 'fa' 'fr' 'hi' 'id' 'tr' 'ur' 'vi')
+locales=('en-US' 'ar' 'bs' 'de' 'fa' 'fr' 'hi' 'id' 'tr' 'ur' 'vi' 'bn')
 
 start_clean_status_bar
 

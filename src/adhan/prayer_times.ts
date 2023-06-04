@@ -197,7 +197,7 @@ type NextPrayerOptions = {
   checkNextDay?: boolean;
   /** check the next 6 days, so a full week is checked */
   checkNextDays?: boolean;
-  /** if set, next prayer of only given prayers is returned */
+  /** if set, next prayer of only given prayers is returned. given prayers must be in order.  */
   prayers?: Array<Prayer>;
 };
 
@@ -279,11 +279,46 @@ export function getNextPrayer(
       prayerTime = getNextPrayer({
         useSettings,
         date: dayToCheck,
+        prayers: prayers,
         _originalDate: false, // this makes it a boolean, and thus not checking the day before it
       });
       if (prayerTime) {
         break;
       }
+    }
+  }
+
+  return prayerTime;
+}
+
+type CurrentPrayerOptions = {
+  /** the date to get the current prayer for */
+  date?: Date;
+  /** if set, next prayer of only given prayers is returned. given prayers must be in order. */
+  prayers?: Array<Prayer>;
+};
+
+export function getCurrentPrayer(
+  options?: CurrentPrayerOptions,
+): PrayerTime | undefined {
+  const {date = new Date(), prayers = PrayersInOrder} = options || {};
+
+  if (!prayers.length) return;
+
+  const prayerTimes = getPrayerTimes(date);
+
+  if (!prayerTimes) return;
+
+  let prayerTime: PrayerTime | undefined;
+
+  for (let i = prayers.length - 1; i >= 0; i--) {
+    if (date >= prayerTimes[prayers[i]]) {
+      prayerTime = {
+        date: prayerTimes[prayers[i]],
+        calculatedFrom: date,
+        prayer: prayers[i],
+      };
+      break;
     }
   }
 
